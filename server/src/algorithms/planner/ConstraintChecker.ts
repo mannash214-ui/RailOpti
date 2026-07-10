@@ -25,13 +25,21 @@ export class ConstraintChecker {
   }
 
   /**
+   * Helper to perform case-insensitive comparison of a train type against allowed train types
+   */
+  public static isTrainTypeAllowed(trainType: string, allowedTrainTypes: string[]): boolean {
+    if (!allowedTrainTypes || allowedTrainTypes.length === 0) {
+      return true;
+    }
+    const normalized = trainType.trim().toLowerCase();
+    return allowedTrainTypes.some(type => type.trim().toLowerCase() === normalized);
+  }
+
+  /**
    * Validate train type is in the allowed list
    */
   public isAllowedTrainType(trainType: string): boolean {
-    if (this.config.allowedTrainTypes.length === 0) {
-      return true;
-    }
-    return this.config.allowedTrainTypes.includes(trainType);
+    return ConstraintChecker.isTrainTypeAllowed(trainType, this.config.allowedTrainTypes);
   }
 
   /**

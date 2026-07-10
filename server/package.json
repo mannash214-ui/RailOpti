@@ -14,7 +14,8 @@
     "test-graph": "ts-node src/algorithms/graph/testGraph.ts",
     "test-planner": "ts-node src/algorithms/planner/testPlanner.ts",
     "test-topk": "ts-node src/algorithms/planner/testTopK.ts",
-    "test-constraints": "ts-node src/algorithms/planner/testConstraints.ts"
+    "test-constraints": "ts-node src/algorithms/planner/testConstraints.ts",
+    "test-constraint-checker": "ts-node src/algorithms/planner/testConstraintChecker.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
