@@ -36,5 +36,23 @@ export class StationController {
       next(error);
     }
   }
+
+  public static async search(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<void> {
+    try {
+      const q = (req.query.q as string || '').trim();
+      const stations = await StationService.searchStations(q);
+      
+      res.status(200).json({
+        status: 'success',
+        data: { stations },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 export default StationController;

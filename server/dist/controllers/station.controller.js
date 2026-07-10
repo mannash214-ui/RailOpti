@@ -28,6 +28,19 @@ class StationController {
             next(error);
         }
     }
+    static async search(req, res, next) {
+        try {
+            const q = (req.query.q || '').trim();
+            const stations = await station_service_1.StationService.searchStations(q);
+            res.status(200).json({
+                status: 'success',
+                data: { stations },
+            });
+        }
+        catch (error) {
+            next(error);
+        }
+    }
 }
 exports.StationController = StationController;
 exports.default = StationController;

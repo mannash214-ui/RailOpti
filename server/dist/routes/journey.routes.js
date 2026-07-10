@@ -4,6 +4,8 @@ const express_1 = require("express");
 const journey_controller_1 = require("../controllers/journey.controller");
 const auth_1 = require("../middleware/auth");
 const router = (0, express_1.Router)();
+// POST /api/journeys/search - Query multi-train routing optimization
+router.post('/search', journey_controller_1.JourneyController.search);
 // Apply JWT verification middleware to all journey pathways
 router.use(auth_1.protect);
 // GET /api/journeys - List all saved journeys for authenticated user

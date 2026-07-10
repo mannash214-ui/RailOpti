@@ -4,6 +4,9 @@ import { protect } from '../middleware/auth';
 
 const router = Router();
 
+// POST /api/journeys/search - Query multi-train routing optimization
+router.post('/search', JourneyController.search);
+
 // Apply JWT verification middleware to all journey pathways
 router.use(protect as any);
 

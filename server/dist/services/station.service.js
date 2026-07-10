@@ -21,5 +21,16 @@ class StationService {
     static async createStation(stationData) {
         return station_model_1.Station.create(stationData);
     }
+    /**
+     * Search stations matching query q by name or code.
+     */
+    static async searchStations(q) {
+        return station_model_1.Station.find({
+            $or: [
+                { stationCode: new RegExp(`^${q}`, 'i') },
+                { name: new RegExp(q, 'i') },
+            ],
+        }).limit(10);
+    }
 }
 exports.StationService = StationService;

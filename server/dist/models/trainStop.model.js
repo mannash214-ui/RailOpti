@@ -29,9 +29,9 @@ const trainStopSchema = new mongoose_1.Schema({
         trim: true,
         validate: {
             validator: function (v) {
-                return timeFormatRegex.test(v);
+                return v === 'Source' || timeFormatRegex.test(v);
             },
-            message: (props) => `${props.value} is not a valid 24h time format (HH:mm).`,
+            message: (props) => `${props.value} is not a valid arrival time (must be HH:mm or 'Source').`,
         },
     },
     departureTime: {
@@ -40,9 +40,9 @@ const trainStopSchema = new mongoose_1.Schema({
         trim: true,
         validate: {
             validator: function (v) {
-                return timeFormatRegex.test(v);
+                return v === 'Destination' || timeFormatRegex.test(v);
             },
-            message: (props) => `${props.value} is not a valid 24h time format (HH:mm).`,
+            message: (props) => `${props.value} is not a valid departure time (must be HH:mm or 'Destination').`,
         },
     },
     dayOffset: {

@@ -7,246 +7,9 @@ import JourneyCard from '../components/JourneyCard';
 import LoadingScreen from '../components/LoadingScreen';
 import ErrorScreen from '../components/ErrorScreen';
 import { Journey } from '../components/JourneyTimeline';
+import journeyService from '../services/journeyService';
 
-// Exact mock itineraries calculated by our Dijkstra routing engine for Silchar -> Patna Junction
-const MOCK_JOURNEYS: Journey[] = [
-  {
-    departureStation: 'Silchar',
-    departureStationCode: 'SCL',
-    destinationStation: 'Patna Junction',
-    destinationStationCode: 'PNBE',
-    departureTime: 'Day 0 09:03',
-    arrivalTime: 'Day 1 01:31',
-    totalTimeMinutes: 1051,
-    travelTimeMinutes: 948,
-    waitingTimeMinutes: 103,
-    transferCount: 1,
-    reliabilityScore: 84, // compounding cancellation and delay factor
-    overallScore: 100,
-    trainSegments: [
-      {
-        trainNumber: '12428',
-        trainName: 'Silchar - Guwahati Shatabdi Special',
-        fromStationCode: 'SCL',
-        fromStationName: 'Silchar',
-        toStationCode: 'GHY',
-        toStationName: 'Guwahati',
-        departureTime: 'Day 0 09:03',
-        arrivalTime: 'Day 0 14:53',
-        travelMinutes: 350,
-        cancellationProbability: 0.05,
-        averageDelayMinutes: 15,
-      },
-      {
-        trainNumber: '12278',
-        trainName: 'Guwahati - Patna Shatabdi Special',
-        fromStationCode: 'GHY',
-        fromStationName: 'Guwahati',
-        toStationCode: 'PNBE',
-        toStationName: 'Patna Junction',
-        departureTime: 'Day 0 15:33',
-        arrivalTime: 'Day 1 01:31',
-        travelMinutes: 598,
-        cancellationProbability: 0.08,
-        averageDelayMinutes: 13,
-      },
-    ],
-  },
-  {
-    departureStation: 'Silchar',
-    departureStationCode: 'SCL',
-    destinationStation: 'Patna Junction',
-    destinationStationCode: 'PNBE',
-    departureTime: 'Day 0 09:39',
-    arrivalTime: 'Day 1 02:25',
-    totalTimeMinutes: 1105,
-    travelTimeMinutes: 979,
-    waitingTimeMinutes: 126,
-    transferCount: 1,
-    reliabilityScore: 81,
-    overallScore: 63,
-    trainSegments: [
-      {
-        trainNumber: '12380',
-        trainName: 'Silchar - Guwahati Shatabdi Special',
-        fromStationCode: 'SCL',
-        fromStationName: 'Silchar',
-        toStationCode: 'GHY',
-        toStationName: 'Guwahati',
-        departureTime: 'Day 0 09:39',
-        arrivalTime: 'Day 0 15:30',
-        travelMinutes: 351,
-        cancellationProbability: 0.05,
-        averageDelayMinutes: 12,
-      },
-      {
-        trainNumber: '12326',
-        trainName: 'Guwahati - Patna Shatabdi Special',
-        fromStationCode: 'GHY',
-        fromStationName: 'Guwahati',
-        toStationCode: 'PNBE',
-        toStationName: 'Patna Junction',
-        departureTime: 'Day 0 15:57',
-        arrivalTime: 'Day 1 02:25',
-        travelMinutes: 628,
-        cancellationProbability: 0.1,
-        averageDelayMinutes: 16,
-      },
-    ],
-  },
-  {
-    departureStation: 'Silchar',
-    departureStationCode: 'SCL',
-    destinationStation: 'Patna Junction',
-    destinationStationCode: 'PNBE',
-    departureTime: 'Day 0 08:36',
-    arrivalTime: 'Day 1 01:31',
-    totalTimeMinutes: 1051,
-    travelTimeMinutes: 948,
-    waitingTimeMinutes: 103,
-    transferCount: 2,
-    reliabilityScore: 68,
-    overallScore: 53,
-    trainSegments: [
-      {
-        trainNumber: '12439',
-        trainName: 'Guwahati - Silchar Rajdhani Special',
-        fromStationCode: 'SCL',
-        fromStationName: 'Silchar',
-        toStationCode: 'SCL',
-        toStationName: 'Silchar Central',
-        departureTime: 'Day 0 08:36',
-        arrivalTime: 'Day 0 08:36',
-        travelMinutes: 0,
-        cancellationProbability: 0.12,
-        averageDelayMinutes: 12,
-      },
-      {
-        trainNumber: '12428',
-        trainName: 'Silchar - Guwahati Shatabdi Special',
-        fromStationCode: 'SCL',
-        fromStationName: 'Silchar Central',
-        toStationCode: 'GHY',
-        toStationName: 'Guwahati',
-        departureTime: 'Day 0 09:03',
-        arrivalTime: 'Day 0 14:53',
-        travelMinutes: 350,
-        cancellationProbability: 0.05,
-        averageDelayMinutes: 15,
-      },
-      {
-        trainNumber: '12278',
-        trainName: 'Guwahati - Patna Shatabdi Special',
-        fromStationCode: 'GHY',
-        fromStationName: 'Guwahati',
-        toStationCode: 'PNBE',
-        toStationName: 'Patna Junction',
-        departureTime: 'Day 0 15:33',
-        arrivalTime: 'Day 1 01:31',
-        travelMinutes: 598,
-        cancellationProbability: 0.08,
-        averageDelayMinutes: 13,
-      },
-    ],
-  },
-  {
-    departureStation: 'Silchar',
-    departureStationCode: 'SCL',
-    destinationStation: 'Patna Junction',
-    destinationStationCode: 'PNBE',
-    departureTime: 'Day 0 09:03',
-    arrivalTime: 'Day 1 02:51',
-    totalTimeMinutes: 1131,
-    travelTimeMinutes: 1032,
-    waitingTimeMinutes: 99,
-    transferCount: 1,
-    reliabilityScore: 74,
-    overallScore: 35,
-    trainSegments: [
-      {
-        trainNumber: '12428',
-        trainName: 'Silchar - Guwahati Shatabdi Special',
-        fromStationCode: 'SCL',
-        fromStationName: 'Silchar',
-        toStationCode: 'GHY',
-        toStationName: 'Guwahati',
-        departureTime: 'Day 0 09:03',
-        arrivalTime: 'Day 0 14:53',
-        travelMinutes: 350,
-        cancellationProbability: 0.05,
-        averageDelayMinutes: 15,
-      },
-      {
-        trainNumber: '12310',
-        trainName: 'Guwahati - Patna Superfast Special',
-        fromStationCode: 'GHY',
-        fromStationName: 'Guwahati',
-        toStationCode: 'PNBE',
-        toStationName: 'Patna Junction',
-        departureTime: 'Day 0 15:29',
-        arrivalTime: 'Day 1 02:51',
-        travelMinutes: 682,
-        cancellationProbability: 0.15,
-        averageDelayMinutes: 20,
-      },
-    ],
-  },
-  {
-    departureStation: 'Silchar',
-    departureStationCode: 'SCL',
-    destinationStation: 'Patna Junction',
-    destinationStationCode: 'PNBE',
-    departureTime: 'Day 0 09:03',
-    arrivalTime: 'Day 1 02:00',
-    totalTimeMinutes: 1080,
-    travelTimeMinutes: 942,
-    waitingTimeMinutes: 138,
-    transferCount: 2,
-    reliabilityScore: 61,
-    overallScore: 30,
-    trainSegments: [
-      {
-        trainNumber: '12428',
-        trainName: 'Silchar - Guwahati Shatabdi Special',
-        fromStationCode: 'SCL',
-        fromStationName: 'Silchar',
-        toStationCode: 'GHY',
-        toStationName: 'Guwahati',
-        departureTime: 'Day 0 09:03',
-        arrivalTime: 'Day 0 14:53',
-        travelMinutes: 350,
-        cancellationProbability: 0.05,
-        averageDelayMinutes: 15,
-      },
-      {
-        trainNumber: '12278',
-        trainName: 'Guwahati - Mokama Shatabdi Special',
-        fromStationCode: 'GHY',
-        fromStationName: 'Guwahati',
-        toStationCode: 'MKA',
-        toStationName: 'Mokama',
-        departureTime: 'Day 0 15:33',
-        arrivalTime: 'Day 1 00:24',
-        travelMinutes: 531,
-        cancellationProbability: 0.08,
-        averageDelayMinutes: 13,
-      },
-      {
-        trainNumber: '12189',
-        trainName: 'Mokama - Patna Passenger',
-        fromStationCode: 'MKA',
-        fromStationName: 'Mokama',
-        toStationCode: 'PNBE',
-        toStationName: 'Patna Junction',
-        departureTime: 'Day 1 00:59',
-        arrivalTime: 'Day 1 02:00',
-        travelMinutes: 61,
-        cancellationProbability: 0.22,
-        averageDelayMinutes: 14,
-      },
-    ],
-  },
-];
+
 
 export default function Search() {
   const [searchParams] = useSearchParams();
@@ -262,6 +25,14 @@ export default function Search() {
   const departureAfter = searchParams.get('departureAfter') || '';
   const optimizationMode = searchParams.get('optimizationMode') || 'BALANCED';
 
+  const arrivalBefore = searchParams.get('arrivalBefore') || undefined;
+  const maximumTransfers = searchParams.get('maximumTransfers') ? Number(searchParams.get('maximumTransfers')) : undefined;
+  const minimumTransferMinutes = searchParams.get('minimumTransferMinutes') ? Number(searchParams.get('minimumTransferMinutes')) : undefined;
+  const maximumWaitingMinutes = searchParams.get('maximumWaitingMinutes') ? Number(searchParams.get('maximumWaitingMinutes')) : undefined;
+  const maximumJourneyDurationMinutes = searchParams.get('maximumJourneyDurationMinutes') ? Number(searchParams.get('maximumJourneyDurationMinutes')) : undefined;
+  const allowedTrainTypes = searchParams.get('allowedTrainTypes') ? searchParams.get('allowedTrainTypes')?.split(',') : undefined;
+  const avoidOvernightTransfers = searchParams.get('avoidOvernightTransfers') === 'true';
+
   // Load saved lists
   useEffect(() => {
     const saved = localStorage.getItem('optirail_saved');
@@ -275,107 +46,52 @@ export default function Search() {
     }
   }, []);
 
-  const executeSearchQuery = () => {
+  const executeSearchQuery = async () => {
     if (!origin || !destination) return;
 
     setLoading(true);
     setError(false);
 
-    // Simulate Dijkstra route graph construction and calculations
-    setTimeout(() => {
-      // Return custom structured itineraries. Silchar -> Patna returns the exact computed backend results
-      if (
-        origin.toLowerCase().includes('silchar') &&
-        destination.toLowerCase().includes('patna')
-      ) {
-        setRawJourneys(MOCK_JOURNEYS);
-        setFilteredJourneys(MOCK_JOURNEYS);
-      } else {
-        // Fallback simple generated mock routes for other stations
-        const fallbackJourneys: Journey[] = [
-          {
-            departureStation: origin,
-            departureStationCode: origin.slice(0, 3).toUpperCase(),
-            destinationStation: destination,
-            destinationStationCode: destination.slice(0, 3).toUpperCase(),
-            departureTime: `Day 0 ${departureAfter || '08:00'}`,
-            arrivalTime: `Day 0 16:30`,
-            totalTimeMinutes: 510,
-            travelTimeMinutes: 450,
-            waitingTimeMinutes: 60,
-            transferCount: 1,
-            reliabilityScore: 92,
-            overallScore: 98,
-            trainSegments: [
-              {
-                trainNumber: '12411',
-                trainName: 'Express Leg 1',
-                fromStationCode: origin.slice(0, 3).toUpperCase(),
-                fromStationName: origin,
-                toStationCode: 'MID',
-                toStationName: 'Midway Crossing',
-                departureTime: `Day 0 ${departureAfter || '08:00'}`,
-                arrivalTime: 'Day 0 12:00',
-                travelMinutes: 240,
-                cancellationProbability: 0.02,
-                averageDelayMinutes: 8,
-              },
-              {
-                trainNumber: '12412',
-                trainName: 'Express Leg 2',
-                fromStationCode: 'MID',
-                fromStationName: 'Midway Crossing',
-                toStationCode: destination.slice(0, 3).toUpperCase(),
-                toStationName: destination,
-                departureTime: 'Day 0 13:00',
-                arrivalTime: 'Day 0 16:30',
-                travelMinutes: 210,
-                cancellationProbability: 0.04,
-                averageDelayMinutes: 5,
-              },
-            ],
-          },
-          {
-            departureStation: origin,
-            departureStationCode: origin.slice(0, 3).toUpperCase(),
-            destinationStation: destination,
-            destinationStationCode: destination.slice(0, 3).toUpperCase(),
-            departureTime: `Day 0 ${departureAfter || '08:30'}`,
-            arrivalTime: `Day 0 18:00`,
-            totalTimeMinutes: 570,
-            travelTimeMinutes: 570,
-            waitingTimeMinutes: 0,
-            transferCount: 0,
-            reliabilityScore: 88,
-            overallScore: 85,
-            trainSegments: [
-              {
-                trainNumber: '12599',
-                trainName: 'Direct Commuter Special',
-                fromStationCode: origin.slice(0, 3).toUpperCase(),
-                fromStationName: origin,
-                toStationCode: destination.slice(0, 3).toUpperCase(),
-                toStationName: destination,
-                departureTime: `Day 0 ${departureAfter || '08:30'}`,
-                arrivalTime: 'Day 0 18:00',
-                travelMinutes: 570,
-                cancellationProbability: 0.06,
-                averageDelayMinutes: 12,
-              },
-            ],
-          },
-        ];
-        setRawJourneys(fallbackJourneys);
-        setFilteredJourneys(fallbackJourneys);
-      }
+    try {
+      const results = await journeyService.search({
+        sourceStation: origin,
+        destinationStation: destination,
+        departureAfter: departureAfter || '08:00',
+        arrivalBefore,
+        optimizationMode,
+        maximumTransfers,
+        minimumTransferMinutes,
+        maximumWaitingMinutes,
+        maximumJourneyDurationMinutes,
+        allowedTrainTypes,
+        avoidOvernightTransfers,
+      });
+
+      setRawJourneys(results);
+      setFilteredJourneys(results);
+    } catch (err) {
+      console.error('[Search] Failed to fetch journeys from backend:', err);
+      setError(true);
+    } finally {
       setLoading(false);
-    }, 1200);
+    }
   };
 
   // Run search query when URL parameters update
   useEffect(() => {
     executeSearchQuery();
-  }, [origin, destination, departureAfter]);
+  }, [
+    origin,
+    destination,
+    departureAfter,
+    arrivalBefore,
+    optimizationMode,
+    maximumTransfers,
+    minimumTransferMinutes,
+    maximumWaitingMinutes,
+    maximumJourneyDurationMinutes,
+    avoidOvernightTransfers,
+  ]);
 
   const handleFilterChange = (filters: {
     maxTransfers: number;

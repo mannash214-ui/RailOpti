@@ -76,6 +76,19 @@ async function validateDataset() {
             errors.push(`Duplicate trainNumber detected: ${t.trainNumber}`);
         }
         trainNumbers.add(t.trainNumber);
+        // Verify sourceStation and destinationStation refer to valid stations
+        if (!t.sourceStation) {
+            errors.push(`Train ${t.trainNumber} is missing sourceStation.`);
+        }
+        else if (!stationCodes.has(t.sourceStation)) {
+            errors.push(`Train ${t.trainNumber} has non-existent sourceStation: ${t.sourceStation}`);
+        }
+        if (!t.destinationStation) {
+            errors.push(`Train ${t.trainNumber} is missing destinationStation.`);
+        }
+        else if (!stationCodes.has(t.destinationStation)) {
+            errors.push(`Train ${t.trainNumber} has non-existent destinationStation: ${t.destinationStation}`);
+        }
     }
     // Group stops by train number to validate sequencing and properties
     const stopsByTrain = new Map();

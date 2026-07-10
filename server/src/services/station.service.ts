@@ -21,4 +21,16 @@ export class StationService {
   public static async createStation(stationData: any): Promise<any> {
     return Station.create(stationData);
   }
+
+  /**
+   * Search stations matching query q by name or code.
+   */
+  public static async searchStations(q: string): Promise<any[]> {
+    return Station.find({
+      $or: [
+        { stationCode: new RegExp(`^${q}`, 'i') },
+        { name: new RegExp(q, 'i') },
+      ],
+    }).limit(10);
+  }
 }

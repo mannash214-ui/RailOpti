@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.JourneyController = void 0;
 const journey_service_1 = require("../services/journey.service");
 const error_1 = require("../middleware/error");
+const builder_1 = require("../algorithms/graph/builder");
+const JourneyPlanner_1 = require("../algorithms/planner/JourneyPlanner");
 class JourneyController {
     static async getUserJourneys(req, res, next) {
         try {
@@ -44,6 +46,34 @@ class JourneyController {
             res.status(204).json({
                 status: 'success',
                 data: null,
+            });
+        }
+        catch (error) {
+            next(error);
+        }
+    }
+    static cachedGraph = null;
+    static async search(req, res, next) {
+        try {
+            if (!JourneyController.cachedGraph) {
+                const builder = new builder_1.GraphBuilder({
+                    minTransferTime: 20,
+                    maxTransferTime: 1440,
+                });
+                JourneyController.cachedGraph = await builder.build();
+            }
+            const planner = new JourneyPlanner_1.JourneyPlanner(JourneyController.cachedGraph);
+            const result = await planner.plan(req.body);
+            if (!result) {
+                res.status(404).json({
+                    status: 'fail',
+                    message: 'Failed to resolve stations or compute itineraries.',
+                });
+                return;
+            }
+            res.status(200).json({
+                status: 'success',
+                data: result,
             });
         }
         catch (error) {

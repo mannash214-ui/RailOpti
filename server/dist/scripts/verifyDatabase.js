@@ -48,7 +48,7 @@ async function verify() {
     const connectedStationsAgg = await trainStop_model_1.TrainStop.aggregate([
         { $group: { _id: '$stationId', totalVisits: { $sum: 1 } } },
         { $sort: { totalVisits: -1 } },
-        { $limit: 5 },
+        { $limit: 10 },
         {
             $lookup: {
                 from: 'stations',
@@ -61,7 +61,7 @@ async function verify() {
         {
             $project: {
                 code: '$stationDetails.stationCode',
-                name: '$stationDetails.stationName',
+                name: '$stationDetails.name',
                 city: '$stationDetails.city',
                 visits: '$totalVisits'
             }
@@ -85,7 +85,7 @@ async function verify() {
         console.log(` - ${t._id}: ${t.count} trains`);
     });
     console.log('--------------------------------------------------');
-    console.log('Top 5 Most Connected Stations (Total stop listings):');
+    console.log('Top 10 Busiest Stations (Total stop listings):');
     connectedStationsAgg.forEach((s, idx) => {
         console.log(` [${idx + 1}] ${s.name} (${s.code}) - ${s.city} -> ${s.visits} stops scheduled`);
     });

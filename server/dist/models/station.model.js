@@ -15,10 +15,10 @@ const stationSchema = new mongoose_1.Schema({
         trim: true,
         validate: {
             validator: function (v) {
-                // Standard station code check: 2 to 6 capital alphanumeric letters
-                return /^[A-Z0-9]{2,6}$/.test(v);
+                // Standard station code check: 2 to 10 capital alphanumeric letters, hyphens, and underscores
+                return /^[A-Z0-9_-]{2,10}$/.test(v);
             },
-            message: (props) => `${props.value} is not a valid station code (2-6 uppercase alphanumeric characters).`,
+            message: (props) => `${props.value} is not a valid station code (2-10 uppercase alphanumeric, hyphen, or underscore characters).`,
         },
     },
     city: {

@@ -1,13 +1,25 @@
+import { useState, useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
 
 export default function LoadingScreen() {
+  const [phase, setPhase] = useState('Searching...');
+
+  useEffect(() => {
+    const timer1 = setTimeout(() => setPhase('Building journey...'), 400);
+    const timer2 = setTimeout(() => setPhase('Ranking routes...'), 800);
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, []);
+
   return (
     <div className="flex flex-col items-center justify-center py-20 px-4 text-center">
       <div className="relative flex items-center justify-center">
         <Loader2 className="h-10 w-10 text-blue-600 animate-spin" />
         <div className="absolute h-14 w-14 border-2 border-dashed border-blue-200 rounded-full animate-spin [animation-duration:8s]" />
       </div>
-      <h3 className="text-base font-bold text-slate-800 mt-6">Computing Multi-Train Routes</h3>
+      <h3 className="text-base font-bold text-slate-800 mt-6">{phase}</h3>
       <p className="text-xs text-slate-500 mt-1 max-w-xs leading-relaxed">
         Compiling railway graph networks, validating transfer wait caps, and assessing leg reliability indices...
       </p>

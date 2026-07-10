@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, SlidersHorizontal, ArrowUpDown, RotateCcw } from 'lucide-react';
+import { Search, SlidersHorizontal, ArrowUpDown, RotateCcw, Loader2 } from 'lucide-react';
+import stationService, { StationData } from '../services/stationService';
 
 interface SearchFormProps {
   initialValues?: {
@@ -37,6 +38,88 @@ export default function SearchForm({ initialValues, onSearchSubmit }: SearchForm
   const [maxDuration, setMaxDuration] = useState(initialValues?.maximumJourneyDurationMinutes || 1440);
   const [avoidOvernight, setAvoidOvernight] = useState(initialValues?.avoidOvernightTransfers || false);
   const [selectedTrainTypes, setSelectedTrainTypes] = useState<string[]>(initialValues?.allowedTrainTypes || []);
+
+  // Autocomplete states
+  const [sourceSuggestions, setSourceSuggestions] = useState<StationData[]>([]);
+  const [destSuggestions, setDestSuggestions] = useState<StationData[]>([]);
+  const [loadingSource, setLoadingSource] = useState(false);
+  const [loadingDest, setLoadingDest] = useState(false);
+  const [ignoreSourceQuery, setIgnoreSourceQuery] = useState(false);
+  const [ignoreDestQuery, setIgnoreDestQuery] = useState(false);
+
+  // Debouncing effect for source
+  useEffect(() => {
+    if (!source || source.length < 2) {
+      setSourceSuggestions([]);
+      return;
+    }
+    if (ignoreSourceQuery) {
+      setIgnoreSourceQuery(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    setLoadingSource(true);
+
+    const timer = setTimeout(async () => {
+      try {
+        const results = await stationService.search(source, controller.signal);
+        setSourceSuggestions(results);
+      } catch (err) {
+        // Silent AbortError
+      } finally {
+        setLoadingSource(false);
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [source]);
+
+  // Debouncing effect for destination
+  useEffect(() => {
+    if (!destination || destination.length < 2) {
+      setDestSuggestions([]);
+      return;
+    }
+    if (ignoreDestQuery) {
+      setIgnoreDestQuery(false);
+      return;
+    }
+
+    const controller = new AbortController();
+    setLoadingDest(true);
+
+    const timer = setTimeout(async () => {
+      try {
+        const results = await stationService.search(destination, controller.signal);
+        setDestSuggestions(results);
+      } catch (err) {
+        // Silent AbortError
+      } finally {
+        setLoadingDest(false);
+      }
+    }, 300);
+
+    return () => {
+      clearTimeout(timer);
+      controller.abort();
+    };
+  }, [destination]);
+
+  const handleSelectSource = (station: StationData) => {
+    setIgnoreSourceQuery(true);
+    setSource(station.name);
+    setSourceSuggestions([]);
+  };
+
+  const handleSelectDest = (station: StationData) => {
+    setIgnoreDestQuery(true);
+    setDestination(station.name);
+    setDestSuggestions([]);
+  };
 
   const trainTypes = ['Shatabdi', 'Rajdhani', 'Superfast', 'Express', 'Vande Bharat', 'Passenger'];
 
@@ -148,6 +231,26 @@ export default function SearchForm({ initialValues, onSearchSubmit }: SearchForm
             required
             className="w-full google-input pr-10"
           />
+          {loadingSource && (
+            <div className="absolute right-3 top-3.5 flex items-center justify-center">
+              <Loader2 className="h-4 w-4 text-blue-600 animate-spin" />
+            </div>
+          )}
+          {sourceSuggestions.length > 0 && (
+            <div className="absolute left-0 right-0 top-[48px] bg-white border border-slate-200 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+              {sourceSuggestions.map((station) => (
+                <button
+                  key={station._id}
+                  type="button"
+                  onClick={() => handleSelectSource(station)}
+                  className="w-full text-left px-4 py-2 hover:bg-slate-50 text-xs text-slate-800 font-medium flex items-center justify-between border-b border-slate-100 last:border-b-0"
+                >
+                  <span>{station.name}</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">{station.stationCode}</span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Swap Button */}
@@ -163,15 +266,35 @@ export default function SearchForm({ initialValues, onSearchSubmit }: SearchForm
         </div>
 
         {/* Destination Input */}
-        <div className="md:col-span-4">
+        <div className="md:col-span-4 relative">
           <input
             type="text"
             placeholder="To (e.g. Patna)"
             value={destination}
             onChange={(e) => setDestination(e.target.value)}
             required
-            className="w-full google-input"
+            className="w-full google-input pr-10"
           />
+          {loadingDest && (
+            <div className="absolute right-3 top-3.5 flex items-center justify-center">
+              <Loader2 className="h-4 w-4 text-blue-600 animate-spin" />
+            </div>
+          )}
+          {destSuggestions.length > 0 && (
+            <div className="absolute left-0 right-0 top-[48px] bg-white border border-slate-200 rounded-lg shadow-lg z-50 max-h-60 overflow-y-auto">
+              {destSuggestions.map((station) => (
+                <button
+                  key={station._id}
+                  type="button"
+                  onClick={() => handleSelectDest(station)}
+                  className="w-full text-left px-4 py-2 hover:bg-slate-50 text-xs text-slate-800 font-medium flex items-center justify-between border-b border-slate-100 last:border-b-0"
+                >
+                  <span>{station.name}</span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">{station.stationCode}</span>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Departure Time */}
