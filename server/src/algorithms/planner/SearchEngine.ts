@@ -150,6 +150,7 @@ export class SearchEngine {
           currentTrainId: node.trainId,
           accumulatedCost: initialCost,
           accumulatedWaiting: waitingMinutes,
+          departureTime: node.absoluteDepartureMinutes,
         });
       }
     }
@@ -209,7 +210,7 @@ export class SearchEngine {
           if (!this.constraintChecker.isAllowedTrainType(vNode.trainType)) {
             continue;
           }
-          if (!this.constraintChecker.isValidJourneyDuration(departureMinutes, vNode.absoluteArrivalMinutes)) {
+          if (!this.constraintChecker.isValidJourneyDuration(u.departureTime, vNode.absoluteArrivalMinutes)) {
             continue;
           }
           if (!this.constraintChecker.isValidArrival(vNode.absoluteArrivalMinutes)) {
@@ -246,6 +247,7 @@ export class SearchEngine {
               currentTrainId: vNode.trainId,
               accumulatedCost: newCost,
               accumulatedWaiting: u.accumulatedWaiting,
+              departureTime: u.departureTime,
             });
           }
         } else if (edge.type === EdgeType.TRANSFER) {
@@ -270,13 +272,13 @@ export class SearchEngine {
             continue;
           }
           const newWaiting = u.accumulatedWaiting + waitingMinutes;
-          if (!this.constraintChecker.isValidWaiting(newWaiting)) {
+          if (!this.constraintChecker.isValidWaiting(waitingMinutes)) {
             continue;
           }
           if (!this.constraintChecker.isNotOvernightTransfer(uNode.absoluteArrivalMinutes, vNode.absoluteDepartureMinutes)) {
             continue;
           }
-          if (!this.constraintChecker.isValidJourneyDuration(departureMinutes, vNode.absoluteDepartureMinutes)) {
+          if (!this.constraintChecker.isValidJourneyDuration(u.departureTime, vNode.absoluteDepartureMinutes)) {
             continue;
           }
           if (!this.constraintChecker.isValidArrival(vNode.absoluteDepartureMinutes)) {
@@ -308,6 +310,7 @@ export class SearchEngine {
               currentTrainId: '', // Boarding a new train (set to empty to flag transfer)
               accumulatedCost: newCost,
               accumulatedWaiting: newWaiting,
+              departureTime: u.departureTime,
             });
           }
         }

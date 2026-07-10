@@ -4,53 +4,29 @@
 
 @layer base {
   body {
-    @apply bg-navy-950 text-slate-100 selection:bg-brand-500/30 selection:text-brand-200;
+    @apply bg-slate-50 text-slate-900 antialiased selection:bg-blue-100 selection:text-blue-900;
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
   }
 
-  /* Custom glassmorphism scrollbar */
+  /* Custom modern scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-navy-800 rounded-full border-2 border-navy-950 hover:bg-navy-700 transition-colors;
+    @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
   }
 }
 
 @layer utilities {
-  .glass-card {
-    background: rgba(15, 23, 42, 0.45);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+  .google-card {
+    @apply bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow duration-200;
   }
-
-  .glass-panel {
-    background: rgba(2, 6, 23, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  }
-
-  .text-glow {
-    text-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
-  }
-
-  .animate-pulse-slow {
-    animation: pulse-slow 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @keyframes pulse-slow {
-    0%, 100% {
-      opacity: 0.15;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.3;
-      transform: scale(1.05);
-    }
+  
+  .google-input {
+    @apply px-4 py-3 bg-white border border-slate-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all text-sm placeholder:text-slate-400 text-slate-800;
   }
 }

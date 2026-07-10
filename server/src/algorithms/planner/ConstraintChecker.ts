@@ -73,19 +73,8 @@ export class ConstraintChecker {
     if (!this.config.avoidOvernightTransfers) {
       return true;
     }
-    const duration = departureMinutes - arrivalMinutes;
-    if (duration >= 1440) {
-      return false; // Spans full day, must overlap night
-    }
-    const arrMod = arrivalMinutes % 1440;
-    const depMod = arrMod + duration;
-
-    // Night intervals mod 1440:
-    // [1380, 1740] (23:00 to 05:00 next day)
-    // [-60, 300] (23:00 previous day to 05:00 same day)
-    const overlapsNight1 = Math.max(arrMod, 1380) <= Math.min(depMod, 1740);
-    const overlapsNight2 = Math.max(arrMod, -60) <= Math.min(depMod, 300);
-
-    return !overlapsNight1 && !overlapsNight2;
+    const arrivalDay = Math.floor(arrivalMinutes / 1440);
+    const departureDay = Math.floor(departureMinutes / 1440);
+    return arrivalDay === departureDay;
   }
 }

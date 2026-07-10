@@ -35,6 +35,7 @@ export interface SearchState {
   currentTrainId: string;
   accumulatedCost: number;
   accumulatedWaiting: number;
+  departureTime: number;
 }
 
 export interface SearchRequest {

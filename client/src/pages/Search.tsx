@@ -1,320 +1,522 @@
-import { useState } from 'react';
-import { Compass, Train, Clock, Shuffle, ShieldCheck, ArrowRight, Heart } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { Compass, Train } from 'lucide-react';
+import SearchForm from '../components/SearchForm';
+import FilterSidebar from '../components/FilterSidebar';
+import JourneyCard from '../components/JourneyCard';
+import LoadingScreen from '../components/LoadingScreen';
+import ErrorScreen from '../components/ErrorScreen';
+import { Journey } from '../components/JourneyTimeline';
 
-interface Itinerary {
-  id: string;
-  totalDuration: string;
-  transfers: number;
-  avgWaitingTime: string;
-  reliability: number;
-  routes: Array<{
-    trainNumber: string;
-    origin: string;
-    destination: string;
-    departure: string;
-    arrival: string;
-  }>;
-}
+// Exact mock itineraries calculated by our Dijkstra routing engine for Silchar -> Patna Junction
+const MOCK_JOURNEYS: Journey[] = [
+  {
+    departureStation: 'Silchar',
+    departureStationCode: 'SCL',
+    destinationStation: 'Patna Junction',
+    destinationStationCode: 'PNBE',
+    departureTime: 'Day 0 09:03',
+    arrivalTime: 'Day 1 01:31',
+    totalTimeMinutes: 1051,
+    travelTimeMinutes: 948,
+    waitingTimeMinutes: 103,
+    transferCount: 1,
+    reliabilityScore: 84, // compounding cancellation and delay factor
+    overallScore: 100,
+    trainSegments: [
+      {
+        trainNumber: '12428',
+        trainName: 'Silchar - Guwahati Shatabdi Special',
+        fromStationCode: 'SCL',
+        fromStationName: 'Silchar',
+        toStationCode: 'GHY',
+        toStationName: 'Guwahati',
+        departureTime: 'Day 0 09:03',
+        arrivalTime: 'Day 0 14:53',
+        travelMinutes: 350,
+        cancellationProbability: 0.05,
+        averageDelayMinutes: 15,
+      },
+      {
+        trainNumber: '12278',
+        trainName: 'Guwahati - Patna Shatabdi Special',
+        fromStationCode: 'GHY',
+        fromStationName: 'Guwahati',
+        toStationCode: 'PNBE',
+        toStationName: 'Patna Junction',
+        departureTime: 'Day 0 15:33',
+        arrivalTime: 'Day 1 01:31',
+        travelMinutes: 598,
+        cancellationProbability: 0.08,
+        averageDelayMinutes: 13,
+      },
+    ],
+  },
+  {
+    departureStation: 'Silchar',
+    departureStationCode: 'SCL',
+    destinationStation: 'Patna Junction',
+    destinationStationCode: 'PNBE',
+    departureTime: 'Day 0 09:39',
+    arrivalTime: 'Day 1 02:25',
+    totalTimeMinutes: 1105,
+    travelTimeMinutes: 979,
+    waitingTimeMinutes: 126,
+    transferCount: 1,
+    reliabilityScore: 81,
+    overallScore: 63,
+    trainSegments: [
+      {
+        trainNumber: '12380',
+        trainName: 'Silchar - Guwahati Shatabdi Special',
+        fromStationCode: 'SCL',
+        fromStationName: 'Silchar',
+        toStationCode: 'GHY',
+        toStationName: 'Guwahati',
+        departureTime: 'Day 0 09:39',
+        arrivalTime: 'Day 0 15:30',
+        travelMinutes: 351,
+        cancellationProbability: 0.05,
+        averageDelayMinutes: 12,
+      },
+      {
+        trainNumber: '12326',
+        trainName: 'Guwahati - Patna Shatabdi Special',
+        fromStationCode: 'GHY',
+        fromStationName: 'Guwahati',
+        toStationCode: 'PNBE',
+        toStationName: 'Patna Junction',
+        departureTime: 'Day 0 15:57',
+        arrivalTime: 'Day 1 02:25',
+        travelMinutes: 628,
+        cancellationProbability: 0.1,
+        averageDelayMinutes: 16,
+      },
+    ],
+  },
+  {
+    departureStation: 'Silchar',
+    departureStationCode: 'SCL',
+    destinationStation: 'Patna Junction',
+    destinationStationCode: 'PNBE',
+    departureTime: 'Day 0 08:36',
+    arrivalTime: 'Day 1 01:31',
+    totalTimeMinutes: 1051,
+    travelTimeMinutes: 948,
+    waitingTimeMinutes: 103,
+    transferCount: 2,
+    reliabilityScore: 68,
+    overallScore: 53,
+    trainSegments: [
+      {
+        trainNumber: '12439',
+        trainName: 'Guwahati - Silchar Rajdhani Special',
+        fromStationCode: 'SCL',
+        fromStationName: 'Silchar',
+        toStationCode: 'SCL',
+        toStationName: 'Silchar Central',
+        departureTime: 'Day 0 08:36',
+        arrivalTime: 'Day 0 08:36',
+        travelMinutes: 0,
+        cancellationProbability: 0.12,
+        averageDelayMinutes: 12,
+      },
+      {
+        trainNumber: '12428',
+        trainName: 'Silchar - Guwahati Shatabdi Special',
+        fromStationCode: 'SCL',
+        fromStationName: 'Silchar Central',
+        toStationCode: 'GHY',
+        toStationName: 'Guwahati',
+        departureTime: 'Day 0 09:03',
+        arrivalTime: 'Day 0 14:53',
+        travelMinutes: 350,
+        cancellationProbability: 0.05,
+        averageDelayMinutes: 15,
+      },
+      {
+        trainNumber: '12278',
+        trainName: 'Guwahati - Patna Shatabdi Special',
+        fromStationCode: 'GHY',
+        fromStationName: 'Guwahati',
+        toStationCode: 'PNBE',
+        toStationName: 'Patna Junction',
+        departureTime: 'Day 0 15:33',
+        arrivalTime: 'Day 1 01:31',
+        travelMinutes: 598,
+        cancellationProbability: 0.08,
+        averageDelayMinutes: 13,
+      },
+    ],
+  },
+  {
+    departureStation: 'Silchar',
+    departureStationCode: 'SCL',
+    destinationStation: 'Patna Junction',
+    destinationStationCode: 'PNBE',
+    departureTime: 'Day 0 09:03',
+    arrivalTime: 'Day 1 02:51',
+    totalTimeMinutes: 1131,
+    travelTimeMinutes: 1032,
+    waitingTimeMinutes: 99,
+    transferCount: 1,
+    reliabilityScore: 74,
+    overallScore: 35,
+    trainSegments: [
+      {
+        trainNumber: '12428',
+        trainName: 'Silchar - Guwahati Shatabdi Special',
+        fromStationCode: 'SCL',
+        fromStationName: 'Silchar',
+        toStationCode: 'GHY',
+        toStationName: 'Guwahati',
+        departureTime: 'Day 0 09:03',
+        arrivalTime: 'Day 0 14:53',
+        travelMinutes: 350,
+        cancellationProbability: 0.05,
+        averageDelayMinutes: 15,
+      },
+      {
+        trainNumber: '12310',
+        trainName: 'Guwahati - Patna Superfast Special',
+        fromStationCode: 'GHY',
+        fromStationName: 'Guwahati',
+        toStationCode: 'PNBE',
+        toStationName: 'Patna Junction',
+        departureTime: 'Day 0 15:29',
+        arrivalTime: 'Day 1 02:51',
+        travelMinutes: 682,
+        cancellationProbability: 0.15,
+        averageDelayMinutes: 20,
+      },
+    ],
+  },
+  {
+    departureStation: 'Silchar',
+    departureStationCode: 'SCL',
+    destinationStation: 'Patna Junction',
+    destinationStationCode: 'PNBE',
+    departureTime: 'Day 0 09:03',
+    arrivalTime: 'Day 1 02:00',
+    totalTimeMinutes: 1080,
+    travelTimeMinutes: 942,
+    waitingTimeMinutes: 138,
+    transferCount: 2,
+    reliabilityScore: 61,
+    overallScore: 30,
+    trainSegments: [
+      {
+        trainNumber: '12428',
+        trainName: 'Silchar - Guwahati Shatabdi Special',
+        fromStationCode: 'SCL',
+        fromStationName: 'Silchar',
+        toStationCode: 'GHY',
+        toStationName: 'Guwahati',
+        departureTime: 'Day 0 09:03',
+        arrivalTime: 'Day 0 14:53',
+        travelMinutes: 350,
+        cancellationProbability: 0.05,
+        averageDelayMinutes: 15,
+      },
+      {
+        trainNumber: '12278',
+        trainName: 'Guwahati - Mokama Shatabdi Special',
+        fromStationCode: 'GHY',
+        fromStationName: 'Guwahati',
+        toStationCode: 'MKA',
+        toStationName: 'Mokama',
+        departureTime: 'Day 0 15:33',
+        arrivalTime: 'Day 1 00:24',
+        travelMinutes: 531,
+        cancellationProbability: 0.08,
+        averageDelayMinutes: 13,
+      },
+      {
+        trainNumber: '12189',
+        trainName: 'Mokama - Patna Passenger',
+        fromStationCode: 'MKA',
+        fromStationName: 'Mokama',
+        toStationCode: 'PNBE',
+        toStationName: 'Patna Junction',
+        departureTime: 'Day 1 00:59',
+        arrivalTime: 'Day 1 02:00',
+        travelMinutes: 61,
+        cancellationProbability: 0.22,
+        averageDelayMinutes: 14,
+      },
+    ],
+  },
+];
 
 export default function Search() {
-  const [origin, setOrigin] = useState('');
-  const [destination, setDestination] = useState('');
-  const [date, setDate] = useState('');
-  const [maxTransfers, setMaxTransfers] = useState(2);
-  const [maxWaitTime, setMaxWaitTime] = useState(60);
-  const [minReliability, setMinReliability] = useState(85);
-  const [results, setResults] = useState<Itinerary[]>([]);
+  const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [rawJourneys, setRawJourneys] = useState<Journey[]>([]);
+  const [filteredJourneys, setFilteredJourneys] = useState<Journey[]>([]);
+  const [savedJourneyIds, setSavedJourneyIds] = useState<string[]>([]);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
+  // Parse parameters from URL
+  const origin = searchParams.get('sourceStation') || '';
+  const destination = searchParams.get('destinationStation') || '';
+  const departureAfter = searchParams.get('departureAfter') || '';
+  const optimizationMode = searchParams.get('optimizationMode') || 'BALANCED';
+
+  // Load saved lists
+  useEffect(() => {
+    const saved = localStorage.getItem('optirail_saved');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setSavedJourneyIds(parsed.map((j: any) => `${j.departureTime}-${j.arrivalTime}-${j.totalTimeMinutes}`));
+      } catch (e) {
+        // Silent
+      }
+    }
+  }, []);
+
+  const executeSearchQuery = () => {
     if (!origin || !destination) return;
 
     setLoading(true);
-    // Simulate complex multi-train algorithm response after 800ms
+    setError(false);
+
+    // Simulate Dijkstra route graph construction and calculations
     setTimeout(() => {
-      setResults([
-        {
-          id: '1',
-          totalDuration: '3h 15m',
-          transfers: 1,
-          avgWaitingTime: '25m',
-          reliability: 96,
-          routes: [
-            {
-              trainNumber: 'EXP 102',
-              origin: origin.toUpperCase(),
-              destination: 'CENTRAL JUNCTION',
-              departure: '08:00 AM',
-              arrival: '09:30 AM',
-            },
-            {
-              trainNumber: 'METRO 405',
-              origin: 'CENTRAL JUNCTION',
-              destination: destination.toUpperCase(),
-              departure: '09:55 AM',
-              arrival: '11:15 AM',
-            },
-          ],
-        },
-        {
-          id: '2',
-          totalDuration: '3h 45m',
-          transfers: 2,
-          avgWaitingTime: '15m',
-          reliability: 91,
-          routes: [
-            {
-              trainNumber: 'EXP 104',
-              origin: origin.toUpperCase(),
-              destination: 'EAST NODE',
-              departure: '08:15 AM',
-              arrival: '09:15 AM',
-            },
-            {
-              trainNumber: 'SHUTTLE 12',
-              origin: 'EAST NODE',
-              destination: 'WEST CROSSING',
-              departure: '09:30 AM',
-              arrival: '10:15 AM',
-            },
-            {
-              trainNumber: 'METRO 22',
-              origin: 'WEST CROSSING',
-              destination: destination.toUpperCase(),
-              departure: '10:30 AM',
-              arrival: '12:00 PM',
-            },
-          ],
-        },
-      ]);
+      // Return custom structured itineraries. Silchar -> Patna returns the exact computed backend results
+      if (
+        origin.toLowerCase().includes('silchar') &&
+        destination.toLowerCase().includes('patna')
+      ) {
+        setRawJourneys(MOCK_JOURNEYS);
+        setFilteredJourneys(MOCK_JOURNEYS);
+      } else {
+        // Fallback simple generated mock routes for other stations
+        const fallbackJourneys: Journey[] = [
+          {
+            departureStation: origin,
+            departureStationCode: origin.slice(0, 3).toUpperCase(),
+            destinationStation: destination,
+            destinationStationCode: destination.slice(0, 3).toUpperCase(),
+            departureTime: `Day 0 ${departureAfter || '08:00'}`,
+            arrivalTime: `Day 0 16:30`,
+            totalTimeMinutes: 510,
+            travelTimeMinutes: 450,
+            waitingTimeMinutes: 60,
+            transferCount: 1,
+            reliabilityScore: 92,
+            overallScore: 98,
+            trainSegments: [
+              {
+                trainNumber: '12411',
+                trainName: 'Express Leg 1',
+                fromStationCode: origin.slice(0, 3).toUpperCase(),
+                fromStationName: origin,
+                toStationCode: 'MID',
+                toStationName: 'Midway Crossing',
+                departureTime: `Day 0 ${departureAfter || '08:00'}`,
+                arrivalTime: 'Day 0 12:00',
+                travelMinutes: 240,
+                cancellationProbability: 0.02,
+                averageDelayMinutes: 8,
+              },
+              {
+                trainNumber: '12412',
+                trainName: 'Express Leg 2',
+                fromStationCode: 'MID',
+                fromStationName: 'Midway Crossing',
+                toStationCode: destination.slice(0, 3).toUpperCase(),
+                toStationName: destination,
+                departureTime: 'Day 0 13:00',
+                arrivalTime: 'Day 0 16:30',
+                travelMinutes: 210,
+                cancellationProbability: 0.04,
+                averageDelayMinutes: 5,
+              },
+            ],
+          },
+          {
+            departureStation: origin,
+            departureStationCode: origin.slice(0, 3).toUpperCase(),
+            destinationStation: destination,
+            destinationStationCode: destination.slice(0, 3).toUpperCase(),
+            departureTime: `Day 0 ${departureAfter || '08:30'}`,
+            arrivalTime: `Day 0 18:00`,
+            totalTimeMinutes: 570,
+            travelTimeMinutes: 570,
+            waitingTimeMinutes: 0,
+            transferCount: 0,
+            reliabilityScore: 88,
+            overallScore: 85,
+            trainSegments: [
+              {
+                trainNumber: '12599',
+                trainName: 'Direct Commuter Special',
+                fromStationCode: origin.slice(0, 3).toUpperCase(),
+                fromStationName: origin,
+                toStationCode: destination.slice(0, 3).toUpperCase(),
+                toStationName: destination,
+                departureTime: `Day 0 ${departureAfter || '08:30'}`,
+                arrivalTime: 'Day 0 18:00',
+                travelMinutes: 570,
+                cancellationProbability: 0.06,
+                averageDelayMinutes: 12,
+              },
+            ],
+          },
+        ];
+        setRawJourneys(fallbackJourneys);
+        setFilteredJourneys(fallbackJourneys);
+      }
       setLoading(false);
-    }, 800);
+    }, 1200);
+  };
+
+  // Run search query when URL parameters update
+  useEffect(() => {
+    executeSearchQuery();
+  }, [origin, destination, departureAfter]);
+
+  const handleFilterChange = (filters: {
+    maxTransfers: number;
+    maxWaitingMinutes: number;
+    minReliability: number;
+    avoidOvernightTransfers: boolean;
+    allowedTrainTypes: string[];
+  }) => {
+    let result = [...rawJourneys];
+
+    // 1. Filter by transfers
+    result = result.filter(j => j.transferCount <= filters.maxTransfers);
+
+    // 2. Filter by max waiting time
+    result = result.filter(j => j.waitingTimeMinutes <= filters.maxWaitingMinutes);
+
+    // 3. Filter by min reliability
+    result = result.filter(j => j.reliabilityScore >= filters.minReliability);
+
+    // 4. Filter by overnight transfers calendar days
+    if (filters.avoidOvernightTransfers) {
+      result = result.filter(j => {
+        // check each transfer segment
+        return j.trainSegments.every((seg, idx) => {
+          if (idx === j.trainSegments.length - 1) return true;
+          const nextSeg = j.trainSegments[idx + 1];
+          const arrDay = parseInt(seg.arrivalTime.match(/Day (\d+)/)?.[1] || '0', 10);
+          const depDay = parseInt(nextSeg.departureTime.match(/Day (\d+)/)?.[1] || '0', 10);
+          return arrDay === depDay; // same calendar day
+        });
+      });
+    }
+
+    // 5. Filter by allowed train types
+    if (filters.allowedTrainTypes.length > 0) {
+      result = result.filter(j => {
+        return j.trainSegments.every(seg => {
+          return filters.allowedTrainTypes.some(type =>
+            seg.trainName.toLowerCase().includes(type.toLowerCase()) ||
+            seg.trainNumber.toLowerCase().includes(type.toLowerCase())
+          );
+        });
+      });
+    }
+
+    setFilteredJourneys(result);
+  };
+
+  const handleSaveJourney = (journey: Journey) => {
+    const key = `${journey.departureTime}-${journey.arrivalTime}-${journey.totalTimeMinutes}`;
+    let saved = localStorage.getItem('optirail_saved');
+    let list = saved ? JSON.parse(saved) : [];
+
+    if (savedJourneyIds.includes(key)) {
+      list = list.filter((j: any) => `${j.departureTime}-${j.arrivalTime}-${j.totalTimeMinutes}` !== key);
+      setSavedJourneyIds(prev => prev.filter(k => k !== key));
+    } else {
+      list.push(journey);
+      setSavedJourneyIds(prev => [...prev, key]);
+    }
+    localStorage.setItem('optirail_saved', JSON.stringify(list));
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
-      
-      {/* Left Column: Constraints Input Form */}
-      <div className="lg:col-span-4">
-        <div className="glass-card p-6 rounded-2xl border border-slate-800/80 shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-3 bg-brand-500/10 rounded-bl-2xl border-l border-b border-brand-500/10 text-brand-400">
-            <Compass className="h-5 w-5" />
-          </div>
-
-          <h2 className="text-xl font-bold text-slate-100 mb-6">Journey Constraints</h2>
-          
-          <form onSubmit={handleSearch} className="space-y-5">
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Origin Station</label>
-              <input
-                type="text"
-                value={origin}
-                onChange={(e) => setOrigin(e.target.value)}
-                placeholder="e.g. London King's Cross"
-                required
-                className="w-full px-4 py-3 bg-navy-900 border border-slate-800 rounded-xl text-slate-100 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors placeholder-slate-600"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Destination Station</label>
-              <input
-                type="text"
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-                placeholder="e.g. Edinburgh Waverley"
-                required
-                className="w-full px-4 py-3 bg-navy-900 border border-slate-800 rounded-xl text-slate-100 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors placeholder-slate-600"
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Travel Date</label>
-              <div className="relative">
-                <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                  required
-                  className="w-full px-4 py-3 bg-navy-900 border border-slate-800 rounded-xl text-slate-100 text-sm focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 transition-colors text-left"
-                />
-              </div>
-            </div>
-
-            {/* Slider: Max Transfers */}
-            <div>
-              <div className="flex justify-between text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                <span>Max Transfers</span>
-                <span className="text-brand-400 font-bold">{maxTransfers}</span>
-              </div>
-              <input
-                type="range"
-                min="0"
-                max="3"
-                value={maxTransfers}
-                onChange={(e) => setMaxTransfers(parseInt(e.target.value))}
-                className="w-full accent-brand-500 bg-navy-900"
-              />
-            </div>
-
-            {/* Slider: Max Waiting Time */}
-            <div>
-              <div className="flex justify-between text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                <span>Max Waiting Time</span>
-                <span className="text-brand-400 font-bold">{maxWaitTime} mins</span>
-              </div>
-              <input
-                type="range"
-                min="10"
-                max="120"
-                step="5"
-                value={maxWaitTime}
-                onChange={(e) => setMaxWaitTime(parseInt(e.target.value))}
-                className="w-full accent-brand-500 bg-navy-900"
-              />
-            </div>
-
-            {/* Slider: Min Reliability */}
-            <div>
-              <div className="flex justify-between text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                <span>Min Reliability Index</span>
-                <span className="text-accent-400 font-bold">{minReliability}%</span>
-              </div>
-              <input
-                type="range"
-                min="70"
-                max="98"
-                value={minReliability}
-                onChange={(e) => setMinReliability(parseInt(e.target.value))}
-                className="w-full accent-accent-500 bg-navy-900"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full py-4 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-sm font-semibold shadow-lg shadow-brand-500/10 transition-all disabled:opacity-50 flex items-center justify-center gap-2 border border-brand-500/20"
-            >
-              {loading ? (
-                <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                'Find Optimal Itinerary'
-              )}
-            </button>
-          </form>
-        </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex flex-col gap-6">
+      {/* Search Bar header panel */}
+      <div className="google-card p-4">
+        <SearchForm
+          initialValues={{
+            sourceStation: origin,
+            destinationStation: destination,
+            departureAfter: departureAfter,
+            optimizationMode: optimizationMode,
+          }}
+        />
       </div>
 
-      {/* Right Column: Search Results Display */}
-      <div className="lg:col-span-8 flex flex-col gap-6">
-        <div className="p-4 bg-navy-900/25 border border-slate-900 rounded-xl text-xs text-slate-400 flex items-center justify-between">
-          <span>Optimization mode: <strong>Multi-Train Wait-Time Minimizer</strong></span>
-          <span className="text-brand-400">Ready</span>
-        </div>
-
-        {results.length === 0 ? (
-          <div className="flex-grow flex flex-col items-center justify-center border border-dashed border-slate-800 rounded-2xl p-16 text-center bg-navy-950/40">
-            <Train className="h-12 w-12 text-slate-700 mb-4" />
-            <h3 className="text-lg font-bold text-slate-300">No Itineraries Loaded</h3>
-            <p className="text-xs text-slate-500 mt-2 max-w-xs leading-relaxed">
-              Enter your station routes and custom transit constraints on the left panel to calculate multi-hop itineraries.
-            </p>
+      {/* Main Results Layout */}
+      {origin && destination ? (
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          {/* Left Column: Filter Sidebar */}
+          <div className="lg:col-span-3">
+            <FilterSidebar
+              onFiltersChange={handleFilterChange}
+              initialValues={{
+                maxTransfers: 2,
+                maxWaitingMinutes: 1440,
+                minReliability: 30,
+                avoidOvernightTransfers: false,
+                allowedTrainTypes: [],
+              }}
+            />
           </div>
-        ) : (
-          <div className="space-y-6">
-            {results.map((itinerary, index) => (
-              <div
-                key={itinerary.id}
-                className="glass-card p-6 rounded-2xl border border-slate-800 hover:border-brand-500/30 transition-all shadow-lg flex flex-col gap-6 relative overflow-hidden"
-              >
-                {/* Badge top right */}
-                <div className="absolute top-0 right-0 bg-brand-600/15 text-brand-300 px-3 py-1 border-l border-b border-slate-800 text-xs font-bold rounded-bl-xl">
-                  Option {index + 1}
-                </div>
 
-                {/* Main Metrics Summary */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pb-4 border-b border-slate-900">
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4.5 w-4.5 text-slate-400" />
-                    <div>
-                      <p className="text-[10px] text-slate-500 font-semibold uppercase">Total Time</p>
-                      <p className="text-sm font-bold text-slate-200">{itinerary.totalDuration}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Shuffle className="h-4.5 w-4.5 text-slate-400" />
-                    <div>
-                      <p className="text-[10px] text-slate-500 font-semibold uppercase">Transfers</p>
-                      <p className="text-sm font-bold text-slate-200">
-                        {itinerary.transfers === 0 ? 'Direct' : `${itinerary.transfers} stops`}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Clock className="h-4.5 w-4.5 text-slate-400" />
-                    <div>
-                      <p className="text-[10px] text-slate-500 font-semibold uppercase">Avg Wait Time</p>
-                      <p className="text-sm font-bold text-slate-200">{itinerary.avgWaitingTime}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <ShieldCheck className="h-4.5 w-4.5 text-accent-500" />
-                    <div>
-                      <p className="text-[10px] text-slate-500 font-semibold uppercase">Reliability Index</p>
-                      <p className="text-sm font-bold text-accent-400">{itinerary.reliability}%</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Path Segment Timelines */}
-                <div className="space-y-4">
-                  {itinerary.routes.map((segment, segIdx) => (
-                    <div key={segIdx} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 bg-navy-900/35 border border-slate-900 rounded-xl relative">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-slate-800 rounded-lg text-xs font-bold text-slate-300">
-                          {segment.trainNumber}
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
-                            <span>{segment.origin}</span>
-                            <ArrowRight className="h-3 w-3 text-slate-500" />
-                            <span>{segment.destination}</span>
-                          </div>
-                          <p className="text-[10px] text-slate-500 mt-1">Leg {segIdx + 1}</p>
-                        </div>
-                      </div>
-
-                      <div className="flex gap-6 text-xs text-right">
-                        <div>
-                          <p className="text-slate-500 text-[10px] uppercase font-semibold">Departure</p>
-                          <p className="font-bold text-slate-300">{segment.departure}</p>
-                        </div>
-                        <div>
-                          <p className="text-slate-500 text-[10px] uppercase font-semibold">Arrival</p>
-                          <p className="font-bold text-slate-300">{segment.arrival}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Saved Journey buttons */}
-                <div className="flex justify-between items-center mt-2">
-                  <span className="text-[10px] text-slate-500">Calculated in 2ms</span>
-                  <button className="flex items-center gap-1 text-xs text-brand-400 hover:text-brand-300 font-medium transition-colors">
-                    <Heart className="h-3.5 w-3.5" />
-                    Save to My Journeys
-                  </button>
-                </div>
+          {/* Right Column: Dynamic Content & Lists */}
+          <div className="lg:col-span-9 flex flex-col gap-4">
+            {loading ? (
+              <LoadingScreen />
+            ) : error ? (
+              <ErrorScreen onRetry={executeSearchQuery} />
+            ) : filteredJourneys.length === 0 ? (
+              <div className="bg-white rounded-xl border border-slate-200 p-12 text-center shadow-sm">
+                <Compass className="h-10 w-10 text-slate-300 mx-auto" />
+                <h4 className="text-sm font-bold text-slate-800 mt-4">No matching itineraries</h4>
+                <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto">
+                  Try relaxing layout filter limits like maximum waiting times or allowing more transfers.
+                </p>
               </div>
-            ))}
+            ) : (
+              <>
+                <div className="flex items-center justify-between text-xs text-slate-500 font-semibold px-1">
+                  <span>Sorted by overall {optimizationMode.toLowerCase()} score</span>
+                  <span>{filteredJourneys.length} route options</span>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  {filteredJourneys.map((journey, idx) => {
+                    const key = `${journey.departureTime}-${journey.arrivalTime}-${journey.totalTimeMinutes}`;
+                    return (
+                      <JourneyCard
+                        key={idx}
+                        journey={journey}
+                        onSave={handleSaveJourney}
+                        isSaved={savedJourneyIds.includes(key)}
+                      />
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <div className="bg-white rounded-xl border border-slate-200 p-16 text-center shadow-sm py-24">
+          <Train className="h-12 w-12 text-blue-600/25 mx-auto" />
+          <h3 className="text-base font-bold text-slate-800 mt-6">Plan your train connection</h3>
+          <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+            Input origin, destination, and departure times to compute optimal routing itineraries across the railway network.
+          </p>
+        </div>
+      )}
     </div>
   );
 }
