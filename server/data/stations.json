@@ -1,0 +1,2802 @@
+[
+  {
+    "stationCode": "HWH",
+    "stationName": "Howrah Junction",
+    "city": "Kolkata",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 22.5833,
+    "longitude": 88.3424
+  },
+  {
+    "stationCode": "SDAH",
+    "stationName": "Sealdah",
+    "city": "Kolkata",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 22.5697,
+    "longitude": 88.3712
+  },
+  {
+    "stationCode": "KOAA",
+    "stationName": "Kolkata Chitpur",
+    "city": "Kolkata",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 22.5982,
+    "longitude": 88.3789
+  },
+  {
+    "stationCode": "SHM",
+    "stationName": "Shalimar",
+    "city": "Howrah",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 22.5594,
+    "longitude": 88.3183
+  },
+  {
+    "stationCode": "SRC",
+    "stationName": "Santragachi Junction",
+    "city": "Howrah",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": true,
+    "latitude": 22.5714,
+    "longitude": 88.2917
+  },
+  {
+    "stationCode": "KGP",
+    "stationName": "Kharagpur Junction",
+    "city": "Kharagpur",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": true,
+    "latitude": 22.3302,
+    "longitude": 87.3237
+  },
+  {
+    "stationCode": "MDN",
+    "stationName": "Midnapore",
+    "city": "Midnapore",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 22.4172,
+    "longitude": 87.3275
+  },
+  {
+    "stationCode": "BWN",
+    "stationName": "Bardhaman Junction",
+    "city": "Bardhaman",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 23.2389,
+    "longitude": 87.8614
+  },
+  {
+    "stationCode": "DGR",
+    "stationName": "Durgapur",
+    "city": "Durgapur",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 23.4984,
+    "longitude": 87.3106
+  },
+  {
+    "stationCode": "RNG",
+    "stationName": "Raniganj",
+    "city": "Asansol",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 23.6121,
+    "longitude": 87.1124
+  },
+  {
+    "stationCode": "ASN",
+    "stationName": "Asansol Junction",
+    "city": "Asansol",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 23.6828,
+    "longitude": 86.9749
+  },
+  {
+    "stationCode": "BHP",
+    "stationName": "Bolpur Shantiniketan",
+    "city": "Bolpur",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 23.6657,
+    "longitude": 87.6934
+  },
+  {
+    "stationCode": "RPH",
+    "stationName": "Rampurhat Junction",
+    "city": "Rampurhat",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 24.1683,
+    "longitude": 87.7816
+  },
+  {
+    "stationCode": "NHT",
+    "stationName": "Nalhati Junction",
+    "city": "Nalhati",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 24.2982,
+    "longitude": 87.8341
+  },
+  {
+    "stationCode": "MLDT",
+    "stationName": "Malda Town",
+    "city": "Malda",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 25.0108,
+    "longitude": 88.1362
+  },
+  {
+    "stationCode": "NJP",
+    "stationName": "New Jalpaiguri Junction",
+    "city": "Siliguri",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.6833,
+    "longitude": 88.4411
+  },
+  {
+    "stationCode": "SGUJ",
+    "stationName": "Siliguri Junction",
+    "city": "Siliguri",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.7118,
+    "longitude": 88.4316
+  },
+  {
+    "stationCode": "JPE",
+    "stationName": "Jalpaiguri Road",
+    "city": "Jalpaiguri",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.5412,
+    "longitude": 88.741
+  },
+  {
+    "stationCode": "DQG",
+    "stationName": "Dhupguri",
+    "city": "Dhupguri",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.591,
+    "longitude": 89.0142
+  },
+  {
+    "stationCode": "NCB",
+    "stationName": "New Cooch Behar Junction",
+    "city": "Cooch Behar",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.3402,
+    "longitude": 89.4718
+  },
+  {
+    "stationCode": "NOQ",
+    "stationName": "New Alipurduar",
+    "city": "Alipurduar",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.505,
+    "longitude": 89.7522
+  },
+  {
+    "stationCode": "ADRA",
+    "stationName": "Adra Junction",
+    "city": "Adra",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": true,
+    "latitude": 23.4981,
+    "longitude": 86.6908
+  },
+  {
+    "stationCode": "BQA",
+    "stationName": "Bankura Junction",
+    "city": "Bankura",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": true,
+    "latitude": 23.2334,
+    "longitude": 87.0709
+  },
+  {
+    "stationCode": "BDC",
+    "stationName": "Bandel Junction",
+    "city": "Bandel",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 22.9238,
+    "longitude": 88.3752
+  },
+  {
+    "stationCode": "SHE",
+    "stationName": "Sheoraphuli Junction",
+    "city": "Serampore",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 22.7937,
+    "longitude": 88.3241
+  },
+  {
+    "stationCode": "KWAE",
+    "stationName": "Katwa Junction",
+    "city": "Katwa",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 23.6429,
+    "longitude": 88.1352
+  },
+  {
+    "stationCode": "AZ",
+    "stationName": "Azimganj Junction",
+    "city": "Azimganj",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 24.2381,
+    "longitude": 88.2435
+  },
+  {
+    "stationCode": "RHA",
+    "stationName": "Ranaghat Junction",
+    "city": "Ranaghat",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 23.1782,
+    "longitude": 88.5638
+  },
+  {
+    "stationCode": "NH",
+    "stationName": "Naihati Junction",
+    "city": "Naihati",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 22.9009,
+    "longitude": 88.4239
+  },
+  {
+    "stationCode": "BNJ",
+    "stationName": "Bongaon Junction",
+    "city": "Bongaon",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 23.045,
+    "longitude": 88.8256
+  },
+  {
+    "stationCode": "HAS",
+    "stationName": "Hasimara",
+    "city": "Alipurduar",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.745,
+    "longitude": 89.345
+  },
+  {
+    "stationCode": "APDJ",
+    "stationName": "Alipurduar Junction",
+    "city": "Alipurduar",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.495,
+    "longitude": 89.525
+  },
+  {
+    "stationCode": "SM",
+    "stationName": "Samsi",
+    "city": "Malda",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.2612,
+    "longitude": 87.9348
+  },
+  {
+    "stationCode": "AUB",
+    "stationName": "Aluabari Road Junction",
+    "city": "Islampur",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.275,
+    "longitude": 88.1912
+  },
+  {
+    "stationCode": "TKG",
+    "stationName": "Thakurganj",
+    "city": "Thakurganj",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.441,
+    "longitude": 88.131
+  },
+  {
+    "stationCode": "BOE",
+    "stationName": "Barsoi Junction",
+    "city": "Barsoi",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 25.641,
+    "longitude": 87.941
+  },
+  {
+    "stationCode": "DDL",
+    "stationName": "Dalkhola",
+    "city": "Dalkhola",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.8612,
+    "longitude": 87.854
+  },
+  {
+    "stationCode": "LGL",
+    "stationName": "Lalgola",
+    "city": "Lalgola",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 24.4172,
+    "longitude": 88.2512
+  },
+  {
+    "stationCode": "BGB",
+    "stationName": "Budge Budge",
+    "city": "Kolkata",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 22.4812,
+    "longitude": 88.1812
+  },
+  {
+    "stationCode": "LLH",
+    "stationName": "Liluah",
+    "city": "Howrah",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 22.6189,
+    "longitude": 88.3412
+  },
+  {
+    "stationCode": "RIS",
+    "stationName": "Rishra",
+    "city": "Hooghly",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 22.7118,
+    "longitude": 88.334
+  },
+  {
+    "stationCode": "SRP",
+    "stationName": "Serampore",
+    "city": "Serampore",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 22.7538,
+    "longitude": 88.3412
+  },
+  {
+    "stationCode": "CGR",
+    "stationName": "Chandannagar",
+    "city": "Chandannagar",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 22.8612,
+    "longitude": 88.3612
+  },
+  {
+    "stationCode": "CNS",
+    "stationName": "Chuchura",
+    "city": "Chinsurah",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 22.901,
+    "longitude": 88.384
+  },
+  {
+    "stationCode": "PAN",
+    "stationName": "Panagarh",
+    "city": "Panagarh",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 23.441,
+    "longitude": 87.4612
+  },
+  {
+    "stationCode": "SIT",
+    "stationName": "Sitarampur Junction",
+    "city": "Asansol",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 23.701,
+    "longitude": 86.871
+  },
+  {
+    "stationCode": "SLS",
+    "stationName": "Salanpur",
+    "city": "Salanpur",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 23.7712,
+    "longitude": 86.8812
+  },
+  {
+    "stationCode": "BRR",
+    "stationName": "Barakar",
+    "city": "Barakar",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 23.742,
+    "longitude": 86.821
+  },
+  {
+    "stationCode": "KAN",
+    "stationName": "Khana Junction",
+    "city": "Bardhaman",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 23.3421,
+    "longitude": 87.741
+  },
+  {
+    "stationCode": "FLK",
+    "stationName": "Falakata",
+    "city": "Falakata",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.521,
+    "longitude": 89.214
+  },
+  {
+    "stationCode": "DLK",
+    "stationName": "Dankuni Junction",
+    "city": "Hooghly",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 22.684,
+    "longitude": 88.291
+  },
+  {
+    "stationCode": "BLRG",
+    "stationName": "Balurghat",
+    "city": "Balurghat",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.221,
+    "longitude": 88.761
+  },
+  {
+    "stationCode": "GZO",
+    "stationName": "Gazole",
+    "city": "Malda",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.214,
+    "longitude": 88.191
+  },
+  {
+    "stationCode": "EKI",
+    "stationName": "Eklakhi Junction",
+    "city": "Malda",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 25.174,
+    "longitude": 88.161
+  },
+  {
+    "stationCode": "RDP",
+    "stationName": "Radhikapur",
+    "city": "Dinajpur",
+    "state": "West Bengal",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.612,
+    "longitude": 88.264
+  },
+  {
+    "stationCode": "KNE",
+    "stationName": "Kishanganj",
+    "city": "Kishanganj",
+    "state": "Bihar",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.074,
+    "longitude": 87.9412
+  },
+  {
+    "stationCode": "MIG",
+    "stationName": "Midnapore Town",
+    "city": "Midnapore",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 22.421,
+    "longitude": 87.311
+  },
+  {
+    "stationCode": "SLB",
+    "stationName": "Salboni",
+    "city": "Salboni",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 22.641,
+    "longitude": 87.291
+  },
+  {
+    "stationCode": "CDGR",
+    "stationName": "Chandrakona Road",
+    "city": "Chandrakona",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 22.7412,
+    "longitude": 87.311
+  },
+  {
+    "stationCode": "GBA",
+    "stationName": "Garhbeta",
+    "city": "Garhbeta",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 22.8612,
+    "longitude": 87.341
+  },
+  {
+    "stationCode": "VSU",
+    "stationName": "Bishnupur Junction",
+    "city": "Bishnupur",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": true,
+    "latitude": 23.0812,
+    "longitude": 87.321
+  },
+  {
+    "stationCode": "ODM",
+    "stationName": "Ondagram",
+    "city": "Bankura",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 23.131,
+    "longitude": 87.214
+  },
+  {
+    "stationCode": "CJN",
+    "stationName": "Chhatna",
+    "city": "Bankura",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 23.3012,
+    "longitude": 86.991
+  },
+  {
+    "stationCode": "GHY",
+    "stationName": "Guwahati",
+    "city": "Guwahati",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.1834,
+    "longitude": 91.7516
+  },
+  {
+    "stationCode": "KYQ",
+    "stationName": "Kamakhya Junction",
+    "city": "Guwahati",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.1557,
+    "longitude": 91.684
+  },
+  {
+    "stationCode": "RNY",
+    "stationName": "Rangiya Junction",
+    "city": "Rangiya",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.4412,
+    "longitude": 91.631
+  },
+  {
+    "stationCode": "PBL",
+    "stationName": "Pathsala",
+    "city": "Pathsala",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.495,
+    "longitude": 91.1718
+  },
+  {
+    "stationCode": "BPRD",
+    "stationName": "Barpeta Road",
+    "city": "Barpeta Road",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.5012,
+    "longitude": 90.971
+  },
+  {
+    "stationCode": "NBQ",
+    "stationName": "New Bongaigaon Junction",
+    "city": "Bongaigaon",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.4718,
+    "longitude": 90.5412
+  },
+  {
+    "stationCode": "KOJ",
+    "stationName": "Kokrajhar",
+    "city": "Kokrajhar",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.4012,
+    "longitude": 90.2718
+  },
+  {
+    "stationCode": "NHLG",
+    "stationName": "New Haflong",
+    "city": "Haflong",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.1782,
+    "longitude": 93.0238
+  },
+  {
+    "stationCode": "MBG",
+    "stationName": "Maibang",
+    "city": "Maibang",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.291,
+    "longitude": 93.121
+  },
+  {
+    "stationCode": "LMG",
+    "stationName": "Lumding Junction",
+    "city": "Lumding",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 25.7524,
+    "longitude": 93.1849
+  },
+  {
+    "stationCode": "DPU",
+    "stationName": "Diphu",
+    "city": "Diphu",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.845,
+    "longitude": 93.425
+  },
+  {
+    "stationCode": "DMV",
+    "stationName": "Dimapur",
+    "city": "Dimapur",
+    "state": "Nagaland",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.901,
+    "longitude": 93.7218
+  },
+  {
+    "stationCode": "FKG",
+    "stationName": "Furkating Junction",
+    "city": "Golaghat",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.4812,
+    "longitude": 93.9712
+  },
+  {
+    "stationCode": "MXN",
+    "stationName": "Mariani Junction",
+    "city": "Jorhat",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.661,
+    "longitude": 94.321
+  },
+  {
+    "stationCode": "SLGR",
+    "stationName": "Simaluguri Junction",
+    "city": "Simaluguri",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.8912,
+    "longitude": 94.811
+  },
+  {
+    "stationCode": "DBRG",
+    "stationName": "Dibrugarh",
+    "city": "Dibrugarh",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 27.4718,
+    "longitude": 94.911
+  },
+  {
+    "stationCode": "TSK",
+    "stationName": "Tinsukia Junction",
+    "city": "Tinsukia",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 27.5012,
+    "longitude": 95.3612
+  },
+  {
+    "stationCode": "LEDO",
+    "stationName": "Ledo",
+    "city": "Ledo",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 27.3012,
+    "longitude": 95.741
+  },
+  {
+    "stationCode": "DNT",
+    "stationName": "Dangari",
+    "city": "Dangari",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 27.6012,
+    "longitude": 95.611
+  },
+  {
+    "stationCode": "SCL",
+    "stationName": "Silchar",
+    "city": "Silchar",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 24.8218,
+    "longitude": 92.801
+  },
+  {
+    "stationCode": "BPB",
+    "stationName": "Badarpur Junction",
+    "city": "Badarpur",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 24.9012,
+    "longitude": 92.621
+  },
+  {
+    "stationCode": "KXJ",
+    "stationName": "Karimganj Junction",
+    "city": "Karimganj",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 24.8612,
+    "longitude": 92.3512
+  },
+  {
+    "stationCode": "HKD",
+    "stationName": "Hailakandi",
+    "city": "Hailakandi",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 24.6812,
+    "longitude": 92.561
+  },
+  {
+    "stationCode": "KTX",
+    "stationName": "Katakhal Junction",
+    "city": "Katakhal",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 24.831,
+    "longitude": 92.691
+  },
+  {
+    "stationCode": "SCA",
+    "stationName": "Salchapra",
+    "city": "Salchapra",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 24.811,
+    "longitude": 92.741
+  },
+  {
+    "stationCode": "JID",
+    "stationName": "Jagi Road",
+    "city": "Jagi Road",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.121,
+    "longitude": 92.131
+  },
+  {
+    "stationCode": "HJI",
+    "stationName": "Hojai",
+    "city": "Hojai",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.001,
+    "longitude": 92.851
+  },
+  {
+    "stationCode": "LKA",
+    "stationName": "Lanka",
+    "city": "Lanka",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.921,
+    "longitude": 93.0012
+  },
+  {
+    "stationCode": "CPK",
+    "stationName": "Chaparmukh Junction",
+    "city": "Chaparmukh",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.1912,
+    "longitude": 92.521
+  },
+  {
+    "stationCode": "GLPT",
+    "stationName": "Goalpara Town",
+    "city": "Goalpara",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.1712,
+    "longitude": 90.621
+  },
+  {
+    "stationCode": "AYU",
+    "stationName": "Abhayapuri",
+    "city": "Abhayapuri",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.3312,
+    "longitude": 90.661
+  },
+  {
+    "stationCode": "RPAN",
+    "stationName": "Rangapara North Junction",
+    "city": "Rangapara",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.8112,
+    "longitude": 92.6912
+  },
+  {
+    "stationCode": "DKGN",
+    "stationName": "Dekargaon",
+    "city": "Tezpur",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.6512,
+    "longitude": 92.791
+  },
+  {
+    "stationCode": "GPZ",
+    "stationName": "Gohpur",
+    "city": "Gohpur",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.8812,
+    "longitude": 93.631
+  },
+  {
+    "stationCode": "VNE",
+    "stationName": "Viswanath Charali",
+    "city": "Charali",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.8612,
+    "longitude": 93.151
+  },
+  {
+    "stationCode": "ULG",
+    "stationName": "Udalguri",
+    "city": "Udalguri",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.7412,
+    "longitude": 92.1012
+  },
+  {
+    "stationCode": "TNL",
+    "stationName": "Tangla",
+    "city": "Tangla",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.5612,
+    "longitude": 91.901
+  },
+  {
+    "stationCode": "DSK",
+    "stationName": "Duliajan",
+    "city": "Duliajan",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 27.3612,
+    "longitude": 95.311
+  },
+  {
+    "stationCode": "NHK",
+    "stationName": "Naharkatiya",
+    "city": "Naharkatiya",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 27.2812,
+    "longitude": 95.341
+  },
+  {
+    "stationCode": "NAM",
+    "stationName": "Namrup",
+    "city": "Namrup",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 27.1812,
+    "longitude": 95.421
+  },
+  {
+    "stationCode": "LHB",
+    "stationName": "Lahowal",
+    "city": "Dibrugarh",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 27.4812,
+    "longitude": 95.0012
+  },
+  {
+    "stationCode": "DBRT",
+    "stationName": "Dibrugarh Town",
+    "city": "Dibrugarh",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 27.481,
+    "longitude": 94.901
+  },
+  {
+    "stationCode": "NTS",
+    "stationName": "New Tinsukia Junction",
+    "city": "Tinsukia",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 27.505,
+    "longitude": 95.361
+  },
+  {
+    "stationCode": "AGI",
+    "stationName": "Amguri Junction",
+    "city": "Amguri",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 26.801,
+    "longitude": 94.611
+  },
+  {
+    "stationCode": "MRHT",
+    "stationName": "Moranhat",
+    "city": "Moranhat",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 27.181,
+    "longitude": 94.691
+  },
+  {
+    "stationCode": "DMR",
+    "stationName": "Dharmanagar",
+    "city": "Dharmanagar",
+    "state": "Tripura",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 24.3612,
+    "longitude": 92.161
+  },
+  {
+    "stationCode": "ABSA",
+    "stationName": "Ambassa",
+    "city": "Ambassa",
+    "state": "Tripura",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 23.9812,
+    "longitude": 91.841
+  },
+  {
+    "stationCode": "AGTL",
+    "stationName": "Agartala",
+    "city": "Agartala",
+    "state": "Tripura",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 23.834,
+    "longitude": 91.2828
+  },
+  {
+    "stationCode": "UDPU",
+    "stationName": "Udaipur",
+    "city": "Udaipur",
+    "state": "Tripura",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 23.5312,
+    "longitude": 91.481
+  },
+  {
+    "stationCode": "SBRM",
+    "stationName": "Sabroom",
+    "city": "Sabroom",
+    "state": "Tripura",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 22.981,
+    "longitude": 91.711
+  },
+  {
+    "stationCode": "MANU",
+    "stationName": "Manu",
+    "city": "Manu",
+    "state": "Tripura",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 24.0112,
+    "longitude": 91.981
+  },
+  {
+    "stationCode": "KUGT",
+    "stationName": "Kumarghat",
+    "city": "Kumarghat",
+    "state": "Tripura",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 24.1612,
+    "longitude": 92.031
+  },
+  {
+    "stationCode": "JRN",
+    "stationName": "Jirania",
+    "city": "Jirania",
+    "state": "Tripura",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 23.811,
+    "longitude": 91.411
+  },
+  {
+    "stationCode": "SKAP",
+    "stationName": "Sekerkote",
+    "city": "Sekerkote",
+    "state": "Tripura",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 23.751,
+    "longitude": 91.281
+  },
+  {
+    "stationCode": "VBR",
+    "stationName": "Bishalgarh",
+    "city": "Bishalgarh",
+    "state": "Tripura",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 23.6912,
+    "longitude": 91.261
+  },
+  {
+    "stationCode": "MNDP",
+    "stationName": "Mendipathar",
+    "city": "Mendipathar",
+    "state": "Meghalaya",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.9212,
+    "longitude": 90.651
+  },
+  {
+    "stationCode": "JRBM",
+    "stationName": "Jiribam",
+    "city": "Jiribam",
+    "state": "Manipur",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 24.791,
+    "longitude": 93.121
+  },
+  {
+    "stationCode": "BHRB",
+    "stationName": "Bairabi",
+    "city": "Bairabi",
+    "state": "Mizoram",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 24.191,
+    "longitude": 92.541
+  },
+  {
+    "stationCode": "NHLN",
+    "stationName": "Naharlagun",
+    "city": "Naharlagun",
+    "state": "Arunachal Pradesh",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 27.1012,
+    "longitude": 93.761
+  },
+  {
+    "stationCode": "HMY",
+    "stationName": "Harmuti Junction",
+    "city": "Harmuti",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 27.021,
+    "longitude": 93.811
+  },
+  {
+    "stationCode": "BHAL",
+    "stationName": "Bhalukpong",
+    "city": "Bhalukpong",
+    "state": "Arunachal Pradesh",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 27.0112,
+    "longitude": 92.641
+  },
+  {
+    "stationCode": "PNBE",
+    "stationName": "Patna Junction",
+    "city": "Patna",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 25.6022,
+    "longitude": 85.1194
+  },
+  {
+    "stationCode": "DNR",
+    "stationName": "Danapur",
+    "city": "Patna",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 25.5912,
+    "longitude": 85.041
+  },
+  {
+    "stationCode": "ARA",
+    "stationName": "Ara Junction",
+    "city": "Ara",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 25.5512,
+    "longitude": 84.661
+  },
+  {
+    "stationCode": "BXR",
+    "stationName": "Buxar",
+    "city": "Buxar",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.5712,
+    "longitude": 83.971
+  },
+  {
+    "stationCode": "RJPB",
+    "stationName": "Rajendra Nagar Terminal",
+    "city": "Patna",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.5982,
+    "longitude": 85.161
+  },
+  {
+    "stationCode": "PNC",
+    "stationName": "Patna Saheb",
+    "city": "Patna",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.594,
+    "longitude": 85.2212
+  },
+  {
+    "stationCode": "BKP",
+    "stationName": "Bakhtiyarpur Junction",
+    "city": "Bakhtiyarpur",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 25.4612,
+    "longitude": 85.521
+  },
+  {
+    "stationCode": "MKA",
+    "stationName": "Mokama Junction",
+    "city": "Mokama",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 25.3912,
+    "longitude": 85.901
+  },
+  {
+    "stationCode": "BJU",
+    "stationName": "Barauni Junction",
+    "city": "Barauni",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 25.4312,
+    "longitude": 85.981
+  },
+  {
+    "stationCode": "BGS",
+    "stationName": "Begusarai",
+    "city": "Begusarai",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.4172,
+    "longitude": 86.131
+  },
+  {
+    "stationCode": "KGG",
+    "stationName": "Khagaria Junction",
+    "city": "Khagaria",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 25.5012,
+    "longitude": 86.471
+  },
+  {
+    "stationCode": "NNA",
+    "stationName": "Naugachia",
+    "city": "Naugachia",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.3912,
+    "longitude": 87.1012
+  },
+  {
+    "stationCode": "KIR",
+    "stationName": "Katihar Junction",
+    "city": "Katihar",
+    "state": "Bihar",
+    "zone": "NFR",
+    "isJunction": true,
+    "latitude": 25.5348,
+    "longitude": 87.5612
+  },
+  {
+    "stationCode": "GAYA",
+    "stationName": "Gaya Junction",
+    "city": "Gaya",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 24.795,
+    "longitude": 85.001
+  },
+  {
+    "stationCode": "BELA",
+    "stationName": "Bela",
+    "city": "Bela",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.031,
+    "longitude": 84.991
+  },
+  {
+    "stationCode": "JHD",
+    "stationName": "Jehanabad",
+    "city": "Jehanabad",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.2112,
+    "longitude": 84.9912
+  },
+  {
+    "stationCode": "NWD",
+    "stationName": "Nawada",
+    "city": "Nawada",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 24.8812,
+    "longitude": 85.541
+  },
+  {
+    "stationCode": "KIUL",
+    "stationName": "Kiul Junction",
+    "city": "Kiul",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 25.2512,
+    "longitude": 86.2212
+  },
+  {
+    "stationCode": "JAJ",
+    "stationName": "Jhajha",
+    "city": "Jhajha",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 24.8912,
+    "longitude": 86.3812
+  },
+  {
+    "stationCode": "JMU",
+    "stationName": "Jamui",
+    "city": "Jamui",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 24.9112,
+    "longitude": 86.221
+  },
+  {
+    "stationCode": "LKR",
+    "stationName": "Lakhisarai Junction",
+    "city": "Lakhisarai",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 25.2612,
+    "longitude": 86.1012
+  },
+  {
+    "stationCode": "BGP",
+    "stationName": "Bhagalpur Junction",
+    "city": "Bhagalpur",
+    "state": "Bihar",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 25.244,
+    "longitude": 87.0012
+  },
+  {
+    "stationCode": "SGG",
+    "stationName": "Sultanganj",
+    "city": "Sultanganj",
+    "state": "Bihar",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 25.241,
+    "longitude": 86.741
+  },
+  {
+    "stationCode": "JMP",
+    "stationName": "Jamalpur Junction",
+    "city": "Jamalpur",
+    "state": "Bihar",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 25.3012,
+    "longitude": 86.5012
+  },
+  {
+    "stationCode": "BUA",
+    "stationName": "Barhiya",
+    "city": "Barhiya",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.281,
+    "longitude": 86.021
+  },
+  {
+    "stationCode": "HTZ",
+    "stationName": "Hathidah Junction",
+    "city": "Hathidah",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 25.3612,
+    "longitude": 85.961
+  },
+  {
+    "stationCode": "SHC",
+    "stationName": "Saharsa Junction",
+    "city": "Saharsa",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 25.881,
+    "longitude": 86.601
+  },
+  {
+    "stationCode": "SBV",
+    "stationName": "Simri Bakhtiyarpur",
+    "city": "Bakhtiyarpur",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.751,
+    "longitude": 86.621
+  },
+  {
+    "stationCode": "COP",
+    "stationName": "Copar",
+    "city": "Copar",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.6812,
+    "longitude": 86.591
+  },
+  {
+    "stationCode": "DMH",
+    "stationName": "Dauram Madhepura",
+    "city": "Madhepura",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.901,
+    "longitude": 86.791
+  },
+  {
+    "stationCode": "MNE",
+    "stationName": "Mansi Junction",
+    "city": "Mansi",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 25.4812,
+    "longitude": 86.591
+  },
+  {
+    "stationCode": "THB",
+    "stationName": "Thana Bihpur Junction",
+    "city": "Bihpur",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 25.4312,
+    "longitude": 86.901
+  },
+  {
+    "stationCode": "SMO",
+    "stationName": "Semapur",
+    "city": "Semapur",
+    "state": "Bihar",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.461,
+    "longitude": 87.421
+  },
+  {
+    "stationCode": "SRI",
+    "stationName": "Salmari",
+    "city": "Salmari",
+    "state": "Bihar",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.6512,
+    "longitude": 87.791
+  },
+  {
+    "stationCode": "AZR",
+    "stationName": "Azamnagar Road",
+    "city": "Azamnagar",
+    "state": "Bihar",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.6912,
+    "longitude": 87.891
+  },
+  {
+    "stationCode": "DNR_T",
+    "stationName": "Danapur Town",
+    "city": "Danapur",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.601,
+    "longitude": 85.021
+  },
+  {
+    "stationCode": "KGG_T",
+    "stationName": "Khagaria Town",
+    "city": "Khagaria",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.511,
+    "longitude": 86.461
+  },
+  {
+    "stationCode": "BJU_T",
+    "stationName": "Barauni Town",
+    "city": "Barauni",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.441,
+    "longitude": 85.961
+  },
+  {
+    "stationCode": "PNC_T",
+    "stationName": "Patna Saheb Town",
+    "city": "Patna",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.584,
+    "longitude": 85.241
+  },
+  {
+    "stationCode": "KIUL_T",
+    "stationName": "Kiul Town",
+    "city": "Kiul",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.261,
+    "longitude": 86.201
+  },
+  {
+    "stationCode": "JAJ_T",
+    "stationName": "Jhajha Town",
+    "city": "Jhajha",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 24.901,
+    "longitude": 86.361
+  },
+  {
+    "stationCode": "BGP_T",
+    "stationName": "Bhagalpur Town",
+    "city": "Bhagalpur",
+    "state": "Bihar",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 25.251,
+    "longitude": 86.981
+  },
+  {
+    "stationCode": "RNC",
+    "stationName": "Ranchi Junction",
+    "city": "Ranchi",
+    "state": "Jharkhand",
+    "zone": "SER",
+    "isJunction": true,
+    "latitude": 23.3421,
+    "longitude": 85.3097
+  },
+  {
+    "stationCode": "HTE",
+    "stationName": "Hatia",
+    "city": "Ranchi",
+    "state": "Jharkhand",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 23.3082,
+    "longitude": 85.2917
+  },
+  {
+    "stationCode": "MURI",
+    "stationName": "Muri Junction",
+    "city": "Muri",
+    "state": "Jharkhand",
+    "zone": "SER",
+    "isJunction": true,
+    "latitude": 23.3712,
+    "longitude": 85.8612
+  },
+  {
+    "stationCode": "BKSC",
+    "stationName": "Bokaro Steel City",
+    "city": "Bokaro",
+    "state": "Jharkhand",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 23.6412,
+    "longitude": 86.151
+  },
+  {
+    "stationCode": "CRP",
+    "stationName": "Chandrapura Junction",
+    "city": "Chandrapura",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 23.7512,
+    "longitude": 86.221
+  },
+  {
+    "stationCode": "GMO",
+    "stationName": "Netaji SC Bose Gomoh Junction",
+    "city": "Gomoh",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 23.8682,
+    "longitude": 86.131
+  },
+  {
+    "stationCode": "DHN",
+    "stationName": "Dhanbad Junction",
+    "city": "Dhanbad",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 23.8012,
+    "longitude": 86.4312
+  },
+  {
+    "stationCode": "MDP",
+    "stationName": "Madhupur Junction",
+    "city": "Madhupur",
+    "state": "Jharkhand",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 24.2512,
+    "longitude": 86.641
+  },
+  {
+    "stationCode": "JSME",
+    "stationName": "Jasidih Junction",
+    "city": "Deoghar",
+    "state": "Jharkhand",
+    "zone": "ER",
+    "isJunction": true,
+    "latitude": 24.5112,
+    "longitude": 86.6412
+  },
+  {
+    "stationCode": "KQR",
+    "stationName": "Koderma Junction",
+    "city": "Koderma",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 24.4682,
+    "longitude": 85.601
+  },
+  {
+    "stationCode": "HZIB",
+    "stationName": "Hazaribagh Town",
+    "city": "Hazaribagh",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 23.9912,
+    "longitude": 85.3612
+  },
+  {
+    "stationCode": "BRKA",
+    "stationName": "Barkakana Junction",
+    "city": "Barkakana",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 23.6212,
+    "longitude": 85.471
+  },
+  {
+    "stationCode": "DTO",
+    "stationName": "Daltonganj",
+    "city": "Daltonganj",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 24.0312,
+    "longitude": 84.071
+  },
+  {
+    "stationCode": "LTHR",
+    "stationName": "Latehar",
+    "city": "Latehar",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 23.741,
+    "longitude": 84.501
+  },
+  {
+    "stationCode": "TORI",
+    "stationName": "Tori Junction",
+    "city": "Tori",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": true,
+    "latitude": 23.6812,
+    "longitude": 84.781
+  },
+  {
+    "stationCode": "RHE",
+    "stationName": "Rahe",
+    "city": "Rahe",
+    "state": "Jharkhand",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 23.321,
+    "longitude": 85.741
+  },
+  {
+    "stationCode": "SILLI",
+    "stationName": "Silli",
+    "city": "Silli",
+    "state": "Jharkhand",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 23.3512,
+    "longitude": 85.811
+  },
+  {
+    "stationCode": "MHQ",
+    "stationName": "Mahuda Junction",
+    "city": "Mahuda",
+    "state": "Jharkhand",
+    "zone": "SER",
+    "isJunction": true,
+    "latitude": 23.7412,
+    "longitude": 86.201
+  },
+  {
+    "stationCode": "KTH",
+    "stationName": "Katrasgarh",
+    "city": "Katrasgarh",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 23.801,
+    "longitude": 86.281
+  },
+  {
+    "stationCode": "PKA",
+    "stationName": "Putki",
+    "city": "Dhanbad",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 23.781,
+    "longitude": 86.361
+  },
+  {
+    "stationCode": "VAA",
+    "stationName": "Bhaga Junction",
+    "city": "Bhaga",
+    "state": "Jharkhand",
+    "zone": "SER",
+    "isJunction": true,
+    "latitude": 23.681,
+    "longitude": 86.391
+  },
+  {
+    "stationCode": "JMT",
+    "stationName": "Jamtara",
+    "city": "Jamtara",
+    "state": "Jharkhand",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 24.0812,
+    "longitude": 86.801
+  },
+  {
+    "stationCode": "CRJ",
+    "stationName": "Chittaranjan",
+    "city": "Mihijam",
+    "state": "Jharkhand",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 24.0112,
+    "longitude": 86.901
+  },
+  {
+    "stationCode": "BRKA_T",
+    "stationName": "Barkakana Town",
+    "city": "Barkakana",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 23.611,
+    "longitude": 85.451
+  },
+  {
+    "stationCode": "RNC_T",
+    "stationName": "Ranchi Town",
+    "city": "Ranchi",
+    "state": "Jharkhand",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 23.3321,
+    "longitude": 85.2897
+  },
+  {
+    "stationCode": "DHN_T",
+    "stationName": "Dhanbad Town",
+    "city": "Dhanbad",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 23.8112,
+    "longitude": 86.4112
+  },
+  {
+    "stationCode": "MURI_T",
+    "stationName": "Muri Town",
+    "city": "Muri",
+    "state": "Jharkhand",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 23.3612,
+    "longitude": 85.8412
+  },
+  {
+    "stationCode": "JSME_T",
+    "stationName": "Jasidih Town",
+    "city": "Deoghar",
+    "state": "Jharkhand",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 24.5012,
+    "longitude": 86.6212
+  },
+  {
+    "stationCode": "BBS",
+    "stationName": "Bhubaneswar",
+    "city": "Bhubaneswar",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": true,
+    "latitude": 20.2524,
+    "longitude": 85.8449
+  },
+  {
+    "stationCode": "CTC",
+    "stationName": "Cuttack Junction",
+    "city": "Cuttack",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": true,
+    "latitude": 20.4618,
+    "longitude": 85.884
+  },
+  {
+    "stationCode": "JJKR",
+    "stationName": "Jajpur Keonjhar Road",
+    "city": "Jajpur",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.951,
+    "longitude": 86.131
+  },
+  {
+    "stationCode": "BHC",
+    "stationName": "Bhadrak",
+    "city": "Bhadrak",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 21.0512,
+    "longitude": 86.511
+  },
+  {
+    "stationCode": "BLS",
+    "stationName": "Balasore",
+    "city": "Balasore",
+    "state": "Odisha",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 21.4912,
+    "longitude": 86.9312
+  },
+  {
+    "stationCode": "ROU",
+    "stationName": "Rourkela Junction",
+    "city": "Rourkela",
+    "state": "Odisha",
+    "zone": "SER",
+    "isJunction": true,
+    "latitude": 22.2212,
+    "longitude": 84.871
+  },
+  {
+    "stationCode": "JSG",
+    "stationName": "Jharsuguda Junction",
+    "city": "Jharsuguda",
+    "state": "Odisha",
+    "zone": "SER",
+    "isJunction": true,
+    "latitude": 21.8512,
+    "longitude": 84.021
+  },
+  {
+    "stationCode": "SBP",
+    "stationName": "Sambalpur Junction",
+    "city": "Sambalpur",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": true,
+    "latitude": 21.4612,
+    "longitude": 83.971
+  },
+  {
+    "stationCode": "ANGL",
+    "stationName": "Angul",
+    "city": "Angul",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.8412,
+    "longitude": 85.121
+  },
+  {
+    "stationCode": "TLHR",
+    "stationName": "Talcher",
+    "city": "Talcher",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.9212,
+    "longitude": 85.221
+  },
+  {
+    "stationCode": "DNKL",
+    "stationName": "Dhenkanal",
+    "city": "Dhenkanal",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.6512,
+    "longitude": 85.601
+  },
+  {
+    "stationCode": "KUR",
+    "stationName": "Khurda Road Junction",
+    "city": "Jatni",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": true,
+    "latitude": 20.1512,
+    "longitude": 85.701
+  },
+  {
+    "stationCode": "PURI",
+    "stationName": "Puri",
+    "city": "Puri",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 19.8118,
+    "longitude": 85.811
+  },
+  {
+    "stationCode": "BAM",
+    "stationName": "Berhampur",
+    "city": "Brahmapur",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 19.3112,
+    "longitude": 84.791
+  },
+  {
+    "stationCode": "PSA",
+    "stationName": "Palasa",
+    "city": "Palasa",
+    "state": "Andhra Pradesh",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 18.7712,
+    "longitude": 84.411
+  },
+  {
+    "stationCode": "BALU",
+    "stationName": "Balugaon",
+    "city": "Balugaon",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 19.741,
+    "longitude": 85.211
+  },
+  {
+    "stationCode": "CAP",
+    "stationName": "Chatrapur",
+    "city": "Chatrapur",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 19.3512,
+    "longitude": 84.901
+  },
+  {
+    "stationCode": "RAIR",
+    "stationName": "Rairakhol",
+    "city": "Rairakhol",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 21.0612,
+    "longitude": 84.341
+  },
+  {
+    "stationCode": "BRGA",
+    "stationName": "Bargarh Road",
+    "city": "Bargarh",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 21.3312,
+    "longitude": 83.621
+  },
+  {
+    "stationCode": "BLGR",
+    "stationName": "Balangir",
+    "city": "Balangir",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.7212,
+    "longitude": 83.481
+  },
+  {
+    "stationCode": "TIG",
+    "stationName": "Titlagarh Junction",
+    "city": "Titlagarh",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": true,
+    "latitude": 20.2812,
+    "longitude": 83.141
+  },
+  {
+    "stationCode": "KBJ",
+    "stationName": "Kantabanji",
+    "city": "Kantabanji",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.4812,
+    "longitude": 82.681
+  },
+  {
+    "stationCode": "KSNG",
+    "stationName": "Kesinga",
+    "city": "Kesinga",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.2012,
+    "longitude": 83.221
+  },
+  {
+    "stationCode": "MNGD",
+    "stationName": "Muniguda",
+    "city": "Muniguda",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 19.631,
+    "longitude": 83.491
+  },
+  {
+    "stationCode": "RGDA",
+    "stationName": "Rayagada",
+    "city": "Rayagada",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 19.1712,
+    "longitude": 83.421
+  },
+  {
+    "stationCode": "JKP",
+    "stationName": "Jakhapura Junction",
+    "city": "Jakhapura",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": true,
+    "latitude": 20.961,
+    "longitude": 86.101
+  },
+  {
+    "stationCode": "SKND",
+    "stationName": "Sukinda Road",
+    "city": "Sukinda",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.981,
+    "longitude": 86.201
+  },
+  {
+    "stationCode": "HCNR",
+    "stationName": "Harichandanpur",
+    "city": "Harichandanpur",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 21.3412,
+    "longitude": 85.791
+  },
+  {
+    "stationCode": "KDJR",
+    "stationName": "Kendujhargarh",
+    "city": "Kendujhar",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 21.6412,
+    "longitude": 85.601
+  },
+  {
+    "stationCode": "VSKP",
+    "stationName": "Visakhapatnam Junction",
+    "city": "Visakhapatnam",
+    "state": "Andhra Pradesh",
+    "zone": "ECoR",
+    "isJunction": true,
+    "latitude": 17.7212,
+    "longitude": 83.281
+  },
+  {
+    "stationCode": "VZM",
+    "stationName": "Vizianagaram Junction",
+    "city": "Vizianagaram",
+    "state": "Andhra Pradesh",
+    "zone": "ECoR",
+    "isJunction": true,
+    "latitude": 18.1212,
+    "longitude": 83.401
+  },
+  {
+    "stationCode": "BBS_T",
+    "stationName": "Bhubaneswar Town",
+    "city": "Bhubaneswar",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.2624,
+    "longitude": 85.8249
+  },
+  {
+    "stationCode": "CTC_T",
+    "stationName": "Cuttack Town",
+    "city": "Cuttack",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.4718,
+    "longitude": 85.864
+  },
+  {
+    "stationCode": "ROU_T",
+    "stationName": "Rourkela Town",
+    "city": "Rourkela",
+    "state": "Odisha",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 22.2312,
+    "longitude": 84.851
+  },
+  {
+    "stationCode": "JSG_T",
+    "stationName": "Jharsuguda Town",
+    "city": "Jharsuguda",
+    "state": "Odisha",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 21.8612,
+    "longitude": 84.001
+  },
+  {
+    "stationCode": "SBP_T",
+    "stationName": "Sambalpur Town",
+    "city": "Sambalpur",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 21.4712,
+    "longitude": 83.951
+  },
+  {
+    "stationCode": "EX-WB1",
+    "stationName": "Chandrakona Halt",
+    "city": "Chandrakona",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 22.751,
+    "longitude": 87.351
+  },
+  {
+    "stationCode": "EX-WB2",
+    "stationName": "Salboni Halt",
+    "city": "Salboni",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 22.651,
+    "longitude": 87.301
+  },
+  {
+    "stationCode": "EX-WB3",
+    "stationName": "Garhbeta Road",
+    "city": "Garhbeta",
+    "state": "West Bengal",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 22.8812,
+    "longitude": 87.361
+  },
+  {
+    "stationCode": "EX-WB4",
+    "stationName": "Rampurhat Halt",
+    "city": "Rampurhat",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 24.181,
+    "longitude": 87.791
+  },
+  {
+    "stationCode": "EX-WB5",
+    "stationName": "Nalhati Halt",
+    "city": "Nalhati",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 24.311,
+    "longitude": 87.851
+  },
+  {
+    "stationCode": "EX-WB6",
+    "stationName": "Bolpur Town",
+    "city": "Bolpur",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 23.681,
+    "longitude": 87.711
+  },
+  {
+    "stationCode": "EX-WB7",
+    "stationName": "Katwa Town",
+    "city": "Katwa",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 23.661,
+    "longitude": 88.151
+  },
+  {
+    "stationCode": "EX-WB8",
+    "stationName": "Ranaghat Town",
+    "city": "Ranaghat",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 23.191,
+    "longitude": 88.581
+  },
+  {
+    "stationCode": "EX-WB9",
+    "stationName": "Bongaon Town",
+    "city": "Bongaon",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 23.061,
+    "longitude": 88.841
+  },
+  {
+    "stationCode": "EX-WB10",
+    "stationName": "Bandel Town",
+    "city": "Bandel",
+    "state": "West Bengal",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 22.941,
+    "longitude": 88.391
+  },
+  {
+    "stationCode": "EX-BH1",
+    "stationName": "Jehanabad Town",
+    "city": "Jehanabad",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.231,
+    "longitude": 85.011
+  },
+  {
+    "stationCode": "EX-BH2",
+    "stationName": "Taregna Halt",
+    "city": "Taregna",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.321,
+    "longitude": 85.031
+  },
+  {
+    "stationCode": "EX-BH3",
+    "stationName": "Mokama Halt",
+    "city": "Mokama",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.411,
+    "longitude": 85.921
+  },
+  {
+    "stationCode": "EX-BH4",
+    "stationName": "Begusarai Town",
+    "city": "Begusarai",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.431,
+    "longitude": 86.151
+  },
+  {
+    "stationCode": "EX-BH5",
+    "stationName": "Khagaria Halt",
+    "city": "Khagaria",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.521,
+    "longitude": 86.491
+  },
+  {
+    "stationCode": "EX-BH6",
+    "stationName": "Buxar Town",
+    "city": "Buxar",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.591,
+    "longitude": 83.991
+  },
+  {
+    "stationCode": "EX-BH7",
+    "stationName": "Ara Town",
+    "city": "Ara",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.571,
+    "longitude": 84.681
+  },
+  {
+    "stationCode": "EX-BH8",
+    "stationName": "Nawada Halt",
+    "city": "Nawada",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 24.901,
+    "longitude": 85.561
+  },
+  {
+    "stationCode": "EX-BH9",
+    "stationName": "Jamui Town",
+    "city": "Jamui",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 24.931,
+    "longitude": 86.241
+  },
+  {
+    "stationCode": "EX-BH10",
+    "stationName": "Lakhisarai Town",
+    "city": "Lakhisarai",
+    "state": "Bihar",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 25.281,
+    "longitude": 86.121
+  },
+  {
+    "stationCode": "EX-AS1",
+    "stationName": "Hojai Town",
+    "city": "Hojai",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.021,
+    "longitude": 92.871
+  },
+  {
+    "stationCode": "EX-AS2",
+    "stationName": "Lanka Town",
+    "city": "Lanka",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.941,
+    "longitude": 93.021
+  },
+  {
+    "stationCode": "EX-AS3",
+    "stationName": "Diphu Town",
+    "city": "Diphu",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 25.861,
+    "longitude": 93.441
+  },
+  {
+    "stationCode": "EX-AS4",
+    "stationName": "Mariani Town",
+    "city": "Jorhat",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.681,
+    "longitude": 94.341
+  },
+  {
+    "stationCode": "EX-AS5",
+    "stationName": "Amguri Town",
+    "city": "Amguri",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.821,
+    "longitude": 94.631
+  },
+  {
+    "stationCode": "EX-AS6",
+    "stationName": "Simaluguri Town",
+    "city": "Simaluguri",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 26.911,
+    "longitude": 94.831
+  },
+  {
+    "stationCode": "EX-AS7",
+    "stationName": "Dibrugarh Bypass",
+    "city": "Dibrugarh",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 27.461,
+    "longitude": 94.931
+  },
+  {
+    "stationCode": "EX-AS8",
+    "stationName": "Tinsukia Town",
+    "city": "Tinsukia",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 27.521,
+    "longitude": 95.381
+  },
+  {
+    "stationCode": "EX-AS9",
+    "stationName": "Badarpur Town",
+    "city": "Badarpur",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 24.921,
+    "longitude": 92.641
+  },
+  {
+    "stationCode": "EX-AS10",
+    "stationName": "Karimganj Town",
+    "city": "Karimganj",
+    "state": "Assam",
+    "zone": "NFR",
+    "isJunction": false,
+    "latitude": 24.881,
+    "longitude": 92.371
+  },
+  {
+    "stationCode": "EX-OD1",
+    "stationName": "Jajpur Town",
+    "city": "Jajpur",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.971,
+    "longitude": 86.151
+  },
+  {
+    "stationCode": "EX-OD2",
+    "stationName": "Bhadrak Halt",
+    "city": "Bhadrak",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 21.071,
+    "longitude": 86.531
+  },
+  {
+    "stationCode": "EX-OD3",
+    "stationName": "Balasore Town",
+    "city": "Balasore",
+    "state": "Odisha",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 21.511,
+    "longitude": 86.951
+  },
+  {
+    "stationCode": "EX-OD4",
+    "stationName": "Angul Town",
+    "city": "Angul",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.861,
+    "longitude": 85.141
+  },
+  {
+    "stationCode": "EX-OD5",
+    "stationName": "Dhenkanal Town",
+    "city": "Dhenkanal",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.671,
+    "longitude": 85.621
+  },
+  {
+    "stationCode": "EX-OD6",
+    "stationName": "Sambalpur Halt",
+    "city": "Sambalpur",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 21.481,
+    "longitude": 83.991
+  },
+  {
+    "stationCode": "EX-OD7",
+    "stationName": "Bargarh Town",
+    "city": "Bargarh",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 21.351,
+    "longitude": 83.641
+  },
+  {
+    "stationCode": "EX-OD8",
+    "stationName": "Balangir Town",
+    "city": "Balangir",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.741,
+    "longitude": 83.501
+  },
+  {
+    "stationCode": "EX-OD9",
+    "stationName": "Titlagarh Halt",
+    "city": "Titlagarh",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 20.301,
+    "longitude": 83.161
+  },
+  {
+    "stationCode": "EX-OD10",
+    "stationName": "Rayagada Town",
+    "city": "Rayagada",
+    "state": "Odisha",
+    "zone": "ECoR",
+    "isJunction": false,
+    "latitude": 19.191,
+    "longitude": 83.441
+  },
+  {
+    "stationCode": "EX-JH1",
+    "stationName": "Muri Halt",
+    "city": "Muri",
+    "state": "Jharkhand",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 23.381,
+    "longitude": 85.881
+  },
+  {
+    "stationCode": "EX-JH2",
+    "stationName": "Bokaro Town",
+    "city": "Bokaro",
+    "state": "Jharkhand",
+    "zone": "SER",
+    "isJunction": false,
+    "latitude": 23.661,
+    "longitude": 86.171
+  },
+  {
+    "stationCode": "EX-JH3",
+    "stationName": "Gomoh Town",
+    "city": "Gomoh",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 23.881,
+    "longitude": 86.151
+  },
+  {
+    "stationCode": "EX-JH4",
+    "stationName": "Koderma Town",
+    "city": "Koderma",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 24.481,
+    "longitude": 85.621
+  },
+  {
+    "stationCode": "EX-JH5",
+    "stationName": "Latehar Town",
+    "city": "Latehar",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 23.761,
+    "longitude": 84.521
+  },
+  {
+    "stationCode": "EX-JH6",
+    "stationName": "Tori Town",
+    "city": "Tori",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 23.701,
+    "longitude": 84.801
+  },
+  {
+    "stationCode": "EX-JH7",
+    "stationName": "Barkakana Halt",
+    "city": "Barkakana",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 23.631,
+    "longitude": 85.491
+  },
+  {
+    "stationCode": "EX-JH8",
+    "stationName": "Daltonganj Town",
+    "city": "Daltonganj",
+    "state": "Jharkhand",
+    "zone": "ECR",
+    "isJunction": false,
+    "latitude": 24.051,
+    "longitude": 84.091
+  },
+  {
+    "stationCode": "EX-JH9",
+    "stationName": "Madhupur Town",
+    "city": "Madhupur",
+    "state": "Jharkhand",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 24.271,
+    "longitude": 86.661
+  },
+  {
+    "stationCode": "EX-JH10",
+    "stationName": "Jasidih Halt",
+    "city": "Deoghar",
+    "state": "Jharkhand",
+    "zone": "ER",
+    "isJunction": false,
+    "latitude": 24.531,
+    "longitude": 86.661
+  }
+]

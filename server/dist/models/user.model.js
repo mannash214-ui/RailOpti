@@ -20,15 +20,21 @@ const userSchema = new mongoose_1.Schema({
         trim: true,
         match: [
             /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-            'Please fill a valid email address',
+            'Please fill a valid email address.',
         ],
     },
     password: {
         type: String,
         required: [true, 'Please provide a password.'],
         minlength: [8, 'Password must be at least 8 characters long.'],
-        select: false, // Prevents password from being returned in search results by default
+        select: false, // Security precaution: exclude password from select results
     },
+    savedStations: [
+        {
+            type: mongoose_1.Schema.Types.ObjectId,
+            ref: 'Station',
+        },
+    ],
 }, {
     timestamps: true,
 });
@@ -47,7 +53,7 @@ userSchema.pre('save', async function (next) {
 });
 // Compare password prototype helper
 userSchema.methods.comparePassword = async function (passwordInput) {
-    return bcrypt_1.default.compare(passwordInput, this.password);
+    return bcrypt_1.default.compare(passwordInput, this.password || '');
 };
 exports.User = (0, mongoose_1.model)('User', userSchema);
 exports.default = exports.User;

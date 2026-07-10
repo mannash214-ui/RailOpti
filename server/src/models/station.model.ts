@@ -1,27 +1,57 @@
 import { Schema, model } from 'mongoose';
+import { IStation } from './types';
 
-const stationSchema = new Schema(
+const stationSchema = new Schema<IStation>(
   {
-    code: {
-      type: String,
-      required: [true, 'Station unique code is required (e.g. KGX).'],
-      unique: true,
-      uppercase: true,
-      trim: true,
-    },
     name: {
       type: String,
       required: [true, 'Station name is required.'],
       trim: true,
     },
+    stationCode: {
+      type: String,
+      required: [true, 'Station code is required.'],
+      uppercase: true,
+      trim: true,
+      validate: {
+        validator: function (v: string) {
+          // Standard station code check: 2 to 10 capital alphanumeric letters, hyphens, and underscores
+          return /^[A-Z0-9_-]{2,10}$/.test(v);
+        },
+        message: (props: any) => `${props.value} is not a valid station code (2-10 uppercase alphanumeric, hyphen, or underscore characters).`,
+      },
+    },
     city: {
       type: String,
-      required: true,
+      required: [true, 'City is required.'],
       trim: true,
     },
-    isActive: {
+    state: {
+      type: String,
+      required: [true, 'State is required.'],
+      trim: true,
+    },
+    latitude: {
+      type: Number,
+      required: [true, 'Latitude is required.'],
+      min: [-90, 'Latitude must be at least -90.'],
+      max: [90, 'Latitude cannot exceed 90.'],
+    },
+    longitude: {
+      type: Number,
+      required: [true, 'Longitude is required.'],
+      min: [-180, 'Longitude must be at least -180.'],
+      max: [180, 'Longitude cannot exceed 180.'],
+    },
+    zone: {
+      type: String,
+      required: [true, 'Railway zone is required (e.g. CR, NR, ER, WR, SR).'],
+      uppercase: true,
+      trim: true,
+    },
+    isJunction: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   {
@@ -29,8 +59,10 @@ const stationSchema = new Schema(
   }
 );
 
-// Indexing Station code for rapid indexing searches
-stationSchema.index({ code: 1 });
+// Indexes
+stationSchema.index({ stationCode: 1 }, { unique: true });
+stationSchema.index({ city: 1 });
+stationSchema.index({ state: 1 });
 
-export const Station = model('Station', stationSchema);
+export const Station = model<IStation>('Station', stationSchema);
 export default Station;

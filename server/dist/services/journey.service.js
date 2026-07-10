@@ -1,20 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.JourneyService = void 0;
-const journey_model_1 = require("../models/journey.model");
+const savedJourney_model_1 = require("../models/savedJourney.model");
 const error_1 = require("../middleware/error");
 class JourneyService {
     /**
      * Fetch all journeys pinned/saved by a user.
      */
     static async getUserJourneys(userId) {
-        return journey_model_1.Journey.find({ userId }).sort({ createdAt: -1 });
+        return savedJourney_model_1.SavedJourney.find({ userId }).sort({ createdAt: -1 });
     }
     /**
      * Save an optimized itinerary to the user's account.
      */
     static async saveJourney(userId, journeyData) {
-        const newJourney = await journey_model_1.Journey.create({
+        const newJourney = await savedJourney_model_1.SavedJourney.create({
             userId,
             ...journeyData,
         });
@@ -24,7 +24,7 @@ class JourneyService {
      * Deletes a saved journey. Checks ownership.
      */
     static async deleteJourney(userId, journeyId) {
-        const journey = await journey_model_1.Journey.findById(journeyId);
+        const journey = await savedJourney_model_1.SavedJourney.findById(journeyId);
         if (!journey) {
             throw new error_1.AppError('Journey not found.', 404);
         }
@@ -32,7 +32,7 @@ class JourneyService {
         if (journey.userId.toString() !== userId) {
             throw new error_1.AppError('You do not have permission to delete this journey.', 403);
         }
-        await journey_model_1.Journey.findByIdAndDelete(journeyId);
+        await savedJourney_model_1.SavedJourney.findByIdAndDelete(journeyId);
     }
 }
 exports.JourneyService = JourneyService;
