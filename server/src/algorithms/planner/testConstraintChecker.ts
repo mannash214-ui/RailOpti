@@ -94,6 +94,7 @@ function createBaseNode(id: string, station: string, timeStr: string, minutes: n
     averageDelayMinutes: 0,
     absoluteArrivalMinutes: minutes,
     absoluteDepartureMinutes: minutes,
+    operatingDays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
   };
 }
 

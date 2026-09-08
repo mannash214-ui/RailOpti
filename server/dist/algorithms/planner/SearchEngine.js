@@ -90,6 +90,9 @@ class SearchEngine {
                 if (!this.constraintChecker.isAllowedTrainType(node.trainType)) {
                     continue;
                 }
+                if (this.config.weekday && !node.operatingDays?.includes(this.config.weekday)) {
+                    continue;
+                }
                 const waitingMinutes = node.absoluteDepartureMinutes - departureMinutes;
                 if (!this.constraintChecker.isValidWaiting(waitingMinutes)) {
                     continue;
@@ -167,6 +170,9 @@ class SearchEngine {
                     if (!this.constraintChecker.isAllowedTrainType(vNode.trainType)) {
                         continue;
                     }
+                    if (this.config.weekday && !vNode.operatingDays?.includes(this.config.weekday)) {
+                        continue;
+                    }
                     if (!this.constraintChecker.isValidJourneyDuration(u.departureTime, vNode.absoluteArrivalMinutes)) {
                         continue;
                     }
@@ -219,6 +225,9 @@ class SearchEngine {
                     }
                     // Validate new transfer constraints
                     if (!this.constraintChecker.isAllowedTrainType(vNode.trainType)) {
+                        continue;
+                    }
+                    if (this.config.weekday && !vNode.operatingDays?.includes(this.config.weekday)) {
                         continue;
                     }
                     const newWaiting = u.accumulatedWaiting + waitingMinutes;

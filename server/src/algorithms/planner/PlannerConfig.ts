@@ -13,6 +13,8 @@ export interface PlannerConfig {
   allowedTrainTypes: string[];
   avoidOvernightTransfers: boolean;
   arrivalBeforeAbsoluteMinutes?: number;
+  travelDate?: string;
+  weekday?: string;
 }
 
 export const DEFAULT_PLANNER_CONFIG: PlannerConfig = {

@@ -86,6 +86,7 @@ function createBaseNode(id, station, timeStr, minutes, trainId = 'T1') {
         averageDelayMinutes: 0,
         absoluteArrivalMinutes: minutes,
         absoluteDepartureMinutes: minutes,
+        operatingDays: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
     };
 }
 function runTests() {

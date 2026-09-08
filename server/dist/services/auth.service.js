@@ -14,9 +14,15 @@ class AuthService {
         return jsonwebtoken_1.default.sign({ id, email }, secret, { expiresIn: expires });
     }
     static async register(userData) {
-        const { name, email, password } = userData;
+        const { name, email, password } = userData || {};
+        if (!name || !email || !password) {
+            throw new error_1.AppError('Please provide name, email, and password.', 400);
+        }
+        if (password.length < 8) {
+            throw new error_1.AppError('Password must be at least 8 characters long.', 400);
+        }
         // Check if user already exists
-        const existingUser = await user_model_1.User.findOne({ email });
+        const existingUser = await user_model_1.User.findOne({ email: email.toLowerCase().trim() });
         if (existingUser) {
             throw new error_1.AppError('An account with this email address already exists.', 400);
         }
@@ -40,6 +46,9 @@ class AuthService {
         const { email, password } = credentials;
         if (!email || !password) {
             throw new error_1.AppError('Please provide both email and password.', 400);
+        }
+        if (password.length < 8) {
+            throw new error_1.AppError('Password must be at least 8 characters long.', 400);
         }
         // Find user and explicitly select password field
         const user = await user_model_1.User.findOne({ email }).select('+password');

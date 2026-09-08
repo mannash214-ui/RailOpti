@@ -80,6 +80,7 @@ class GraphBuilder {
                 cancellationProbability: train.cancellationProbability ?? 0.0,
                 absoluteArrivalMinutes,
                 absoluteDepartureMinutes,
+                operatingDays: train.operatingDays || [],
             };
             nodesMap.set(nodeId, node);
             adjacencyList.set(nodeId, []);

@@ -17,6 +17,7 @@ export interface GraphNode {
   cancellationProbability: number;
   absoluteArrivalMinutes: number;   // Calculated absolute arrival mins from Day 0, 00:00
   absoluteDepartureMinutes: number; // Calculated absolute departure mins from Day 0, 00:00
+  operatingDays: string[];
 }
 
 export enum EdgeType {

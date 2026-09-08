@@ -12,6 +12,8 @@ export interface TrainSegment {
   travelMinutes: number;
   cancellationProbability: number;
   averageDelayMinutes: number;
+  actualDepartureDateTime?: string;
+  actualArrivalDateTime?: string;
 }
 
 export interface Journey {
@@ -28,6 +30,11 @@ export interface Journey {
   reliabilityScore: number;
   overallScore: number;
   trainSegments: TrainSegment[];
+  travelDate?: string;
+  actualDepartureDateTime?: string;
+  actualArrivalDateTime?: string;
+  arrivalDay?: string;
+  departureDay?: string;
 }
 
 interface JourneyTimelineProps {
@@ -95,7 +102,7 @@ export default function JourneyTimeline({ journey }: JourneyTimelineProps) {
                   {/* Boarding Point */}
                   <div className="flex flex-col">
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Board Train</span>
-                    <span className="text-sm font-bold text-slate-800 mt-0.5">{segment.departureTime}</span>
+                    <span className="text-sm font-bold text-slate-800 mt-0.5">{segment.actualDepartureDateTime || segment.departureTime}</span>
                     <span className="text-xs font-medium text-slate-600 mt-0.5">
                       {segment.fromStationName} ({segment.fromStationCode})
                     </span>
@@ -104,7 +111,7 @@ export default function JourneyTimeline({ journey }: JourneyTimelineProps) {
                   {/* Alighting Point */}
                   <div className="flex flex-col">
                     <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Alight Train</span>
-                    <span className="text-sm font-bold text-slate-800 mt-0.5">{segment.arrivalTime}</span>
+                    <span className="text-sm font-bold text-slate-800 mt-0.5">{segment.actualArrivalDateTime || segment.arrivalTime}</span>
                     <span className="text-xs font-medium text-slate-600 mt-0.5">
                       {segment.toStationName} ({segment.toStationCode})
                     </span>

@@ -10,6 +10,8 @@ export interface TrainSegment {
   travelMinutes: number;
   cancellationProbability: number;
   averageDelayMinutes: number;
+  actualDepartureDateTime?: string;
+  actualArrivalDateTime?: string;
 }
 
 export interface Journey {
@@ -26,6 +28,11 @@ export interface Journey {
   reliabilityScore: number;
   overallScore: number;
   trainSegments: TrainSegment[];
+  travelDate?: string;
+  actualDepartureDateTime?: string;
+  actualArrivalDateTime?: string;
+  arrivalDay?: string;
+  departureDay?: string;
 }
 
 export interface SearchState {
@@ -39,16 +46,31 @@ export interface SearchState {
 }
 
 export interface SearchRequest {
-  sourceStation: string;
-  destinationStation: string;
-  departureAfter: string; // Format: "HH:mm"
+  // New request format
+  source?: string;
+  destination?: string;
+  travelDate?: string; // YYYY-MM-DD
+  departureTime?: string; // HH:mm
+  maxTransfers?: number;
+  allowedTrainTypes?: string[];
+  advancedConstraints?: {
+    arrivalBefore?: string;
+    minimumTransferMinutes?: number;
+    maximumWaitingMinutes?: number;
+    maximumJourneyDurationMinutes?: number;
+    avoidOvernightTransfers?: boolean;
+  };
+
+  // Original request format
+  sourceStation?: string;
+  destinationStation?: string;
+  departureAfter?: string; // Format: "HH:mm"
   arrivalBefore?: string; // Format: "HH:mm" (optional)
   optimizationMode?: string; // Matches OptimizationMode enum
   maximumTransfers?: number;
   minimumTransferMinutes?: number;
   maximumWaitingMinutes?: number;
   maximumJourneyDurationMinutes?: number;
-  allowedTrainTypes?: string[];
   avoidOvernightTransfers?: boolean;
 }
 

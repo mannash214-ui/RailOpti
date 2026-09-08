@@ -1,41 +1,39 @@
 import { Schema, model } from 'mongoose';
-import { ISavedJourney, OptimizationMode } from './types';
 
-const savedJourneySchema = new Schema<ISavedJourney>(
+const savedJourneySchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'User reference is required.'],
     },
-    sourceStation: {
-      type: Schema.Types.ObjectId,
-      ref: 'Station',
-      required: [true, 'Source station reference is required.'],
-    },
-    destinationStation: {
-      type: Schema.Types.ObjectId,
-      ref: 'Station',
-      required: [true, 'Destination station reference is required.'],
-    },
-    optimizationMode: {
-      type: String,
-      required: [true, 'Optimization mode filter is required.'],
-      enum: {
-        values: Object.values(OptimizationMode),
-        message: '{VALUE} is not a valid optimization mode.',
-      },
-    },
+    departureStation: { type: String },
+    departureStationCode: { type: String },
+    destinationStation: { type: String },
+    destinationStationCode: { type: String },
+    departureTime: { type: String },
+    arrivalTime: { type: String },
+    totalTimeMinutes: { type: Number },
+    travelTimeMinutes: { type: Number },
+    waitingTimeMinutes: { type: Number },
+    transferCount: { type: Number },
+    reliabilityScore: { type: Number },
+    overallScore: { type: Number },
+    trainSegments: { type: Schema.Types.Mixed },
+    travelDate: { type: String },
+    actualDepartureDateTime: { type: String },
+    actualArrivalDateTime: { type: String },
+    arrivalDay: { type: String },
+    departureDay: { type: String },
   },
   {
     timestamps: true,
+    strict: false,
   }
 );
 
 // Indexes
 savedJourneySchema.index({ userId: 1 });
-savedJourneySchema.index({ sourceStation: 1 });
-savedJourneySchema.index({ destinationStation: 1 });
 
-export const SavedJourney = model<ISavedJourney>('SavedJourney', savedJourneySchema);
+export const SavedJourney = model('SavedJourney', savedJourneySchema);
 export default SavedJourney;

@@ -6,7 +6,7 @@ class PathReconstructor {
     /**
      * Trace parents and compile graph nodes into formatted journey with segments
      */
-    static reconstruct(parentTable, endNodeId, endTransfers, graph, userDepartureMinutes) {
+    static reconstruct(parentTable, endNodeId, endTransfers, graph, userDepartureMinutes, travelDate) {
         let currNodeId = endNodeId;
         let currTransfers = endTransfers;
         const pathNodes = [];
@@ -37,6 +37,36 @@ class PathReconstructor {
         const startWaitingTime = startNode.absoluteDepartureMinutes - userDepartureMinutes;
         waitingTimeMinutes += Math.max(0, startWaitingTime);
         let currentSegmentStart = startNode;
+        const tDate = travelDate || new Date().toISOString().split('T')[0];
+        const addDaysToDate = (dateStr, days) => {
+            const dateParts = dateStr.split('-');
+            const year = parseInt(dateParts[0], 10);
+            const month = parseInt(dateParts[1], 10) - 1;
+            const day = parseInt(dateParts[2], 10);
+            const date = new Date(Date.UTC(year, month, day));
+            date.setUTCDate(date.getUTCDate() + days);
+            return date;
+        };
+        const getFormattedCalendarDate = (dateStr, absoluteMinutes) => {
+            const dayOffset = Math.floor(absoluteMinutes / 1440);
+            const remainingMinutes = absoluteMinutes % 1440;
+            const hours = Math.floor(remainingMinutes / 60);
+            const mins = remainingMinutes % 60;
+            const timeStr = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+            const dateObj = addDaysToDate(dateStr, dayOffset);
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const day = dateObj.getUTCDate();
+            const month = months[dateObj.getUTCMonth()];
+            const year = dateObj.getUTCFullYear();
+            const shortWeekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            const fullWeekdays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const utcDay = dateObj.getUTCDay();
+            return {
+                dateTimeStr: `${day} ${month} ${year} ${timeStr}`,
+                dayLong: fullWeekdays[utcDay],
+                dayShort: shortWeekdays[utcDay],
+            };
+        };
         for (let i = 0; i < pathNodes.length - 1; i++) {
             const curr = pathNodes[i];
             const next = pathNodes[i + 1];
@@ -44,6 +74,8 @@ class PathReconstructor {
                 // Change of train represents transfer layover
                 const segmentTravel = curr.absoluteArrivalMinutes - currentSegmentStart.absoluteDepartureMinutes;
                 travelTimeMinutes += segmentTravel;
+                const depDateInfo = getFormattedCalendarDate(tDate, currentSegmentStart.absoluteDepartureMinutes);
+                const arrDateInfo = getFormattedCalendarDate(tDate, curr.absoluteArrivalMinutes);
                 trainSegments.push({
                     trainNumber: currentSegmentStart.trainNumber,
                     trainName: currentSegmentStart.trainName,
@@ -56,6 +88,8 @@ class PathReconstructor {
                     travelMinutes: segmentTravel,
                     cancellationProbability: currentSegmentStart.cancellationProbability,
                     averageDelayMinutes: currentSegmentStart.averageDelayMinutes,
+                    actualDepartureDateTime: depDateInfo.dateTimeStr,
+                    actualArrivalDateTime: arrDateInfo.dateTimeStr,
                 });
                 // Add the waiting duration of transfer layover
                 const transferWait = next.absoluteDepartureMinutes - curr.absoluteArrivalMinutes;
@@ -68,6 +102,8 @@ class PathReconstructor {
         const lastNode = pathNodes[pathNodes.length - 1];
         const finalSegmentTravel = lastNode.absoluteArrivalMinutes - currentSegmentStart.absoluteDepartureMinutes;
         travelTimeMinutes += finalSegmentTravel;
+        const depDateInfoFinal = getFormattedCalendarDate(tDate, currentSegmentStart.absoluteDepartureMinutes);
+        const arrDateInfoFinal = getFormattedCalendarDate(tDate, lastNode.absoluteArrivalMinutes);
         trainSegments.push({
             trainNumber: currentSegmentStart.trainNumber,
             trainName: currentSegmentStart.trainName,
@@ -80,8 +116,12 @@ class PathReconstructor {
             travelMinutes: finalSegmentTravel,
             cancellationProbability: currentSegmentStart.cancellationProbability,
             averageDelayMinutes: currentSegmentStart.averageDelayMinutes,
+            actualDepartureDateTime: depDateInfoFinal.dateTimeStr,
+            actualArrivalDateTime: arrDateInfoFinal.dateTimeStr,
         });
         const totalTimeMinutes = travelTimeMinutes + waitingTimeMinutes;
+        const journeyDepDateInfo = getFormattedCalendarDate(tDate, startNode.absoluteDepartureMinutes);
+        const journeyArrDateInfo = getFormattedCalendarDate(tDate, destinationNode.absoluteArrivalMinutes);
         return {
             departureStation: startNode.stationName,
             departureStationCode: startNode.stationCode,
@@ -96,6 +136,11 @@ class PathReconstructor {
             reliabilityScore: 0,
             overallScore: 0,
             trainSegments,
+            travelDate: tDate,
+            actualDepartureDateTime: journeyDepDateInfo.dateTimeStr,
+            actualArrivalDateTime: journeyArrDateInfo.dateTimeStr,
+            arrivalDay: journeyArrDateInfo.dayShort,
+            departureDay: journeyDepDateInfo.dayShort,
         };
     }
 }

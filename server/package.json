@@ -15,7 +15,9 @@
     "test-planner": "ts-node src/algorithms/planner/testPlanner.ts",
     "test-topk": "ts-node src/algorithms/planner/testTopK.ts",
     "test-constraints": "ts-node src/algorithms/planner/testConstraints.ts",
-    "test-constraint-checker": "ts-node src/algorithms/planner/testConstraintChecker.ts"
+    "test-constraint-checker": "ts-node src/algorithms/planner/testConstraintChecker.ts",
+    "test-date-aware": "ts-node src/algorithms/planner/testDateAwarePlanner.ts",
+    "example-search": "ts-node src/algorithms/planner/exampleSearch.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

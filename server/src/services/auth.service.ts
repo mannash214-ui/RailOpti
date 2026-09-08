@@ -19,10 +19,18 @@ export class AuthService {
   }
 
   public static async register(userData: any): Promise<TokenResponse> {
-    const { name, email, password } = userData;
+    const { name, email, password } = userData || {};
+
+    if (!name || !email || !password) {
+      throw new AppError('Please provide name, email, and password.', 400);
+    }
+
+    if (password.length < 8) {
+      throw new AppError('Password must be at least 8 characters long.', 400);
+    }
 
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
     if (existingUser) {
       throw new AppError('An account with this email address already exists.', 400);
     }
@@ -51,6 +59,10 @@ export class AuthService {
 
     if (!email || !password) {
       throw new AppError('Please provide both email and password.', 400);
+    }
+
+    if (password.length < 8) {
+      throw new AppError('Password must be at least 8 characters long.', 400);
     }
 
     // Find user and explicitly select password field

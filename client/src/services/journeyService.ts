@@ -5,6 +5,7 @@ export interface SearchRequest {
   sourceStation: string;
   destinationStation: string;
   departureAfter: string;
+  travelDate?: string;
   arrivalBefore?: string;
   optimizationMode?: string;
   maximumTransfers?: number;

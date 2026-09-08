@@ -11,6 +11,7 @@ const types_1 = require("../../models/types");
 const ReliabilityCalculator_1 = require("./ReliabilityCalculator");
 const DuplicateFilter_1 = require("./DuplicateFilter");
 const JourneyRanker_1 = require("./JourneyRanker");
+const error_1 = require("../../middleware/error");
 class JourneyPlanner {
     graph;
     constructor(graph) {
@@ -21,9 +22,15 @@ class JourneyPlanner {
      */
     async plan(request) {
         const startTime = Date.now();
-        const sourceStation = request.sourceStation;
-        const destinationStation = request.destinationStation;
-        const departureTime = request.departureAfter;
+        // Support backward compatibility / request model mapping
+        const sourceStation = request.source || request.sourceStation;
+        const destinationStation = request.destination || request.destinationStation;
+        const departureTime = request.departureTime || request.departureAfter;
+        const maximumTransfers = request.maxTransfers !== undefined ? request.maxTransfers : request.maximumTransfers;
+        const travelDate = request.travelDate;
+        if (!sourceStation || !destinationStation || !departureTime) {
+            throw new error_1.AppError('Source, destination, and departure time are required.', 400);
+        }
         // 1. Resolve source and destination stations in MongoDB (by code or name)
         const sourceDb = await station_model_1.Station.findOne({
             $or: [
@@ -44,15 +51,47 @@ class JourneyPlanner {
         // 2. Parse departure time string "HH:mm" to absolute day minutes
         const parts = departureTime.split(':');
         if (parts.length !== 2) {
-            throw new Error(`Invalid departure time format: ${departureTime}. Expected HH:mm`);
+            throw new error_1.AppError(`Invalid departure time format: ${departureTime}. Expected HH:mm`, 400);
         }
         const departureHours = parseInt(parts[0], 10);
         const departureMinutes = parseInt(parts[1], 10);
+        if (isNaN(departureHours) || isNaN(departureMinutes) || departureHours < 0 || departureHours > 23 || departureMinutes < 0 || departureMinutes > 59) {
+            throw new error_1.AppError(`Invalid departure time values: ${departureTime}`, 400);
+        }
         const userDepartureMinutes = departureHours * 60 + departureMinutes;
+        // Validate and process travelDate
+        let weekday;
+        if (travelDate) {
+            if (!/^\d{4}-\d{2}-\d{2}$/.test(travelDate)) {
+                throw new error_1.AppError('Invalid travel date format. Expected YYYY-MM-DD.', 400);
+            }
+            const dateParts = travelDate.split('-');
+            const y = parseInt(dateParts[0], 10);
+            const m = parseInt(dateParts[1], 10) - 1;
+            const d = parseInt(dateParts[2], 10);
+            const dateObj = new Date(Date.UTC(y, m, d));
+            if (isNaN(dateObj.getTime()) || dateObj.getUTCFullYear() !== y || dateObj.getUTCMonth() !== m || dateObj.getUTCDate() !== d) {
+                throw new error_1.AppError('Invalid calendar date.', 400);
+            }
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const localParsedDate = new Date(y, m, d);
+            if (localParsedDate < today) {
+                throw new error_1.AppError('Past travel dates are not allowed.', 400);
+            }
+            const weekdays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+            weekday = weekdays[dateObj.getUTCDay()];
+        }
         // 3. Prepare planner config, cost strategy, and constraint checker
         let arrivalBeforeAbsoluteMinutes;
-        if (request.arrivalBefore) {
-            const arrParts = request.arrivalBefore.split(':');
+        const adv = request.advancedConstraints || {};
+        const arrivalBefore = adv.arrivalBefore || request.arrivalBefore;
+        const minimumTransferMinutes = adv.minimumTransferMinutes ?? request.minimumTransferMinutes;
+        const maximumWaitingMinutes = adv.maximumWaitingMinutes ?? request.maximumWaitingMinutes;
+        const maximumJourneyDurationMinutes = adv.maximumJourneyDurationMinutes ?? request.maximumJourneyDurationMinutes;
+        const avoidOvernightTransfers = adv.avoidOvernightTransfers !== undefined ? adv.avoidOvernightTransfers : request.avoidOvernightTransfers;
+        if (arrivalBefore) {
+            const arrParts = arrivalBefore.split(':');
             if (arrParts.length === 2) {
                 const arrHours = parseInt(arrParts[0], 10);
                 const arrMins = parseInt(arrParts[1], 10);
@@ -65,13 +104,15 @@ class JourneyPlanner {
         }
         const config = {
             ...PlannerConfig_1.DEFAULT_PLANNER_CONFIG,
-            maximumTransfers: request.maximumTransfers ?? PlannerConfig_1.DEFAULT_PLANNER_CONFIG.maximumTransfers,
-            minimumTransferMinutes: request.minimumTransferMinutes ?? PlannerConfig_1.DEFAULT_PLANNER_CONFIG.minimumTransferMinutes,
-            maximumWaitingMinutes: request.maximumWaitingMinutes ?? PlannerConfig_1.DEFAULT_PLANNER_CONFIG.maximumWaitingMinutes,
-            maximumJourneyDurationMinutes: request.maximumJourneyDurationMinutes ?? PlannerConfig_1.DEFAULT_PLANNER_CONFIG.maximumJourneyDurationMinutes,
+            maximumTransfers: maximumTransfers ?? PlannerConfig_1.DEFAULT_PLANNER_CONFIG.maximumTransfers,
+            minimumTransferMinutes: minimumTransferMinutes ?? PlannerConfig_1.DEFAULT_PLANNER_CONFIG.minimumTransferMinutes,
+            maximumWaitingMinutes: maximumWaitingMinutes ?? PlannerConfig_1.DEFAULT_PLANNER_CONFIG.maximumWaitingMinutes,
+            maximumJourneyDurationMinutes: maximumJourneyDurationMinutes ?? PlannerConfig_1.DEFAULT_PLANNER_CONFIG.maximumJourneyDurationMinutes,
             allowedTrainTypes: request.allowedTrainTypes ?? PlannerConfig_1.DEFAULT_PLANNER_CONFIG.allowedTrainTypes,
-            avoidOvernightTransfers: request.avoidOvernightTransfers ?? PlannerConfig_1.DEFAULT_PLANNER_CONFIG.avoidOvernightTransfers,
+            avoidOvernightTransfers: avoidOvernightTransfers ?? PlannerConfig_1.DEFAULT_PLANNER_CONFIG.avoidOvernightTransfers,
             arrivalBeforeAbsoluteMinutes,
+            travelDate,
+            weekday,
         };
         const costStrategy = new CostStrategy_1.CostStrategy(config);
         const constraintChecker = new ConstraintChecker_1.ConstraintChecker(config);
@@ -83,7 +124,7 @@ class JourneyPlanner {
         const destStates = searchResult.destinationStates;
         for (let i = 0; i < destStates.length; i++) {
             const state = destStates[i];
-            const journey = PathReconstructor_1.PathReconstructor.reconstruct(searchResult.parentTable, state.nodeId, state.transfersUsed, this.graph, userDepartureMinutes);
+            const journey = PathReconstructor_1.PathReconstructor.reconstruct(searchResult.parentTable, state.nodeId, state.transfersUsed, this.graph, userDepartureMinutes, travelDate);
             if (journey) {
                 // Calculate normalized reliability score (0-100)
                 journey.reliabilityScore = ReliabilityCalculator_1.ReliabilityCalculator.calculate(journey.trainSegments);

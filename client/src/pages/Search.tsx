@@ -19,9 +19,18 @@ export default function Search() {
   const [filteredJourneys, setFilteredJourneys] = useState<Journey[]>([]);
   const [savedJourneyIds, setSavedJourneyIds] = useState<string[]>([]);
 
+  const getTodayDateString = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   // Parse parameters from URL
   const origin = searchParams.get('sourceStation') || '';
   const destination = searchParams.get('destinationStation') || '';
+  const travelDate = searchParams.get('travelDate') || getTodayDateString();
   const departureAfter = searchParams.get('departureAfter') || '';
   const optimizationMode = searchParams.get('optimizationMode') || 'BALANCED';
 
@@ -56,6 +65,7 @@ export default function Search() {
       const results = await journeyService.search({
         sourceStation: origin,
         destinationStation: destination,
+        travelDate: travelDate,
         departureAfter: departureAfter || '08:00',
         arrivalBefore,
         optimizationMode,
@@ -83,6 +93,7 @@ export default function Search() {
   }, [
     origin,
     destination,
+    travelDate,
     departureAfter,
     arrivalBefore,
     optimizationMode,
@@ -140,17 +151,29 @@ export default function Search() {
     setFilteredJourneys(result);
   };
 
-  const handleSaveJourney = (journey: Journey) => {
+  const handleSaveJourney = async (journey: Journey) => {
     const key = `${journey.departureTime}-${journey.arrivalTime}-${journey.totalTimeMinutes}`;
-    let saved = localStorage.getItem('optirail_saved');
-    let list = saved ? JSON.parse(saved) : [];
+    const token = localStorage.getItem('optirail_token');
 
     if (savedJourneyIds.includes(key)) {
+      setSavedJourneyIds((prev) => prev.filter((k) => k !== key));
+    } else {
+      setSavedJourneyIds((prev) => [...prev, key]);
+      if (token) {
+        try {
+          await journeyService.save(journey);
+        } catch (err) {
+          console.error('[Search] Failed to save journey to MongoDB:', err);
+        }
+      }
+    }
+
+    let saved = localStorage.getItem('optirail_saved');
+    let list = saved ? JSON.parse(saved) : [];
+    if (savedJourneyIds.includes(key)) {
       list = list.filter((j: any) => `${j.departureTime}-${j.arrivalTime}-${j.totalTimeMinutes}` !== key);
-      setSavedJourneyIds(prev => prev.filter(k => k !== key));
     } else {
       list.push(journey);
-      setSavedJourneyIds(prev => [...prev, key]);
     }
     localStorage.setItem('optirail_saved', JSON.stringify(list));
   };
@@ -163,6 +186,7 @@ export default function Search() {
           initialValues={{
             sourceStation: origin,
             destinationStation: destination,
+            travelDate: travelDate,
             departureAfter: departureAfter,
             optimizationMode: optimizationMode,
           }}

@@ -35,6 +35,82 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
+// Mapping of synthetic stations to real Indian Railways stations
+const REAL_STATIONS_MAPPING = {
+    // West Bengal
+    'EX-WB1': { code: 'KQU', name: 'Kamarkundu Junction', city: 'Hooghly', state: 'West Bengal', zone: 'ER', isJunction: true, latitude: 22.8210, longitude: 88.2110 },
+    'EX-WB2': { code: 'GMAN', name: 'Gumani', city: 'Murshidabad', state: 'West Bengal', zone: 'ER', isJunction: false, latitude: 24.5210, longitude: 87.8310 },
+    'EX-WB3': { code: 'ADST', name: 'Adi Saptagram', city: 'Hooghly', state: 'West Bengal', zone: 'ER', isJunction: false, latitude: 22.9212, longitude: 88.3510 },
+    'EX-WB4': { code: 'TPH', name: 'Tinpahar Junction', city: 'Sahibganj', state: 'West Bengal', zone: 'ER', isJunction: true, latitude: 25.0210, longitude: 87.8310 },
+    'EX-WB5': { code: 'SDLE', name: 'Swadinpur', city: 'Birbhum', state: 'West Bengal', zone: 'ER', isJunction: false, latitude: 24.2210, longitude: 87.7910 },
+    'EX-WB6': { code: 'AMP', name: 'Ahmadpur Junction', city: 'Birbhum', state: 'West Bengal', zone: 'ER', isJunction: true, latitude: 23.8310, longitude: 87.6910 },
+    'EX-WB7': { code: 'NDAE', name: 'Nabadwip Dham', city: 'Nadia', state: 'West Bengal', zone: 'ER', isJunction: false, latitude: 23.4110, longitude: 88.3710 },
+    'EX-WB8': { code: 'STB', name: 'Shantipur Junction', city: 'Nadia', state: 'West Bengal', zone: 'ER', isJunction: true, latitude: 23.2510, longitude: 88.5410 },
+    'EX-WB9': { code: 'TKGP', name: 'Thakurnagar', city: 'North 24 Parganas', state: 'West Bengal', zone: 'ER', isJunction: false, latitude: 22.9810, longitude: 88.7910 },
+    'EX-WB10': { code: 'MUG', name: 'Mogra', city: 'Hooghly', state: 'West Bengal', zone: 'ER', isJunction: false, latitude: 22.9810, longitude: 88.3710 },
+    // Bihar
+    'EX-BH1': { code: 'THA', name: 'Tehta', city: 'Jehanabad', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.1210, longitude: 84.9910 },
+    'EX-BH2': { code: 'TEA', name: 'Taregna', city: 'Patna', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.3510, longitude: 85.0210 },
+    'EX-BH3': { code: 'MOR', name: 'Mor', city: 'Patna', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.4310, longitude: 85.8710 },
+    'EX-BH4': { code: 'LAK', name: 'Lakho', city: 'Begusarai', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.4410, longitude: 86.1910 },
+    'EX-BH5': { code: 'UMNR', name: 'Umeshnagar', city: 'Khagaria', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.5310, longitude: 86.4310 },
+    'EX-BH6': { code: 'DURE', name: 'Dumraon', city: 'Buxar', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.5310, longitude: 84.1510 },
+    'EX-BH7': { code: 'BTA', name: 'Bihta', city: 'Patna', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.5610, longitude: 84.8710 },
+    'EX-BH8': { code: 'WRS', name: 'Warisaliganj', city: 'Nawada', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.0110, longitude: 85.6310 },
+    'EX-BH9': { code: 'MNP', name: 'Mananpur', city: 'Lakhisarai', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.1310, longitude: 86.2910 },
+    'EX-BH10': { code: 'BRYA', name: 'Barhiya', city: 'Lakhisarai', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.2910, longitude: 86.0110 },
+    // Assam
+    'EX-AS1': { code: 'JM', name: 'Jamunamukh', city: 'Hojai', state: 'Assam', zone: 'NFR', isJunction: false, latitude: 26.1110, longitude: 92.7510 },
+    'EX-AS2': { code: 'DHRY', name: 'Dhalpukhuri', city: 'Hojai', state: 'Assam', zone: 'NFR', isJunction: false, latitude: 25.9610, longitude: 92.9510 },
+    'EX-AS3': { code: 'BRLF', name: 'Bar Langfer', city: 'Karbi Anglong', state: 'Assam', zone: 'NFR', isJunction: false, latitude: 25.9110, longitude: 93.2510 },
+    'EX-AS4': { code: 'JTTN', name: 'Jorhat Town', city: 'Jorhat', state: 'Assam', zone: 'NFR', isJunction: false, latitude: 26.7510, longitude: 94.2210 },
+    'EX-AS5': { code: 'NMT', name: 'Namtiali', city: 'Sivasagar', state: 'Assam', zone: 'NFR', isJunction: false, latitude: 26.8510, longitude: 94.7210 },
+    'EX-AS6': { code: 'SFR', name: 'Safrai', city: 'Sivasagar', state: 'Assam', zone: 'NFR', isJunction: false, latitude: 26.9610, longitude: 94.9510 },
+    'EX-AS7': { code: 'DDKM', name: 'Dikom', city: 'Dibrugarh', state: 'Assam', zone: 'NFR', isJunction: false, latitude: 27.5310, longitude: 95.0510 },
+    'EX-AS8': { code: 'MJN', name: 'Makum Junction', city: 'Tinsukia', state: 'Assam', zone: 'NFR', isJunction: true, latitude: 27.5010, longitude: 95.4410 },
+    'EX-AS9': { code: 'SQF', name: 'Sukritipur', city: 'Cachar', state: 'Assam', zone: 'NFR', isJunction: false, latitude: 24.8710, longitude: 92.7310 },
+    'EX-AS10': { code: 'NKD', name: 'Nekiland', city: 'Karimganj', state: 'Assam', zone: 'NFR', isJunction: false, latitude: 24.7810, longitude: 92.4210 },
+    // Odisha
+    'EX-OD1': { code: 'HNZ', name: 'Hunsa', city: 'Jajpur', state: 'Odisha', zone: 'ECoR', isJunction: false, latitude: 20.8910, longitude: 86.2110 },
+    'EX-OD2': { code: 'RNTL', name: 'Ranital', city: 'Bhadrak', state: 'Odisha', zone: 'ECoR', isJunction: false, latitude: 21.1310, longitude: 86.5910 },
+    'EX-OD3': { code: 'HIP', name: 'Haldipada', city: 'Balasore', state: 'Odisha', zone: 'SER', isJunction: false, latitude: 21.5710, longitude: 87.0110 },
+    'EX-OD4': { code: 'KPJG', name: 'Kerejanga', city: 'Angul', state: 'Odisha', zone: 'ECoR', isJunction: false, latitude: 20.8510, longitude: 85.0210 },
+    'EX-OD5': { code: 'SNDR', name: 'Send Road', city: 'Dhenkanal', state: 'Odisha', zone: 'ECoR', isJunction: false, latitude: 20.7110, longitude: 85.5210 },
+    'EX-OD6': { code: 'SBPD', name: 'Sambalpur Road', city: 'Sambalpur', state: 'Odisha', zone: 'ECoR', isJunction: false, latitude: 21.4710, longitude: 83.9810 },
+    'EX-OD7': { code: 'BRPL', name: 'Barpali', city: 'Bargarh', state: 'Odisha', zone: 'ECoR', isJunction: false, latitude: 21.1710, longitude: 83.5910 },
+    'EX-OD8': { code: 'DFR', name: 'Deogaon Road', city: 'Balangir', state: 'Odisha', zone: 'ECoR', isJunction: false, latitude: 20.5510, longitude: 83.4310 },
+    'EX-OD9': { code: 'SFK', name: 'Sikir', city: 'Titlagarh', state: 'Odisha', zone: 'ECoR', isJunction: false, latitude: 20.2110, longitude: 83.0510 },
+    'EX-OD10': { code: 'SPRD', name: 'Singapur Road Junction', city: 'Rayagada', state: 'Odisha', zone: 'ECoR', isJunction: true, latitude: 19.2610, longitude: 83.4310 },
+    // Jharkhand
+    'EX-JH1': { code: 'THO', name: 'Tulin', city: 'Purulia', state: 'West Bengal', zone: 'SER', isJunction: false, latitude: 23.3610, longitude: 85.9210 },
+    'EX-JH2': { code: 'RDF', name: 'Radhagaon', city: 'Bokaro', state: 'Jharkhand', zone: 'SER', isJunction: false, latitude: 23.6110, longitude: 86.1310 },
+    'EX-JH3': { code: 'TELO', name: 'Telo', city: 'Bokaro', state: 'Jharkhand', zone: 'ECR', isJunction: false, latitude: 23.7910, longitude: 86.1710 },
+    'EX-JH4': { code: 'HZD', name: 'Hazaribagh Road', city: 'Giridih', state: 'Jharkhand', zone: 'ECR', isJunction: false, latitude: 24.1610, longitude: 85.8310 },
+    'EX-JH5': { code: 'DEMU', name: 'Demu', city: 'Latehar', state: 'Jharkhand', zone: 'ECR', isJunction: false, latitude: 23.7510, longitude: 84.3910 },
+    'EX-JH6': { code: 'RICR', name: 'Ranchi Road', city: 'Ramgarh', state: 'Jharkhand', zone: 'ECR', isJunction: false, latitude: 23.6310, longitude: 85.5510 },
+    'EX-JH7': { code: 'RMT', name: 'Ramgarh Cantt', city: 'Ramgarh', state: 'Jharkhand', zone: 'SER', isJunction: false, latitude: 23.6310, longitude: 85.5110 },
+    'EX-JH8': { code: 'KFT', name: 'Kajri', city: 'Palamu', state: 'Jharkhand', zone: 'ECR', isJunction: false, latitude: 24.0810, longitude: 84.1510 },
+    'EX-JH9': { code: 'JNP', name: 'Jagadishpur', city: 'Deoghar', state: 'Jharkhand', zone: 'ER', isJunction: false, latitude: 24.1910, longitude: 86.7310 },
+    'EX-JH10': { code: 'KBQ', name: 'Kumrabad Rohini', city: 'Deoghar', state: 'Jharkhand', zone: 'ER', isJunction: false, latitude: 24.4910, longitude: 86.6810 },
+    // Town/Bypass stations
+    'BJU_T': { code: 'GHX', name: 'Garhara', city: 'Barauni', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.4350, longitude: 86.0120 },
+    'PNBE_T': { code: 'GZH', name: 'Gulzarbagh', city: 'Patna', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.5990, longitude: 85.1950 },
+    'BBS_T': { code: 'MCS', name: 'Mancheswar', city: 'Bhubaneswar', state: 'Odisha', zone: 'ECoR', isJunction: false, latitude: 20.3150, longitude: 85.8390 },
+    'CTC_T': { code: 'KNPR', name: 'Kendrapara Road', city: 'Cuttack', state: 'Odisha', zone: 'ECoR', isJunction: false, latitude: 20.4850, longitude: 85.9010 },
+    'ROU_T': { code: 'GP', name: 'Rajgangpur', city: 'Sundargarh', state: 'Odisha', zone: 'SER', isJunction: false, latitude: 22.1890, longitude: 84.5820 },
+    'JSG_T': { code: 'IB', name: 'Ib', city: 'Jharsuguda', state: 'Odisha', zone: 'SER', isJunction: false, latitude: 21.9010, longitude: 83.9650 },
+    'SBP_T': { code: 'SLRA', name: 'Sarla Junction', city: 'Sambalpur', state: 'Odisha', zone: 'ECoR', isJunction: true, latitude: 21.5120, longitude: 83.9950 },
+    'DNR_T': { code: 'NEO', name: 'Neora', city: 'Patna', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.5890, longitude: 84.9750 },
+    'KGG_T': { code: 'OLP', name: 'Olapur', city: 'Khagaria', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.5790, longitude: 86.4150 },
+    'PNC_T': { code: 'DDGJ', name: 'Deedarganj', city: 'Patna', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.5790, longitude: 85.2850 },
+    'KIUL_T': { code: 'MKB', name: 'Mankatha', city: 'Lakhisarai', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 25.3210, longitude: 86.0950 },
+    'JAJ_T': { code: 'GHR', name: 'Gidhaur', city: 'Jamui', state: 'Bihar', zone: 'ECR', isJunction: false, latitude: 24.8990, longitude: 86.2850 },
+    'BGP_T': { code: 'SAB', name: 'Sabour', city: 'Bhagalpur', state: 'Bihar', zone: 'ER', isJunction: false, latitude: 25.2490, longitude: 87.0550 },
+    'RNC_T': { code: 'NKM', name: 'Namkum', city: 'Ranchi', state: 'Jharkhand', zone: 'SER', isJunction: false, latitude: 23.3490, longitude: 85.3850 },
+    'DHN_T': { code: 'KDS', name: 'Kusunda Junction', city: 'Dhanbad', state: 'Jharkhand', zone: 'ECR', isJunction: true, latitude: 23.7790, longitude: 86.3950 },
+    'MURI_T': { code: 'SLF', name: 'Silli Junction', city: 'Muri', state: 'Jharkhand', zone: 'SER', isJunction: true, latitude: 23.3590, longitude: 85.8350 },
+    'JSME_T': { code: 'BDME', name: 'Baidyanathdham', city: 'Deoghar', state: 'Jharkhand', zone: 'ER', isJunction: false, latitude: 24.4930, longitude: 86.6990 }
+};
 // 1. COMPACT GEOGRAPHICAL STATION DICTIONARY
 // Over 300 realistic stations covering West Bengal, Assam, Bihar, Odisha, Jharkhand, Tripura, etc.
 const STATIONS_RAW = [
@@ -94,61 +170,56 @@ const STATIONS_RAW = [
     ['GZO', 'Gazole', 'Malda', 'West Bengal', 'NFR', false, 25.2140, 88.1910],
     ['EKI', 'Eklakhi Junction', 'Malda', 'West Bengal', 'NFR', true, 25.1740, 88.1610],
     ['RDP', 'Radhikapur', 'Dinajpur', 'West Bengal', 'NFR', false, 25.6120, 88.2640],
-    ['KNE', 'Kishanganj', 'Kishanganj', 'Bihar', 'NFR', false, 26.0740, 87.9412], // Geographically borders WB/Bihar, keeping it in corridor
+    ['KNE', 'Kishanganj', 'Kishanganj', 'Bihar', 'NFR', false, 26.0740, 87.9412],
     ['MIG', 'Midnapore Town', 'Midnapore', 'West Bengal', 'SER', false, 22.4210, 87.3110],
-    ['SLB', 'Salboni', 'Salboni', 'West Bengal', 'SER', false, 22.6410, 87.2910],
-    ['CDGR', 'Chandrakona Road', 'Chandrakona', 'West Bengal', 'SER', false, 22.7412, 87.3110],
-    ['GBA', 'Garhbeta', 'Garhbeta', 'West Bengal', 'SER', false, 22.8612, 87.3410],
-    ['VSU', 'Bishnupur Junction', 'Bishnupur', 'West Bengal', 'SER', true, 23.0812, 87.3210],
-    ['ODM', 'Ondagram', 'Bankura', 'West Bengal', 'SER', false, 23.1310, 87.2140],
-    ['CJN', 'Chhatna', 'Bankura', 'West Bengal', 'SER', false, 23.3012, 86.9910],
+    ['VSU', 'Bishnupur Junction', 'Bishnupur', 'West Bengal', 'SER', true, 23.0673, 87.3197],
+    ['GBA', 'Garhbeta', 'Garhbeta', 'West Bengal', 'SER', false, 22.8624, 87.3512],
+    ['CDGR', 'Chandrakona Road', 'Chandrakona Road', 'West Bengal', 'SER', false, 22.7538, 87.3712],
+    ['SLB', 'Salboni', 'Salboni', 'West Bengal', 'SER', false, 22.6412, 87.3212],
     // Assam (NFR)
-    ['GHY', 'Guwahati', 'Guwahati', 'Assam', 'NFR', true, 26.1834, 91.7516],
-    ['KYQ', 'Kamakhya Junction', 'Guwahati', 'Assam', 'NFR', true, 26.1557, 91.6840],
-    ['RNY', 'Rangiya Junction', 'Rangiya', 'Assam', 'NFR', true, 26.4412, 91.6310],
-    ['PBL', 'Pathsala', 'Pathsala', 'Assam', 'NFR', false, 26.4950, 91.1718],
-    ['BPRD', 'Barpeta Road', 'Barpeta Road', 'Assam', 'NFR', false, 26.5012, 90.9710],
-    ['NBQ', 'New Bongaigaon Junction', 'Bongaigaon', 'Assam', 'NFR', true, 26.4718, 90.5412],
-    ['KOJ', 'Kokrajhar', 'Kokrajhar', 'Assam', 'NFR', false, 26.4012, 90.2718],
-    ['NHLG', 'New Haflong', 'Haflong', 'Assam', 'NFR', false, 25.1782, 93.0238],
-    ['MBG', 'Maibang', 'Maibang', 'Assam', 'NFR', false, 25.2910, 93.1210],
-    ['LMG', 'Lumding Junction', 'Lumding', 'Assam', 'NFR', true, 25.7524, 93.1849],
-    ['DPU', 'Diphu', 'Diphu', 'Assam', 'NFR', false, 25.8450, 93.4250],
-    ['DMV', 'Dimapur', 'Dimapur', 'Nagaland', 'NFR', false, 25.9010, 93.7218], // Nagaland main station
-    ['FKG', 'Furkating Junction', 'Golaghat', 'Assam', 'NFR', true, 26.4812, 93.9712],
-    ['MXN', 'Mariani Junction', 'Jorhat', 'Assam', 'NFR', true, 26.6610, 94.3210],
-    ['SLGR', 'Simaluguri Junction', 'Simaluguri', 'Assam', 'NFR', true, 26.8912, 94.8110],
-    ['DBRG', 'Dibrugarh', 'Dibrugarh', 'Assam', 'NFR', false, 27.4718, 94.9110],
+    ['GHY', 'Guwahati', 'Guwahati', 'Assam', 'NFR', true, 26.1822, 91.7516],
+    ['KYQ', 'Kamakhya Junction', 'Guwahati', 'Assam', 'NFR', true, 26.1557, 91.7012],
+    ['RNY', 'Rangiya Junction', 'Rangiya', 'Assam', 'NFR', true, 26.4382, 91.6210],
+    ['NBQ', 'New Bongaigaon Junction', 'Bongaigaon', 'Assam', 'NFR', true, 26.5112, 90.5612],
+    ['LMG', 'Lumding Junction', 'Lumding', 'Assam', 'NFR', true, 25.7510, 93.1810],
+    ['SCL', 'Silchar', 'Silchar', 'Assam', 'NFR', false, 24.8210, 92.8010],
+    ['DBRG', 'Dibrugarh', 'Dibrugarh', 'Assam', 'NFR', false, 27.4850, 94.9310],
     ['TSK', 'Tinsukia Junction', 'Tinsukia', 'Assam', 'NFR', true, 27.5012, 95.3612],
-    ['LEDO', 'Ledo', 'Ledo', 'Assam', 'NFR', false, 27.3012, 95.7410],
-    ['DNT', 'Dangari', 'Dangari', 'Assam', 'NFR', false, 27.6012, 95.6110],
-    ['SCL', 'Silchar', 'Silchar', 'Assam', 'NFR', false, 24.8218, 92.8010],
-    ['BPB', 'Badarpur Junction', 'Badarpur', 'Assam', 'NFR', true, 24.9012, 92.6210],
-    ['KXJ', 'Karimganj Junction', 'Karimganj', 'Assam', 'NFR', true, 24.8612, 92.3512],
-    ['HKD', 'Hailakandi', 'Hailakandi', 'Assam', 'NFR', false, 24.6812, 92.5610],
-    ['KTX', 'Katakhal Junction', 'Katakhal', 'Assam', 'NFR', true, 24.8310, 92.6910],
-    ['SCA', 'Salchapra', 'Salchapra', 'Assam', 'NFR', false, 24.8110, 92.7410],
-    ['JID', 'Jagi Road', 'Jagi Road', 'Assam', 'NFR', false, 26.1210, 92.1310],
+    ['LEDO', 'Ledo', 'Ledo', 'Assam', 'NFR', false, 27.2910, 95.7310],
+    ['DNT', 'Dangari', 'Dangari', 'Assam', 'NFR', false, 27.6010, 95.5310],
+    ['GLPT', 'Goalpara Town', 'Goalpara', 'Assam', 'NFR', false, 26.1610, 90.6310],
+    ['AYU', 'Abhayapuri Bazar', 'Abhayapuri', 'Assam', 'NFR', false, 26.3312, 90.6610],
+    ['KOJ', 'Kokrajhar', 'Kokrajhar', 'Assam', 'NFR', false, 26.4010, 90.2710],
+    ['BPRD', 'Barpeta Road', 'Barpeta', 'Assam', 'NFR', false, 26.4950, 90.9710],
+    ['CPK', 'Chaparmukh Junction', 'Nagaon', 'Assam', 'NFR', true, 26.2412, 92.5110],
     ['HJI', 'Hojai', 'Hojai', 'Assam', 'NFR', false, 26.0010, 92.8510],
-    ['LKA', 'Lanka', 'Lanka', 'Assam', 'NFR', false, 25.9210, 93.0012],
-    ['CPK', 'Chaparmukh Junction', 'Chaparmukh', 'Assam', 'NFR', true, 26.1912, 92.5210],
-    ['GLPT', 'Goalpara Town', 'Goalpara', 'Assam', 'NFR', false, 26.1712, 90.6210],
-    ['AYU', 'Abhayapuri', 'Abhayapuri', 'Assam', 'NFR', false, 26.3312, 90.6610],
-    ['RPAN', 'Rangapara North Junction', 'Rangapara', 'Assam', 'NFR', true, 26.8112, 92.6912],
-    ['DKGN', 'Dekargaon', 'Tezpur', 'Assam', 'NFR', false, 26.6512, 92.7910],
+    ['LKA', 'Lanka', 'Hojai', 'Assam', 'NFR', false, 25.9210, 93.0010],
+    ['DPU', 'Diphu', 'Diphu', 'Assam', 'NFR', false, 25.8450, 93.4210],
+    ['DMV', 'Dimapur', 'Dimapur', 'Nagaland', 'NFR', false, 25.8912, 93.7312], // Nagaland border
+    ['FKG', 'Furkating Junction', 'Golaghat', 'Assam', 'NFR', true, 26.4712, 93.9710],
+    ['MXN', 'Mariani Junction', 'Jorhat', 'Assam', 'NFR', true, 26.6612, 94.3210],
+    ['SLGR', 'Simaluguri Junction', 'Simaluguri', 'Assam', 'NFR', true, 26.8912, 94.8110],
+    ['LHB', 'Lahowal', 'Lahowal', 'Assam', 'NFR', false, 27.5010, 95.0010],
+    ['LEDO_H', 'Ledo Town', 'Ledo', 'Assam', 'NFR', false, 27.2810, 95.7210],
+    ['JID', 'Jagi Road', 'Jagi Road', 'Assam', 'NFR', false, 26.1510, 92.1410],
+    ['MBG', 'Maibang', 'Maibang', 'Assam', 'NFR', false, 25.3010, 93.1610],
+    ['NHLG', 'New Haflong', 'Haflong', 'Assam', 'NFR', false, 25.1612, 93.0210],
+    ['BPB', 'Badarpur Junction', 'Badarpur', 'Assam', 'NFR', true, 24.9010, 92.6210],
+    ['KTX', 'Katakhal Junction', 'Katakhal', 'Assam', 'NFR', true, 24.8510, 92.6810],
+    ['SCA', 'Salchapra', 'Salchapra', 'Assam', 'NFR', false, 24.8112, 92.7410],
+    ['HKD', 'Hailakandi', 'Hailakandi', 'Assam', 'NFR', false, 24.6812, 92.5610],
+    ['KXJ', 'Karimganj Junction', 'Karimganj', 'Assam', 'NFR', true, 24.8682, 92.3510],
+    ['TNL', 'Tangla', 'Tangla', 'Assam', 'NFR', false, 26.6512, 91.9010],
+    ['ULG', 'Udalguri', 'Udalguri', 'Assam', 'NFR', false, 26.7450, 92.1310],
+    ['RPAN', 'Rangapara North Junction', 'Rangapara', 'Assam', 'NFR', true, 26.8210, 92.6510],
+    ['DKGN', 'Dekargaon', 'Tezpur', 'Assam', 'NFR', false, 26.6612, 92.8310],
     ['GPZ', 'Gohpur', 'Gohpur', 'Assam', 'NFR', false, 26.8812, 93.6310],
     ['VNE', 'Viswanath Charali', 'Charali', 'Assam', 'NFR', false, 26.8612, 93.1510],
-    ['ULG', 'Udalguri', 'Udalguri', 'Assam', 'NFR', false, 26.7412, 92.1012],
-    ['TNL', 'Tangla', 'Tangla', 'Assam', 'NFR', false, 26.5612, 91.9010],
-    ['DSK', 'Duliajan', 'Duliajan', 'Assam', 'NFR', false, 27.3612, 95.3110],
-    ['NHK', 'Naharkatiya', 'Naharkatiya', 'Assam', 'NFR', false, 27.2812, 95.3410],
-    ['NAM', 'Namrup', 'Namrup', 'Assam', 'NFR', false, 27.1812, 95.4210],
-    ['LHB', 'Lahowal', 'Dibrugarh', 'Assam', 'NFR', false, 27.4812, 95.0012],
     ['DBRT', 'Dibrugarh Town', 'Dibrugarh', 'Assam', 'NFR', false, 27.4810, 94.9010],
     ['NTS', 'New Tinsukia Junction', 'Tinsukia', 'Assam', 'NFR', true, 27.5050, 95.3610],
     ['AGI', 'Amguri Junction', 'Amguri', 'Assam', 'NFR', true, 26.8010, 94.6110],
     ['MRHT', 'Moranhat', 'Moranhat', 'Assam', 'NFR', false, 27.1810, 94.6910],
-    ['DMR', 'Dharmanagar', 'Dharmanagar', 'Tripura', 'NFR', false, 24.3612, 92.1610], // Tripura borders
+    ['DMR', 'Dharmanagar', 'Dharmanagar', 'Tripura', 'NFR', false, 24.3612, 92.1610],
     ['ABSA', 'Ambassa', 'Ambassa', 'Tripura', 'NFR', false, 23.9812, 91.8410],
     ['AGTL', 'Agartala', 'Agartala', 'Tripura', 'NFR', true, 23.8340, 91.2828],
     ['UDPU', 'Udaipur', 'Udaipur', 'Tripura', 'NFR', false, 23.5312, 91.4810],
@@ -158,10 +229,10 @@ const STATIONS_RAW = [
     ['JRN', 'Jirania', 'Jirania', 'Tripura', 'NFR', false, 23.8110, 91.4110],
     ['SKAP', 'Sekerkote', 'Sekerkote', 'Tripura', 'NFR', false, 23.7510, 91.2810],
     ['VBR', 'Bishalgarh', 'Bishalgarh', 'Tripura', 'NFR', false, 23.6912, 91.2610],
-    ['MNDP', 'Mendipathar', 'Mendipathar', 'Meghalaya', 'NFR', false, 25.9212, 90.6510], // Meghalaya
-    ['JRBM', 'Jiribam', 'Jiribam', 'Manipur', 'NFR', false, 24.7910, 93.1210], // Manipur
-    ['BHRB', 'Bairabi', 'Bairabi', 'Mizoram', 'NFR', false, 24.1910, 92.5410], // Mizoram
-    ['NHLN', 'Naharlagun', 'Naharlagun', 'Arunachal Pradesh', 'NFR', false, 27.1012, 93.7610], // Arunachal
+    ['MNDP', 'Mendipathar', 'Mendipathar', 'Meghalaya', 'NFR', false, 25.9212, 90.6510],
+    ['JRBM', 'Jiribam', 'Jiribam', 'Manipur', 'NFR', false, 24.7910, 93.1210],
+    ['BHRB', 'Bairabi', 'Bairabi', 'Mizoram', 'NFR', false, 24.1910, 92.5410],
+    ['NHLN', 'Naharlagun', 'Naharlagun', 'Arunachal Pradesh', 'NFR', false, 27.1012, 93.7610],
     ['HMY', 'Harmuti Junction', 'Harmuti', 'Assam', 'NFR', true, 27.0210, 93.8110],
     ['BHAL', 'Bhalukpong', 'Bhalukpong', 'Arunachal Pradesh', 'NFR', false, 27.0112, 92.6410],
     // Bihar (ECR / ER)
@@ -251,7 +322,7 @@ const STATIONS_RAW = [
     ['KUR', 'Khurda Road Junction', 'Jatni', 'Odisha', 'ECoR', true, 20.1512, 85.7010],
     ['PURI', 'Puri', 'Puri', 'Odisha', 'ECoR', false, 19.8118, 85.8110],
     ['BAM', 'Berhampur', 'Brahmapur', 'Odisha', 'ECoR', false, 19.3112, 84.7910],
-    ['PSA', 'Palasa', 'Palasa', 'Andhra Pradesh', 'ECoR', false, 18.7712, 84.4110], // Border station close to Odisha
+    ['PSA', 'Palasa', 'Palasa', 'Andhra Pradesh', 'ECoR', false, 18.7712, 84.4110],
     ['BALU', 'Balugaon', 'Balugaon', 'Odisha', 'ECoR', false, 19.7410, 85.2110],
     ['CAP', 'Chatrapur', 'Chatrapur', 'Odisha', 'ECoR', false, 19.3512, 84.9010],
     ['RAIR', 'Rairakhol', 'Rairakhol', 'Odisha', 'ECoR', false, 21.0612, 84.3410],
@@ -326,17 +397,32 @@ const STATIONS_RAW = [
     ['EX-JH9', 'Madhupur Town', 'Madhupur', 'Jharkhand', 'ER', false, 24.2710, 86.6610],
     ['EX-JH10', 'Jasidih Halt', 'Deoghar', 'Jharkhand', 'ER', false, 24.5310, 86.6610]
 ];
-// Map raw stations to objects
-const STATIONS = STATIONS_RAW.map(([code, name, city, state, zone, isJunction, lat, lon]) => ({
-    stationCode: code,
-    stationName: name,
-    city,
-    state,
-    zone,
-    isJunction,
-    latitude: lat,
-    longitude: lon,
-}));
+// Map raw stations to objects using the REAL_STATIONS_MAPPING replacement table
+const STATIONS = STATIONS_RAW.map(([code, name, city, state, zone, isJunction, lat, lon]) => {
+    if (REAL_STATIONS_MAPPING[code]) {
+        const r = REAL_STATIONS_MAPPING[code];
+        return {
+            stationCode: r.code,
+            stationName: r.name,
+            city: r.city,
+            state: r.state,
+            zone: r.zone,
+            isJunction: r.isJunction,
+            latitude: r.latitude,
+            longitude: r.longitude,
+        };
+    }
+    return {
+        stationCode: code,
+        stationName: name,
+        city,
+        state,
+        zone,
+        isJunction,
+        latitude: lat,
+        longitude: lon,
+    };
+});
 // Build helper map for quick code checks
 const STATIONS_MAP = new Map();
 for (const s of STATIONS) {
@@ -370,12 +456,17 @@ const CORRIDORS = [
     // 12) West-East Link: Katihar to Siliguri (Mahananda valley)
     ['KIR', 'SRI', 'BOE', 'DDL', 'KNE', 'AUB', 'TKG', 'SGUJ', 'NJP']
 ];
-// Helper to filter valid stations within corridors (safety fallback)
+// Clean and substitute codes in corridors
 const cleanCorridors = CORRIDORS.map(corridor => {
-    return corridor.filter(code => {
+    return corridor.map(code => {
+        if (REAL_STATIONS_MAPPING[code]) {
+            return REAL_STATIONS_MAPPING[code].code;
+        }
+        return code;
+    }).filter(code => {
         const exists = STATIONS_MAP.has(code);
         if (!exists) {
-            console.warn(`[Warning] Station code ${code} defined in corridor, but missing from dictionary. Filtering out.`);
+            console.warn(`[Warning] Station code ${code} missing from dictionary. Filtering out.`);
         }
         return exists;
     });
@@ -390,198 +481,225 @@ function calculateHaversineDistance(lat1, lon1, lat2, lon2) {
             Math.sin(dLon / 2) * Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const d = R * c;
-    // Return rounded distance, incorporating a 1.15 track routing curvature factor
     return Math.round(d * 1.15 * 10) / 10;
 }
-// 3. GENERATE TRAINS AND TIMETABLES
-const trainTypes = [
-    { type: 'Passenger', speed: 48, layover: 2, prob: 1.0, delayAvg: 45, delayStd: 25, cancelProb: 0.02 },
-    { type: 'Express', speed: 68, layover: 3, prob: 0.6, delayAvg: 25, delayStd: 15, cancelProb: 0.01 },
-    { type: 'Superfast', speed: 88, layover: 4, prob: 0.35, delayAvg: 15, delayStd: 10, cancelProb: 0.005 },
-    { type: 'Rajdhani', speed: 108, layover: 8, prob: 0.12, delayAvg: 8, delayStd: 6, cancelProb: 0.002 },
-    { type: 'Shatabdi', speed: 102, layover: 6, prob: 0.15, delayAvg: 10, delayStd: 7, cancelProb: 0.003 },
-    { type: 'Vande Bharat', speed: 112, layover: 5, prob: 0.12, delayAvg: 6, delayStd: 5, cancelProb: 0.002 },
-];
+// 3. GENERATE TRAINS AND TIMETABLES USING REAL TRAINS LIST
+const trainTypesConfig = {
+    'Passenger': { speed: 48, layover: 2, delayAvg: 45, delayStd: 25, cancelProb: 0.02 },
+    'Express': { speed: 68, layover: 3, delayAvg: 25, delayStd: 15, cancelProb: 0.01 },
+    'Superfast': { speed: 88, layover: 4, delayAvg: 15, delayStd: 10, cancelProb: 0.005 },
+    'Rajdhani': { speed: 108, layover: 8, delayAvg: 8, delayStd: 6, cancelProb: 0.002 },
+    'Shatabdi': { speed: 102, layover: 6, delayAvg: 10, delayStd: 7, cancelProb: 0.003 },
+    'Vande Bharat': { speed: 112, layover: 5, delayAvg: 6, delayStd: 5, cancelProb: 0.002 },
+};
 const WEEK_DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 const generatedTrains = [];
 const generatedStops = [];
-let trainCounter = 12001; // Start train numbers sequentially (common Indian Railways bracket)
-// Generate trains running back and forth along defined corridors
-// To reach 900–1200 trains, we will create multiple runs per corridor per day at offset intervals
-const runsPerCorridor = 45; // 45 UP + 45 DOWN runs across 12 corridors = ~1080 trains total
-for (let cIdx = 0; cIdx < cleanCorridors.length; cIdx++) {
-    const corridor = cleanCorridors[cIdx];
-    if (corridor.length < 5)
-        continue; // Skip short corridors
-    for (let run = 0; run < runsPerCorridor; run++) {
-        // Generate both UP and DOWN directions
-        for (const direction of ['UP', 'DOWN']) {
-            const path = direction === 'UP' ? [...corridor] : [...corridor].reverse();
-            // Determine train type based on a pseudo-random rotation to balance distribution
-            const typeObj = trainTypes[(run + (direction === 'UP' ? 0 : 1)) % trainTypes.length];
-            // Select stop sequence based on train type
-            const stopsSelected = [];
-            // Force include first and last stations
-            stopsSelected.push(path[0]);
-            for (let i = 1; i < path.length - 1; i++) {
-                const s = STATIONS_MAP.get(path[i]);
-                if (s.isJunction) {
-                    // Junctions are always stopped at
-                    stopsSelected.push(path[i]);
-                }
-                else {
-                    // Intermediate stations depend on type probability
-                    if (Math.random() < typeObj.prob) {
-                        stopsSelected.push(path[i]);
-                    }
-                }
+// Load the raw trains data we pre-filtered
+const rawTrainsPath = path.join(__dirname, '../../data/raw_trains.json');
+if (!fs.existsSync(rawTrainsPath)) {
+    console.error('[Error] raw_trains.json is missing in server/data/. Please generate it first.');
+    process.exit(1);
+}
+const rawTrainsList = JSON.parse(fs.readFileSync(rawTrainsPath, 'utf-8'));
+// Filter out duplicate numbers to be absolutely safe
+const uniqueRawTrains = [];
+const seenTrainNumbers = new Set();
+for (const rt of rawTrainsList) {
+    if (!seenTrainNumbers.has(rt.number)) {
+        uniqueRawTrains.push(rt);
+        seenTrainNumbers.add(rt.number);
+    }
+}
+console.log(`Loaded ${uniqueRawTrains.length} unique real trains from raw_trains.json.`);
+// We want to generate ~1080 trains. Let's process the unique trains
+for (let idx = 0; idx < uniqueRawTrains.length; idx++) {
+    const rt = uniqueRawTrains[idx];
+    const trainNumber = rt.number;
+    const trainName = rt.name;
+    // Determine train type from keywords
+    let trainType = 'Express';
+    const nameUpper = trainName.toUpperCase();
+    if (nameUpper.includes('VANDE BHARAT') || nameUpper.includes(' VB ') || nameUpper.includes('V BANDE')) {
+        trainType = 'Vande Bharat';
+    }
+    else if (nameUpper.includes('SHATABDI') || nameUpper.includes('SHT')) {
+        trainType = 'Shatabdi';
+    }
+    else if (nameUpper.includes('RAJDHANI') || nameUpper.includes('RJD')) {
+        trainType = 'Rajdhani';
+    }
+    else if (nameUpper.includes('SUPERFAST') || nameUpper.includes('SF') || nameUpper.includes('SUF')) {
+        trainType = 'Superfast';
+    }
+    else if (nameUpper.includes('PASSENGER') || nameUpper.includes('PASS') || nameUpper.includes('PAS') || nameUpper.includes('DEMU') || nameUpper.includes('MEMU') || nameUpper.includes('LOCAL')) {
+        trainType = 'Passenger';
+    }
+    const typeConfig = trainTypesConfig[trainType] || trainTypesConfig.Express;
+    // Determine target corridor based on keyword scoring
+    let bestCorridorIdx = -1;
+    let bestScore = -1;
+    for (let c = 0; c < cleanCorridors.length; c++) {
+        let score = 0;
+        const corridor = cleanCorridors[c];
+        for (const code of corridor) {
+            const station = STATIONS_MAP.get(code);
+            if (nameUpper.includes(code) || nameUpper.includes(station.city.toUpperCase()) || nameUpper.includes(station.stationName.toUpperCase().replace(' JUNCTION', ''))) {
+                score++;
             }
-            stopsSelected.push(path[path.length - 1]);
-            // Enforce the stop number boundaries constraint [12 to 25 stops]
-            let finalStops = stopsSelected;
-            if (finalStops.length < 12 && path.length >= 12) {
-                // Not enough stops, add additional intermediate stops
-                const missing = 12 - finalStops.length;
-                const currentSet = new Set(finalStops);
-                let added = 0;
-                for (let i = 0; i < path.length && added < missing; i++) {
-                    if (!currentSet.has(path[i])) {
-                        finalStops.push(path[i]);
-                        added++;
-                    }
-                }
-                // Re-sort stops in path order
-                finalStops = path.filter(code => finalStops.includes(code));
-            }
-            else if (finalStops.length > 25) {
-                // Too many stops, trim intermediate non-junctions
-                const intermediates = finalStops.slice(1, finalStops.length - 1);
-                // Retain junctions first, then fill up to 23 with others
-                const junctions = intermediates.filter(code => STATIONS_MAP.get(code).isJunction);
-                const nonJunctions = intermediates.filter(code => !STATIONS_MAP.get(code).isJunction);
-                const filledIntermediates = [...junctions];
-                let idx = 0;
-                while (filledIntermediates.length < 23 && idx < nonJunctions.length) {
-                    filledIntermediates.push(nonJunctions[idx]);
-                    idx++;
-                }
-                // Re-sort
-                const sortedIntermediates = path.filter(code => filledIntermediates.includes(code));
-                finalStops = [finalStops[0], ...sortedIntermediates, finalStops[finalStops.length - 1]];
-            }
-            // Double check finalStops bounds (e.g. if corridor itself is short)
-            if (finalStops.length < 3)
-                continue;
-            const sourceCode = finalStops[0];
-            const destCode = finalStops[finalStops.length - 1];
-            const sourceStation = STATIONS_MAP.get(sourceCode);
-            const destStation = STATIONS_MAP.get(destCode);
-            const trainNumber = (trainCounter++).toString();
-            // Create a realistic train name: e.g. "Howrah - Guwahati Vande Bharat Express"
-            const originCity = sourceStation.city;
-            const destCity = destStation.city;
-            const trainName = `${originCity} - ${destCity} ${typeObj.type} ${run % 2 === 0 ? 'Express' : 'Special'}`;
-            // Distribute operating days (some daily, some weekly/biweekly)
-            let operatingDays = [];
-            const randDayMode = run % 4;
-            if (randDayMode === 0) {
-                operatingDays = [...WEEK_DAYS]; // Daily
-            }
-            else if (randDayMode === 1) {
-                operatingDays = ['MON', 'WED', 'FRI']; // Tri-weekly
-            }
-            else if (randDayMode === 2) {
-                operatingDays = ['TUE', 'THU', 'SAT']; // Tri-weekly alt
-            }
-            else {
-                operatingDays = [WEEK_DAYS[run % 7]]; // Weekly
-            }
-            // Add train entry
-            generatedTrains.push({
-                trainNumber,
-                trainName,
-                trainType: typeObj.type,
-                operatingDays,
-                sourceStation: sourceCode,
-                destinationStation: destCode,
-                averageDelayMinutes: Math.round((typeObj.delayAvg + (run % 7)) * 10) / 10,
-                delayStandardDeviation: Math.round((typeObj.delayStd + (run % 3)) * 10) / 10,
-                cancellationProbability: typeObj.cancelProb,
-            });
-            // 4. GENERATE INDIVIDUAL STOP SCHEDULES
-            // Starting hour spread throughout the day
-            let currentHour = (6 + run * 3) % 24;
-            let currentMinute = (run * 11) % 60;
-            let dayOffset = 0;
-            let cumulativeDistance = 0.0;
-            for (let i = 0; i < finalStops.length; i++) {
-                const currentStopCode = finalStops[i];
-                const currentStopStation = STATIONS_MAP.get(currentStopCode);
-                let arrivalTime = '';
-                let departureTime = '';
-                let travelMinutes = 0;
-                if (i === 0) {
-                    // Origin station
-                    arrivalTime = 'Source';
-                    departureTime = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
-                }
-                else {
-                    // Intermediary / Terminal station
-                    const prevStopCode = finalStops[i - 1];
-                    const prevStopStation = STATIONS_MAP.get(prevStopCode);
-                    const distanceDiff = calculateHaversineDistance(prevStopStation.latitude, prevStopStation.longitude, currentStopStation.latitude, currentStopStation.longitude);
-                    cumulativeDistance += distanceDiff;
-                    // Calculate travel time based on speed
-                    const hoursNeeded = distanceDiff / typeObj.speed;
-                    travelMinutes = Math.round(hoursNeeded * 60);
-                    if (travelMinutes < 10)
-                        travelMinutes = 10; // Enforce minimum distance travel time
-                    // Add to time clock
-                    currentMinute += travelMinutes;
-                    while (currentMinute >= 60) {
-                        currentMinute -= 60;
-                        currentHour += 1;
-                        if (currentHour >= 24) {
-                            currentHour -= 24;
-                            dayOffset += 1;
-                        }
-                    }
-                    arrivalTime = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
-                    if (i === finalStops.length - 1) {
-                        // Terminal station
-                        departureTime = 'Destination';
-                    }
-                    else {
-                        // Intermediate layover
-                        currentMinute += typeObj.layover;
-                        while (currentMinute >= 60) {
-                            currentMinute -= 60;
-                            currentHour += 1;
-                            if (currentHour >= 24) {
-                                currentHour -= 24;
-                                dayOffset += 1;
-                            }
-                        }
-                        departureTime = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
-                    }
-                }
-                generatedStops.push({
-                    trainId: trainNumber,
-                    stationId: currentStopCode,
-                    stopNumber: i + 1,
-                    arrivalTime,
-                    departureTime,
-                    dayOffset,
-                    distanceFromSource: Math.round(cumulativeDistance * 10) / 10,
-                    platform: (1 + ((i + run) % 6)).toString(), // Platform 1 to 6
-                    travelMinutesFromPrevious: travelMinutes,
-                });
+        }
+        if (score > bestScore) {
+            bestScore = score;
+            bestCorridorIdx = c;
+        }
+    }
+    // Fallback to modulo indexing if score is 0
+    if (bestScore <= 0) {
+        bestCorridorIdx = idx % cleanCorridors.length;
+    }
+    const corridor = cleanCorridors[bestCorridorIdx];
+    const direction = (parseInt(trainNumber, 10) % 2 === 1) ? 'UP' : 'DOWN';
+    const path = direction === 'UP' ? [...corridor] : [...corridor].reverse();
+    // Selected stop sequence: junctions are always included, intermediate stops are selected based on probability
+    const stopsSelected = [];
+    stopsSelected.push(path[0]);
+    const inclusionProbability = trainType === 'Passenger' ? 1.0 : (trainType === 'Express' ? 0.65 : (trainType === 'Superfast' ? 0.4 : 0.15));
+    for (let i = 1; i < path.length - 1; i++) {
+        const s = STATIONS_MAP.get(path[i]);
+        if (s.isJunction) {
+            stopsSelected.push(path[i]);
+        }
+        else {
+            if (idx % 100 / 100 < inclusionProbability) {
+                stopsSelected.push(path[i]);
             }
         }
     }
+    stopsSelected.push(path[path.length - 1]);
+    // Adjust stop sequence length (12 to 25 stops constraints if possible, but keep it realistic)
+    let finalStops = stopsSelected;
+    if (finalStops.length < 12 && path.length >= 12) {
+        const missing = 12 - finalStops.length;
+        const currentSet = new Set(finalStops);
+        let added = 0;
+        for (let i = 0; i < path.length && added < missing; i++) {
+            if (!currentSet.has(path[i])) {
+                finalStops.push(path[i]);
+                added++;
+            }
+        }
+        finalStops = path.filter(code => finalStops.includes(code));
+    }
+    else if (finalStops.length > 25) {
+        const intermediates = finalStops.slice(1, finalStops.length - 1);
+        const junctions = intermediates.filter(code => STATIONS_MAP.get(code).isJunction);
+        const nonJunctions = intermediates.filter(code => !STATIONS_MAP.get(code).isJunction);
+        const filledIntermediates = [...junctions];
+        let fillIdx = 0;
+        while (filledIntermediates.length < 23 && fillIdx < nonJunctions.length) {
+            filledIntermediates.push(nonJunctions[fillIdx]);
+            fillIdx++;
+        }
+        const sortedIntermediates = path.filter(code => filledIntermediates.includes(code));
+        finalStops = [finalStops[0], ...sortedIntermediates, finalStops[finalStops.length - 1]];
+    }
+    if (finalStops.length < 3) {
+        // Fail-safe minimum stops to prevent path reconstructor errors
+        finalStops = path.slice(0, Math.min(12, path.length));
+    }
+    const sourceCode = finalStops[0];
+    const destCode = finalStops[finalStops.length - 1];
+    // Distribute operating days
+    let operatingDays = [];
+    const dayMode = idx % 4;
+    if (dayMode === 0 || trainType === 'Passenger') {
+        operatingDays = [...WEEK_DAYS]; // Daily
+    }
+    else if (dayMode === 1) {
+        operatingDays = ['MON', 'WED', 'FRI']; // Tri-weekly
+    }
+    else if (dayMode === 2) {
+        operatingDays = ['TUE', 'THU', 'SAT']; // Tri-weekly alt
+    }
+    else {
+        operatingDays = [WEEK_DAYS[idx % 7]]; // Weekly
+    }
+    // Push train data
+    generatedTrains.push({
+        trainNumber,
+        trainName,
+        trainType,
+        operatingDays,
+        sourceStation: sourceCode,
+        destinationStation: destCode,
+        averageDelayMinutes: Math.round((typeConfig.delayAvg + (idx % 7)) * 10) / 10,
+        delayStandardDeviation: Math.round((typeConfig.delayStd + (idx % 3)) * 10) / 10,
+        cancellationProbability: typeConfig.cancelProb,
+    });
+    // Individual stop timetables generator
+    let currentHour = (5 + idx * 2) % 24;
+    let currentMinute = (idx * 7) % 60;
+    let dayOffset = 0;
+    let cumulativeDistance = 0.0;
+    for (let i = 0; i < finalStops.length; i++) {
+        const currentStopCode = finalStops[i];
+        const currentStopStation = STATIONS_MAP.get(currentStopCode);
+        let arrivalTime = '';
+        let departureTime = '';
+        let travelMinutes = 0;
+        if (i === 0) {
+            arrivalTime = 'Source';
+            departureTime = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
+        }
+        else {
+            const prevStopCode = finalStops[i - 1];
+            const prevStopStation = STATIONS_MAP.get(prevStopCode);
+            const distanceDiff = calculateHaversineDistance(prevStopStation.latitude, prevStopStation.longitude, currentStopStation.latitude, currentStopStation.longitude);
+            cumulativeDistance += distanceDiff;
+            const hoursNeeded = distanceDiff / typeConfig.speed;
+            travelMinutes = Math.round(hoursNeeded * 60);
+            if (travelMinutes < 10)
+                travelMinutes = 10;
+            currentMinute += travelMinutes;
+            while (currentMinute >= 60) {
+                currentMinute -= 60;
+                currentHour += 1;
+                if (currentHour >= 24) {
+                    currentHour -= 24;
+                    dayOffset += 1;
+                }
+            }
+            arrivalTime = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
+            if (i === finalStops.length - 1) {
+                departureTime = 'Destination';
+            }
+            else {
+                currentMinute += typeConfig.layover;
+                while (currentMinute >= 60) {
+                    currentMinute -= 60;
+                    currentHour += 1;
+                    if (currentHour >= 24) {
+                        currentHour -= 24;
+                        dayOffset += 1;
+                    }
+                }
+                departureTime = `${String(currentHour).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}`;
+            }
+        }
+        generatedStops.push({
+            trainId: trainNumber,
+            stationId: currentStopCode,
+            stopNumber: i + 1,
+            arrivalTime,
+            departureTime,
+            dayOffset,
+            distanceFromSource: Math.round(cumulativeDistance * 10) / 10,
+            platform: (1 + ((i + idx) % 8)).toString(), // Platform 1 to 8
+            travelMinutesFromPrevious: travelMinutes,
+        });
+    }
 }
 // 5. EXPORT TO JSON FILES
-// Ensure output path exists
 const OUTPUT_DIR = path.join(__dirname, '../../data');
 if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
@@ -590,7 +708,7 @@ fs.writeFileSync(path.join(OUTPUT_DIR, 'stations.json'), JSON.stringify(STATIONS
 fs.writeFileSync(path.join(OUTPUT_DIR, 'trains.json'), JSON.stringify(generatedTrains, null, 2), 'utf-8');
 fs.writeFileSync(path.join(OUTPUT_DIR, 'trainStops.json'), JSON.stringify(generatedStops, null, 2), 'utf-8');
 console.log('==================================================');
-console.log('Railway Network Dataset Generation Complete!');
+console.log('Real Indian Railways Network Dataset Complete!');
 console.log('==================================================');
 console.log(`Generated Stations   : ${STATIONS.length}`);
 console.log(`Generated Trains     : ${generatedTrains.length}`);

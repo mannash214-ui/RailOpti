@@ -7,6 +7,7 @@ interface SearchFormProps {
   initialValues?: {
     sourceStation?: string;
     destinationStation?: string;
+    travelDate?: string;
     departureAfter?: string;
     arrivalBefore?: string;
     optimizationMode?: string;
@@ -24,9 +25,18 @@ export default function SearchForm({ initialValues, onSearchSubmit }: SearchForm
   const navigate = useNavigate();
   const [showAdvanced, setShowAdvanced] = useState(false);
 
+  const getTodayDateString = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   // Core fields
   const [source, setSource] = useState(initialValues?.sourceStation || '');
   const [destination, setDestination] = useState(initialValues?.destinationStation || '');
+  const [travelDate, setTravelDate] = useState(initialValues?.travelDate || getTodayDateString());
   const [departureTime, setDepartureTime] = useState(initialValues?.departureAfter || '08:00');
   const [arrivalBefore, setArrivalBefore] = useState(initialValues?.arrivalBefore || '');
   const [optimizationMode, setOptimizationMode] = useState(initialValues?.optimizationMode || 'BALANCED');
@@ -142,6 +152,7 @@ export default function SearchForm({ initialValues, onSearchSubmit }: SearchForm
     const queryData = {
       sourceStation: source,
       destinationStation: destination,
+      travelDate: travelDate,
       departureAfter: departureTime,
       arrivalBefore: arrivalBefore || undefined,
       optimizationMode,
@@ -174,6 +185,7 @@ export default function SearchForm({ initialValues, onSearchSubmit }: SearchForm
   const handleReset = () => {
     setSource('');
     setDestination('');
+    setTravelDate(getTodayDateString());
     setDepartureTime('08:00');
     setArrivalBefore('');
     setOptimizationMode('BALANCED');
@@ -222,7 +234,7 @@ export default function SearchForm({ initialValues, onSearchSubmit }: SearchForm
       {/* Main Search Inputs */}
       <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
         {/* Origin Input */}
-        <div className="md:col-span-4 relative">
+        <div className="md:col-span-3 relative">
           <input
             type="text"
             placeholder="From (e.g. Silchar)"
@@ -266,7 +278,7 @@ export default function SearchForm({ initialValues, onSearchSubmit }: SearchForm
         </div>
 
         {/* Destination Input */}
-        <div className="md:col-span-4 relative">
+        <div className="md:col-span-3 relative">
           <input
             type="text"
             placeholder="To (e.g. Patna)"
@@ -297,8 +309,20 @@ export default function SearchForm({ initialValues, onSearchSubmit }: SearchForm
           )}
         </div>
 
-        {/* Departure Time */}
+        {/* Journey Date */}
         <div className="md:col-span-3">
+          <input
+            type="date"
+            value={travelDate}
+            onChange={(e) => setTravelDate(e.target.value)}
+            required
+            className="w-full google-input text-center"
+            title="Journey Date"
+          />
+        </div>
+
+        {/* Departure Time */}
+        <div className="md:col-span-2">
           <input
             type="text"
             placeholder="Departure (e.g. 08:00)"

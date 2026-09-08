@@ -24,6 +24,14 @@ export default function JourneyCard({ journey, onSave, isSaved = false }: Journe
     return timeStr.replace(/Day \d+ /, '');
   };
 
+  const getFormattedDateLabel = (dayName?: string, dateTimeStr?: string, defaultLabel = 'Day 0') => {
+    if (!dateTimeStr) return defaultLabel;
+    const parts = dateTimeStr.split(' ');
+    if (parts.length < 2) return defaultLabel;
+    const dateLabel = `${parts[0]} ${parts[1]}`;
+    return dayName ? `${dayName} ${dateLabel}` : defaultLabel;
+  };
+
   return (
     <div className="google-card overflow-hidden">
       {/* Primary Row */}
@@ -31,12 +39,13 @@ export default function JourneyCard({ journey, onSave, isSaved = false }: Journe
         <div className="flex-grow flex flex-col md:flex-row md:items-center gap-6">
           {/* Timeline Summary */}
           <div className="flex items-center gap-3">
-            <div className="flex flex-col">
-              <span className="text-base font-bold text-slate-800">{formatTime(journey.departureTime)}</span>
+            <div className="flex flex-col items-center">
+              <span className="text-[10px] text-slate-500 font-semibold mb-0.5">{getFormattedDateLabel(journey.departureDay, journey.actualDepartureDateTime, 'Day 0')}</span>
+              <span className="text-base font-bold text-slate-800 leading-tight">{formatTime(journey.departureTime)}</span>
               <span className="text-xs text-slate-400 font-semibold text-center mt-0.5">{journey.departureStationCode}</span>
             </div>
             
-            <div className="flex flex-col items-center min-w-[80px] sm:min-w-[120px] relative px-2">
+            <div className="flex flex-col items-center min-w-[80px] sm:min-w-[120px] relative px-2 pt-4">
               <span className="text-[10px] text-slate-400 font-medium">{journey.totalTimeMinutes} min</span>
               <div className="w-full h-0.5 bg-slate-200 relative my-1">
                 {/* Transfer dots */}
@@ -53,8 +62,9 @@ export default function JourneyCard({ journey, onSave, isSaved = false }: Journe
               </span>
             </div>
 
-            <div className="flex flex-col">
-              <span className="text-base font-bold text-slate-800">{formatTime(journey.arrivalTime)}</span>
+            <div className="flex flex-col items-center">
+              <span className="text-[10px] text-slate-500 font-semibold mb-0.5">{getFormattedDateLabel(journey.arrivalDay, journey.actualArrivalDateTime, 'Day 1')}</span>
+              <span className="text-base font-bold text-slate-800 leading-tight">{formatTime(journey.arrivalTime)}</span>
               <span className="text-xs text-slate-400 font-semibold text-center mt-0.5">{journey.destinationStationCode}</span>
             </div>
           </div>
