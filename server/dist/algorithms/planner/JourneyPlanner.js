@@ -23,30 +23,35 @@ class JourneyPlanner {
     async plan(request) {
         const startTime = Date.now();
         // Support backward compatibility / request model mapping
-        const sourceStation = request.source || request.sourceStation;
-        const destinationStation = request.destination || request.destinationStation;
+        const sourceClean = (request.source || request.sourceStation || '').trim();
+        const destClean = (request.destination || request.destinationStation || '').trim();
         const departureTime = request.departureTime || request.departureAfter;
         const maximumTransfers = request.maxTransfers !== undefined ? request.maxTransfers : request.maximumTransfers;
         const travelDate = request.travelDate;
-        if (!sourceStation || !destinationStation || !departureTime) {
+        if (!sourceClean || !destClean || !departureTime) {
             throw new error_1.AppError('Source, destination, and departure time are required.', 400);
         }
-        // 1. Resolve source and destination stations in MongoDB (by code or name)
+        const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        // 1. Resolve source and destination stations in MongoDB (by code or exact/partial name)
         const sourceDb = await station_model_1.Station.findOne({
             $or: [
-                { stationCode: sourceStation.toUpperCase() },
-                { name: new RegExp(sourceStation, 'i') },
+                { stationCode: sourceClean.toUpperCase() },
+                { name: new RegExp(`^${escapeRegex(sourceClean)}$`, 'i') },
+                { name: new RegExp(escapeRegex(sourceClean), 'i') },
             ],
         });
         const destDb = await station_model_1.Station.findOne({
             $or: [
-                { stationCode: destinationStation.toUpperCase() },
-                { name: new RegExp(destinationStation, 'i') },
+                { stationCode: destClean.toUpperCase() },
+                { name: new RegExp(`^${escapeRegex(destClean)}$`, 'i') },
+                { name: new RegExp(escapeRegex(destClean), 'i') },
             ],
         });
-        if (!sourceDb || !destDb) {
-            console.warn(`[JourneyPlanner] Failed to resolve stations: Source found: ${!!sourceDb}, Dest found: ${!!destDb}`);
-            return null;
+        if (!sourceDb) {
+            throw new error_1.AppError(`Source station "${sourceClean}" was not found. Please choose from available stations in suggestions.`, 404);
+        }
+        if (!destDb) {
+            throw new error_1.AppError(`Destination station "${destClean}" was not found. Please choose from available stations in suggestions.`, 404);
         }
         // 2. Parse departure time string "HH:mm" to absolute day minutes
         const parts = departureTime.split(':');
@@ -74,8 +79,8 @@ class JourneyPlanner {
                 throw new error_1.AppError('Invalid calendar date.', 400);
             }
             const now = new Date();
-            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-            const localParsedDate = new Date(y, m, d);
+            const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+            const localParsedDate = new Date(Date.UTC(y, m, d));
             if (localParsedDate < today) {
                 throw new error_1.AppError('Past travel dates are not allowed.', 400);
             }

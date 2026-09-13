@@ -55,11 +55,14 @@ export default function Search() {
     }
   }, []);
 
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
   const executeSearchQuery = async () => {
     if (!origin || !destination) return;
 
     setLoading(true);
     setError(false);
+    setErrorMessage('');
 
     try {
       const results = await journeyService.search({
@@ -79,8 +82,10 @@ export default function Search() {
 
       setRawJourneys(results);
       setFilteredJourneys(results);
-    } catch (err) {
+    } catch (err: any) {
       console.error('[Search] Failed to fetch journeys from backend:', err);
+      const apiMsg = err?.response?.data?.message || err?.message || 'Failed to calculate routing itineraries. Please check station names and search constraints.';
+      setErrorMessage(apiMsg);
       setError(true);
     } finally {
       setLoading(false);
@@ -101,6 +106,7 @@ export default function Search() {
     minimumTransferMinutes,
     maximumWaitingMinutes,
     maximumJourneyDurationMinutes,
+    allowedTrainTypes?.join(','),
     avoidOvernightTransfers,
   ]);
 
@@ -188,7 +194,14 @@ export default function Search() {
             destinationStation: destination,
             travelDate: travelDate,
             departureAfter: departureAfter,
+            arrivalBefore: arrivalBefore,
             optimizationMode: optimizationMode,
+            maximumTransfers,
+            minimumTransferMinutes,
+            maximumWaitingMinutes,
+            maximumJourneyDurationMinutes,
+            allowedTrainTypes,
+            avoidOvernightTransfers,
           }}
         />
       </div>
@@ -201,11 +214,11 @@ export default function Search() {
             <FilterSidebar
               onFiltersChange={handleFilterChange}
               initialValues={{
-                maxTransfers: 2,
-                maxWaitingMinutes: 1440,
+                maxTransfers: maximumTransfers !== undefined ? maximumTransfers : 2,
+                maxWaitingMinutes: maximumWaitingMinutes !== undefined ? maximumWaitingMinutes : 1440,
                 minReliability: 30,
-                avoidOvernightTransfers: false,
-                allowedTrainTypes: [],
+                avoidOvernightTransfers: avoidOvernightTransfers,
+                allowedTrainTypes: allowedTrainTypes || [],
               }}
             />
           </div>
@@ -215,7 +228,11 @@ export default function Search() {
             {loading ? (
               <LoadingScreen />
             ) : error ? (
-              <ErrorScreen onRetry={executeSearchQuery} />
+              <ErrorScreen
+                title="Search Could Not Be Completed"
+                message={errorMessage || 'We encountered an error calculating multi-train itineraries. Please double-check station names and time formats.'}
+                onRetry={executeSearchQuery}
+              />
             ) : filteredJourneys.length === 0 ? (
               <div className="bg-white rounded-xl border border-slate-200 p-12 text-center shadow-sm">
                 <Compass className="h-10 w-10 text-slate-300 mx-auto" />
