@@ -1,4 +1,4 @@
-import { Train, ShieldAlert } from 'lucide-react';
+import { Train } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -21,22 +21,10 @@ export default function Footer() {
               OptiRail is an advanced multi-train routing and journey optimization platform designed to find highly reliable, low-waiting-time itineraries based on custom transit metrics.
             </p>
           </div>
-
-          <div className="flex items-center gap-2.5 p-3.5 bg-amber-50 border border-amber-200 text-amber-800 rounded-lg text-xs max-w-sm">
-            <ShieldAlert className="h-4.5 w-4.5 flex-shrink-0 text-amber-600" />
-            <span>
-              <strong>Note:</strong> OptiRail is NOT a ticket booking system. We specialize strictly in routing analytics and transit optimization.
-            </span>
-          </div>
         </div>
 
         <div className="mt-12 pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
           <p>© {currentYear} OptiRail Inc. All rights reserved.</p>
-          <div className="flex space-x-6">
-            <span className="hover:text-slate-600 cursor-pointer">Security Protocol</span>
-            <span className="hover:text-slate-600 cursor-pointer">Architecture Model</span>
-            <span className="hover:text-slate-600 cursor-pointer">API Specs</span>
-          </div>
         </div>
       </div>
     </footer>

@@ -7,7 +7,16 @@ import apiRouter from './routes';
 const app: Express = express();
 
 // 1) Global Middlewares
-app.use(cors());
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map((o) => o.trim())
+  : '*';
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // Enable custom request logging

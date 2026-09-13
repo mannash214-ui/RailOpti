@@ -7,16 +7,21 @@ exports.connectDB = connectDB;
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const MONGODB_URI = process.env.MONGODB_URI;
+let isConnected = false;
 async function connectDB() {
-    if (!MONGODB_URI) {
+    if (isConnected && mongoose_1.default.connection.readyState === 1) {
+        return;
+    }
+    const mongodbUri = process.env.MONGODB_URI;
+    if (!mongodbUri) {
         console.error('[Database] Fatal Error: MONGODB_URI environment variable is missing.');
         throw new Error('MONGODB_URI environment variable is missing');
     }
     try {
         mongoose_1.default.set('strictQuery', true);
         console.log('[Database] Connecting to MongoDB...');
-        await mongoose_1.default.connect(MONGODB_URI);
+        const conn = await mongoose_1.default.connect(mongodbUri);
+        isConnected = conn.connections[0].readyState === 1;
         console.log('[Database] MongoDB connection established successfully.');
     }
     catch (error) {

@@ -16,15 +16,10 @@ export default function Home() {
       {/* Hero Section */}
       <section className="w-full bg-gradient-to-b from-blue-50/50 via-white to-transparent pt-12 pb-8 flex flex-col items-center">
         <div className="w-full max-w-4xl mx-auto px-4 text-center mb-8">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 border border-blue-200 rounded-full text-blue-700 text-xs font-semibold mb-4">
-            <Zap className="h-3.5 w-3.5" />
-            <span>V1.2 - ADVANCED MULTI-CONSTRAINED JOURNEY PLANNERS</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight leading-tight">
+          <h1 className="text-2xl sm:text-4xl font-bold text-slate-900 tracking-tight leading-tight">
             Compare optimal railway journeys
           </h1>
-          <p className="mt-3 text-slate-500 text-base max-w-xl mx-auto">
+          <p className="mt-2.5 text-slate-500 text-sm max-w-xl mx-auto">
             Design schedules matching your physical load, transfer limits, waiting limits, and reliability preferences.
           </p>
         </div>

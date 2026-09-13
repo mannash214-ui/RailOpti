@@ -3,10 +3,16 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI;
+let isConnected = false;
 
 export async function connectDB(): Promise<void> {
-  if (!MONGODB_URI) {
+  if (isConnected && mongoose.connection.readyState === 1) {
+    return;
+  }
+
+  const mongodbUri = process.env.MONGODB_URI;
+
+  if (!mongodbUri) {
     console.error('[Database] Fatal Error: MONGODB_URI environment variable is missing.');
     throw new Error('MONGODB_URI environment variable is missing');
   }
@@ -15,7 +21,8 @@ export async function connectDB(): Promise<void> {
     mongoose.set('strictQuery', true);
     
     console.log('[Database] Connecting to MongoDB...');
-    await mongoose.connect(MONGODB_URI);
+    const conn = await mongoose.connect(mongodbUri);
+    isConnected = conn.connections[0].readyState === 1;
     
     console.log('[Database] MongoDB connection established successfully.');
   } catch (error) {

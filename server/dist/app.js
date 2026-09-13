@@ -10,7 +10,13 @@ const error_1 = require("./middleware/error");
 const routes_1 = __importDefault(require("./routes"));
 const app = (0, express_1.default)();
 // 1) Global Middlewares
-app.use((0, cors_1.default)());
+const allowedOrigins = process.env.CORS_ORIGIN
+    ? process.env.CORS_ORIGIN.split(',').map((o) => o.trim())
+    : '*';
+app.use((0, cors_1.default)({
+    origin: allowedOrigins,
+    credentials: true,
+}));
 app.use(express_1.default.json());
 // Enable custom request logging
 app.use(logger_1.requestLogger);
