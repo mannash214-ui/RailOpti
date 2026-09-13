@@ -1,6 +1,6 @@
-import stationsData from '../../data/stations.json';
-import trainsData from '../../data/trains.json';
-import trainStopsData from '../../data/trainStops.json';
+import stationsData from '../data/stations.json';
+import trainsData from '../data/trains.json';
+import trainStopsData from '../data/trainStops.json';
 
 let cachedStations: any[] | null = null;
 let cachedTrains: any[] | null = null;
