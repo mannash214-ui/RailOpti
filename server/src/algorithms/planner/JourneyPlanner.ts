@@ -13,6 +13,7 @@ import { ReliabilityCalculator } from './ReliabilityCalculator';
 import { DuplicateFilter } from './DuplicateFilter';
 import { JourneyRanker } from './JourneyRanker';
 import { AppError } from '../../middleware/error';
+import { getStaticStations } from '../../utils/dataLoader';
 
 export interface PlanResult {
   journeys: Journey[];
@@ -71,7 +72,6 @@ export class JourneyPlanner {
     }
 
     if (!sourceDb || !destDb) {
-      const { getStaticStations } = await import('../../utils/dataLoader');
       const staticStations = getStaticStations();
       const matchStation = (query: string) => {
         const qUpper = query.toUpperCase();

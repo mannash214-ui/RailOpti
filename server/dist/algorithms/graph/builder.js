@@ -1,37 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -44,6 +11,7 @@ const train_model_1 = require("../../models/train.model");
 const station_model_1 = require("../../models/station.model");
 const types_1 = require("./types");
 const graph_1 = require("./graph");
+const dataLoader_1 = require("../../utils/dataLoader");
 class GraphBuilder {
     minTransferTime;
     maxTransferTime;
@@ -79,10 +47,9 @@ class GraphBuilder {
         }
         if (!stops || stops.length === 0) {
             console.log('[GraphBuilder] Using static JSON dataset for graph compilation...');
-            const { getStaticTrainStops, getStaticTrains, getStaticStations } = await Promise.resolve().then(() => __importStar(require('../../utils/dataLoader')));
-            const rawStops = getStaticTrainStops();
-            const rawTrains = getStaticTrains();
-            const rawStations = getStaticStations();
+            const rawStops = (0, dataLoader_1.getStaticTrainStops)();
+            const rawTrains = (0, dataLoader_1.getStaticTrains)();
+            const rawStations = (0, dataLoader_1.getStaticStations)();
             const trainMap = new Map(rawTrains.map(t => [t.trainNumber, { ...t, _id: t.trainNumber }]));
             const stationMap = new Map(rawStations.map(s => [s.stationCode, s]));
             stops = rawStops.map((stop, idx) => {

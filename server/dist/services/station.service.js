@@ -1,37 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -39,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.StationService = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const station_model_1 = require("../models/station.model");
+const dataLoader_1 = require("../utils/dataLoader");
 class StationService {
     /**
      * Retrieves all active stations sorted alphabetically by name.
@@ -54,8 +22,7 @@ class StationService {
                 console.warn('[StationService] DB query failed, using static stations.');
             }
         }
-        const { getStaticStations } = await Promise.resolve().then(() => __importStar(require('../utils/dataLoader')));
-        return getStaticStations();
+        return (0, dataLoader_1.getStaticStations)();
     }
     /**
      * Find a station by its 3-letter station code.
@@ -71,8 +38,7 @@ class StationService {
                 // Fallback
             }
         }
-        const { getStaticStations } = await Promise.resolve().then(() => __importStar(require('../utils/dataLoader')));
-        return getStaticStations().find(s => s.stationCode === code.toUpperCase()) || null;
+        return (0, dataLoader_1.getStaticStations)().find(s => s.stationCode === code.toUpperCase()) || null;
     }
     /**
      * Admin: Creates a new station node.
@@ -97,8 +63,7 @@ class StationService {
                 return dbResults;
             }
         }
-        const { getStaticStations } = await Promise.resolve().then(() => __importStar(require('../utils/dataLoader')));
-        const staticStations = getStaticStations();
+        const staticStations = (0, dataLoader_1.getStaticStations)();
         const qLower = q.toLowerCase();
         return staticStations
             .filter(s => s.stationCode.toLowerCase().startsWith(qLower) || s.name.toLowerCase().includes(qLower))

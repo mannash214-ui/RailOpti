@@ -5,6 +5,7 @@ import { Train } from '../../models/train.model';
 import { Station } from '../../models/station.model';
 import { GraphNode, GraphEdge, EdgeType, RailwayGraph } from './types';
 import { ImmutableRailwayGraph } from './graph';
+import { getStaticTrainStops, getStaticTrains, getStaticStations } from '../../utils/dataLoader';
 
 export interface GraphBuilderOptions {
   minTransferTime?: number; // In minutes, default 20
@@ -50,7 +51,6 @@ export class GraphBuilder {
 
     if (!stops || stops.length === 0) {
       console.log('[GraphBuilder] Using static JSON dataset for graph compilation...');
-      const { getStaticTrainStops, getStaticTrains, getStaticStations } = await import('../../utils/dataLoader');
       const rawStops = getStaticTrainStops();
       const rawTrains = getStaticTrains();
       const rawStations = getStaticStations();

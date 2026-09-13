@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { Station } from '../models/station.model';
+import { getStaticStations } from '../utils/dataLoader';
 
 export class StationService {
   /**
@@ -14,7 +15,6 @@ export class StationService {
         console.warn('[StationService] DB query failed, using static stations.');
       }
     }
-    const { getStaticStations } = await import('../utils/dataLoader');
     return getStaticStations();
   }
 
@@ -30,7 +30,6 @@ export class StationService {
         // Fallback
       }
     }
-    const { getStaticStations } = await import('../utils/dataLoader');
     return getStaticStations().find(s => s.stationCode === code.toUpperCase()) || null;
   }
 
@@ -60,7 +59,6 @@ export class StationService {
       }
     }
 
-    const { getStaticStations } = await import('../utils/dataLoader');
     const staticStations = getStaticStations();
     const qLower = q.toLowerCase();
     
