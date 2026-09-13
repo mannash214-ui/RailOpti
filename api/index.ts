@@ -13,7 +13,8 @@ export default async function handler(req: any, res: any) {
     console.error('[Vercel Serverless Error]:', error);
     res.status(500).json({
       status: 'error',
-      message: error.message || 'Internal Server Error during backend request execution.',
+      message: error?.message || String(error),
+      stack: error?.stack || null,
     });
   }
 }
