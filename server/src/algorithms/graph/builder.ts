@@ -29,18 +29,51 @@ export class GraphBuilder {
       throw new Error('Models failed to load');
     }
 
-    // 1. Ensure DB Connection is initialized
+    // 1. Ensure DB Connection is initialized (attempt connection, fallback gracefully)
     if (mongoose.connection.readyState !== 1) {
-      console.log('[GraphBuilder] Connecting to database...');
-      await connectDB();
+      try {
+        console.log('[GraphBuilder] Connecting to database...');
+        await connectDB();
+      } catch (err) {
+        console.warn('[GraphBuilder] Database unavailable, falling back to static JSON dataset.');
+      }
     }
 
-    console.log('[GraphBuilder] Querying train stops from database...');
-    // Query train stops and populate references
-    const stops = await TrainStop.find()
-      .populate('trainId')
-      .populate('stationId')
-      .exec();
+    let stops: any[] = [];
+    if (mongoose.connection.readyState === 1) {
+      console.log('[GraphBuilder] Querying train stops from database...');
+      stops = await TrainStop.find()
+        .populate('trainId')
+        .populate('stationId')
+        .exec();
+    }
+
+    if (!stops || stops.length === 0) {
+      console.log('[GraphBuilder] Using static JSON dataset for graph compilation...');
+      const { getStaticTrainStops, getStaticTrains, getStaticStations } = await import('../../utils/dataLoader');
+      const rawStops = getStaticTrainStops();
+      const rawTrains = getStaticTrains();
+      const rawStations = getStaticStations();
+
+      const trainMap = new Map(rawTrains.map(t => [t.trainNumber, { ...t, _id: t.trainNumber }]));
+      const stationMap = new Map(rawStations.map(s => [s.stationCode, s]));
+
+      stops = rawStops.map((stop, idx) => {
+        const train = trainMap.get(stop.trainId) || { _id: stop.trainId, trainNumber: stop.trainId, trainName: `Train ${stop.trainId}`, trainType: 'Express' };
+        const station = stationMap.get(stop.stationId) || { _id: stop.stationId, stationCode: stop.stationId, name: stop.stationId };
+        return {
+          _id: `stop_${idx}`,
+          trainId: train,
+          stationId: station,
+          stopNumber: stop.stopNumber,
+          arrivalTime: stop.arrivalTime,
+          departureTime: stop.departureTime,
+          dayOffset: stop.dayOffset,
+          distanceFromSource: stop.distanceFromSource,
+          platform: stop.platform,
+        };
+      });
+    }
 
     console.log(`[GraphBuilder] Loaded ${stops.length} TrainStop events. Building nodes...`);
 

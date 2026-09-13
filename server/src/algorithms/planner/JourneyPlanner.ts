@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { RailwayGraph } from '../graph/types';
 import { Station } from '../../models/station.model';
 import { PlannerConfig, DEFAULT_PLANNER_CONFIG } from './PlannerConfig';
@@ -47,22 +48,40 @@ export class JourneyPlanner {
 
     const escapeRegex = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-    // 1. Resolve source and destination stations in MongoDB (by code or exact/partial name)
-    const sourceDb = await Station.findOne({
-      $or: [
-        { stationCode: sourceClean.toUpperCase() },
-        { name: new RegExp(`^${escapeRegex(sourceClean)}$`, 'i') },
-        { name: new RegExp(escapeRegex(sourceClean), 'i') },
-      ],
-    });
+    // 1. Resolve source and destination stations in MongoDB (or fallback static JSON)
+    let sourceDb: any = null;
+    let destDb: any = null;
 
-    const destDb = await Station.findOne({
-      $or: [
-        { stationCode: destClean.toUpperCase() },
-        { name: new RegExp(`^${escapeRegex(destClean)}$`, 'i') },
-        { name: new RegExp(escapeRegex(destClean), 'i') },
-      ],
-    });
+    if (mongoose.connection.readyState === 1) {
+      sourceDb = await Station.findOne({
+        $or: [
+          { stationCode: sourceClean.toUpperCase() },
+          { name: new RegExp(`^${escapeRegex(sourceClean)}$`, 'i') },
+          { name: new RegExp(escapeRegex(sourceClean), 'i') },
+        ],
+      });
+
+      destDb = await Station.findOne({
+        $or: [
+          { stationCode: destClean.toUpperCase() },
+          { name: new RegExp(`^${escapeRegex(destClean)}$`, 'i') },
+          { name: new RegExp(escapeRegex(destClean), 'i') },
+        ],
+      });
+    }
+
+    if (!sourceDb || !destDb) {
+      const { getStaticStations } = await import('../../utils/dataLoader');
+      const staticStations = getStaticStations();
+      const matchStation = (query: string) => {
+        const qUpper = query.toUpperCase();
+        return staticStations.find(s => s.stationCode === qUpper) ||
+               staticStations.find(s => s.name.toLowerCase() === query.toLowerCase()) ||
+               staticStations.find(s => s.name.toLowerCase().includes(query.toLowerCase()));
+      };
+      if (!sourceDb) sourceDb = matchStation(sourceClean);
+      if (!destDb) destDb = matchStation(destClean);
+    }
 
     if (!sourceDb) {
       throw new AppError(`Source station "${sourceClean}" was not found. Please choose from available stations in suggestions.`, 404);

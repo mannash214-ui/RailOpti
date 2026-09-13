@@ -1,4 +1,37 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -26,17 +59,48 @@ class GraphBuilder {
         if (!train_model_1.Train.modelName || !station_model_1.Station.modelName) {
             throw new Error('Models failed to load');
         }
-        // 1. Ensure DB Connection is initialized
+        // 1. Ensure DB Connection is initialized (attempt connection, fallback gracefully)
         if (mongoose_1.default.connection.readyState !== 1) {
-            console.log('[GraphBuilder] Connecting to database...');
-            await (0, db_1.connectDB)();
+            try {
+                console.log('[GraphBuilder] Connecting to database...');
+                await (0, db_1.connectDB)();
+            }
+            catch (err) {
+                console.warn('[GraphBuilder] Database unavailable, falling back to static JSON dataset.');
+            }
         }
-        console.log('[GraphBuilder] Querying train stops from database...');
-        // Query train stops and populate references
-        const stops = await trainStop_model_1.TrainStop.find()
-            .populate('trainId')
-            .populate('stationId')
-            .exec();
+        let stops = [];
+        if (mongoose_1.default.connection.readyState === 1) {
+            console.log('[GraphBuilder] Querying train stops from database...');
+            stops = await trainStop_model_1.TrainStop.find()
+                .populate('trainId')
+                .populate('stationId')
+                .exec();
+        }
+        if (!stops || stops.length === 0) {
+            console.log('[GraphBuilder] Using static JSON dataset for graph compilation...');
+            const { getStaticTrainStops, getStaticTrains, getStaticStations } = await Promise.resolve().then(() => __importStar(require('../../utils/dataLoader')));
+            const rawStops = getStaticTrainStops();
+            const rawTrains = getStaticTrains();
+            const rawStations = getStaticStations();
+            const trainMap = new Map(rawTrains.map(t => [t.trainNumber, { ...t, _id: t.trainNumber }]));
+            const stationMap = new Map(rawStations.map(s => [s.stationCode, s]));
+            stops = rawStops.map((stop, idx) => {
+                const train = trainMap.get(stop.trainId) || { _id: stop.trainId, trainNumber: stop.trainId, trainName: `Train ${stop.trainId}`, trainType: 'Express' };
+                const station = stationMap.get(stop.stationId) || { _id: stop.stationId, stationCode: stop.stationId, name: stop.stationId };
+                return {
+                    _id: `stop_${idx}`,
+                    trainId: train,
+                    stationId: station,
+                    stopNumber: stop.stopNumber,
+                    arrivalTime: stop.arrivalTime,
+                    departureTime: stop.departureTime,
+                    dayOffset: stop.dayOffset,
+                    distanceFromSource: stop.distanceFromSource,
+                    platform: stop.platform,
+                };
+            });
+        }
         console.log(`[GraphBuilder] Loaded ${stops.length} TrainStop events. Building nodes...`);
         const nodesMap = new Map();
         const adjacencyList = new Map();
