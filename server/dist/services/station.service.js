@@ -44,13 +44,35 @@ class StationService {
      * Retrieves all active stations sorted alphabetically by name.
      */
     static async getAllStations() {
-        return station_model_1.Station.find({ isActive: true }).sort({ name: 1 });
+        if (mongoose_1.default.connection.readyState === 1) {
+            try {
+                const dbResults = await station_model_1.Station.find().sort({ name: 1 });
+                if (dbResults && dbResults.length > 0)
+                    return dbResults;
+            }
+            catch (err) {
+                console.warn('[StationService] DB query failed, using static stations.');
+            }
+        }
+        const { getStaticStations } = await Promise.resolve().then(() => __importStar(require('../utils/dataLoader')));
+        return getStaticStations();
     }
     /**
      * Find a station by its 3-letter station code.
      */
     static async getStationByCode(code) {
-        return station_model_1.Station.findOne({ code: code.toUpperCase(), isActive: true });
+        if (mongoose_1.default.connection.readyState === 1) {
+            try {
+                const dbRes = await station_model_1.Station.findOne({ stationCode: code.toUpperCase() });
+                if (dbRes)
+                    return dbRes;
+            }
+            catch (err) {
+                // Fallback
+            }
+        }
+        const { getStaticStations } = await Promise.resolve().then(() => __importStar(require('../utils/dataLoader')));
+        return getStaticStations().find(s => s.stationCode === code.toUpperCase()) || null;
     }
     /**
      * Admin: Creates a new station node.

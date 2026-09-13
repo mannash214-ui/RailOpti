@@ -13,21 +13,20 @@ export async function connectDB(): Promise<void> {
   const mongodbUri = process.env.MONGODB_URI;
 
   if (!mongodbUri) {
-    console.error('[Database] Fatal Error: MONGODB_URI environment variable is missing.');
-    throw new Error('MONGODB_URI environment variable is missing');
+    console.warn('[Database] MONGODB_URI is not set. Operating in static dataset mode.');
+    return;
   }
 
   try {
     mongoose.set('strictQuery', true);
     
     console.log('[Database] Connecting to MongoDB...');
-    const conn = await mongoose.connect(mongodbUri);
+    const conn = await mongoose.connect(mongodbUri, { serverSelectionTimeoutMS: 5000 });
     isConnected = conn.connections[0].readyState === 1;
     
     console.log('[Database] MongoDB connection established successfully.');
   } catch (error) {
-    console.error('[Database] MongoDB connection failed:', error);
-    throw error;
+    console.warn('[Database] MongoDB connection failed. Operating in static dataset mode:', (error as any)?.message);
   }
 }
 

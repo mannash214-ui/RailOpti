@@ -6,14 +6,32 @@ export class StationService {
    * Retrieves all active stations sorted alphabetically by name.
    */
   public static async getAllStations(): Promise<any[]> {
-    return Station.find({ isActive: true }).sort({ name: 1 });
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const dbResults = await Station.find().sort({ name: 1 });
+        if (dbResults && dbResults.length > 0) return dbResults;
+      } catch (err) {
+        console.warn('[StationService] DB query failed, using static stations.');
+      }
+    }
+    const { getStaticStations } = await import('../utils/dataLoader');
+    return getStaticStations();
   }
 
   /**
    * Find a station by its 3-letter station code.
    */
   public static async getStationByCode(code: string): Promise<any | null> {
-    return Station.findOne({ code: code.toUpperCase(), isActive: true });
+    if (mongoose.connection.readyState === 1) {
+      try {
+        const dbRes = await Station.findOne({ stationCode: code.toUpperCase() });
+        if (dbRes) return dbRes;
+      } catch (err) {
+        // Fallback
+      }
+    }
+    const { getStaticStations } = await import('../utils/dataLoader');
+    return getStaticStations().find(s => s.stationCode === code.toUpperCase()) || null;
   }
 
   /**

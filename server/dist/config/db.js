@@ -14,19 +14,18 @@ async function connectDB() {
     }
     const mongodbUri = process.env.MONGODB_URI;
     if (!mongodbUri) {
-        console.error('[Database] Fatal Error: MONGODB_URI environment variable is missing.');
-        throw new Error('MONGODB_URI environment variable is missing');
+        console.warn('[Database] MONGODB_URI is not set. Operating in static dataset mode.');
+        return;
     }
     try {
         mongoose_1.default.set('strictQuery', true);
         console.log('[Database] Connecting to MongoDB...');
-        const conn = await mongoose_1.default.connect(mongodbUri);
+        const conn = await mongoose_1.default.connect(mongodbUri, { serverSelectionTimeoutMS: 5000 });
         isConnected = conn.connections[0].readyState === 1;
         console.log('[Database] MongoDB connection established successfully.');
     }
     catch (error) {
-        console.error('[Database] MongoDB connection failed:', error);
-        throw error;
+        console.warn('[Database] MongoDB connection failed. Operating in static dataset mode:', error?.message);
     }
 }
 // Connection event logging
