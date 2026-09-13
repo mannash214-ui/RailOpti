@@ -14,24 +14,25 @@ class AppError extends Error {
     }
 }
 exports.AppError = AppError;
-// Centralized Express Error handling middleware
 function errorHandler(err, _req, res, 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 _next) {
-    const isProd = process.env.NODE_ENV === 'production';
     if (err instanceof AppError) {
         res.status(err.statusCode).json({
             status: 'error',
             message: err.message,
-            ...(isProd ? {} : { stack: err.stack }),
+            stack: err.stack,
         });
         return;
     }
     // Log unknown/system errors internally
     console.error('[Unhandled Exception Error]:', err);
+    const errMessage = err?.message || (typeof err === 'string' ? err : JSON.stringify(err)) || 'Unknown Error';
+    const errStack = err?.stack || new Error().stack;
     res.status(500).json({
         status: 'error',
-        message: 'An unexpected internal server error occurred.',
-        ...(isProd ? {} : { stack: err.stack, details: err.message }),
+        message: errMessage,
+        details: errMessage,
+        stack: errStack,
     });
 }
