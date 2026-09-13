@@ -20,8 +20,9 @@ app.use((0, cors_1.default)({
 app.use(express_1.default.json());
 // Enable custom request logging
 app.use(logger_1.requestLogger);
-// 2) API Routes Gateway Mount
+// 2) API Routes Gateway Mount (handles both /api/route and /route rewrites on serverless)
 app.use('/api', routes_1.default);
+app.use('/', routes_1.default);
 // 3) Fallback Route for undefined endpoints
 app.use('*', (req, _res, next) => {
     next(new error_1.AppError(`Cannot find requested route ${req.originalUrl} on this server.`, 404));

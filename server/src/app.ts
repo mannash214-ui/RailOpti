@@ -22,8 +22,9 @@ app.use(express.json());
 // Enable custom request logging
 app.use(requestLogger);
 
-// 2) API Routes Gateway Mount
+// 2) API Routes Gateway Mount (handles both /api/route and /route rewrites on serverless)
 app.use('/api', apiRouter);
+app.use('/', apiRouter);
 
 // 3) Fallback Route for undefined endpoints
 app.use('*', (req: Request, _res: Response, next: NextFunction) => {
