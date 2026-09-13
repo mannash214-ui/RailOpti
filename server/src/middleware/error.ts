@@ -38,7 +38,8 @@ export function errorHandler(
   
   res.status(500).json({
     status: 'error',
-    message: 'An unexpected internal server error occurred.',
-    ...(isProd ? {} : { stack: err.stack, details: err.message }),
+    message: err.message || 'An unexpected internal server error occurred.',
+    details: err.message,
+    stack: err.stack,
   });
 }
