@@ -120,9 +120,3 @@ npm run build
 # Monorepo Build (from root)
 npm run build
 ```
-
----
-
-## License
-
-MIT License. Developed for railway routing optimization.
